@@ -98,7 +98,7 @@ create index relationships_target_id_idx on public.relationships (target_id);
 -- ---------------------------------------------------------------------------
 create table public.world_state (
     id integer primary key default 1,
-    current_time timestamptz not null default now(),
+    game_time timestamptz not null default now(),
     weather text not null default 'CLEAR',
     traffic_level integer not null default 50,
     nightlife_level integer not null default 50,
