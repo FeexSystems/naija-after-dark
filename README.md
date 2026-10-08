@@ -57,15 +57,16 @@ naija-after-dark/
 
 ## Current Gate
 
-GATE 4 — AUTHENTICATION (repo + migration live)
+GATE 5 — COMMAND SYSTEM ✅ (TRAVEL verified on live DB)
 
-- SupabaseAuthService / Player / WorldState (anon key + user JWT only)
-- AuthController UI boundary
-- Migration `0002_auth_player_bootstrap.sql` applied (trigger creates player + wallet)
-- Pass on device: signup → login → load player → logout → login again
+- RPC `naad_travel(request_id, to_location_id)` — idempotent + domain event
+- Tables: `player_locations`, `command_receipts`, `domain_events`
+- Seed: Apartment → Suya Spot
+- TS contracts: `backend/game-api/src/contracts/commands.ts`
+- Unity: `ICommandService`, `SupabaseCommandService`, `TravelCommand`
 
-GATE 1 ✅  GATE 2 ✅  GATE 3 (editor verify) · GATE 4 code live
+GATE 1–4 foundation remains. Device UI still uses Editor for full client path.
 
 ## Next
 
-GATE 5 — COMMAND SYSTEM
+GATE 6 — WORLD TIME

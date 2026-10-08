@@ -9,8 +9,8 @@ namespace NAAD.Core.Bootstrap
 {
     /// <summary>
     /// Persistent application root. Owns service references via composition.
-    /// Assign SupabaseConfig in the Inspector to use live Auth (Gate 4).
-    /// Without config, falls back to stubs (Gate 3 offline).
+    /// Assign SupabaseConfig in the Inspector to use live services.
+    /// Without config, falls back to stubs.
     /// </summary>
     public sealed class NAADApplicationRoot : MonoBehaviour
     {
@@ -23,6 +23,7 @@ namespace NAAD.Core.Bootstrap
         public IAuthService Auth { get; private set; } = null!;
         public IPlayerService Players { get; private set; } = null!;
         public IWorldStateService World { get; private set; } = null!;
+        public ICommandService Commands { get; private set; } = null!;
         public ISceneLoader Scenes { get; private set; } = null!;
         public SupabaseConfig? Config => supabaseConfig;
 
@@ -50,6 +51,7 @@ namespace NAAD.Core.Bootstrap
                 Auth = new SupabaseAuthService(supabaseConfig, Logger);
                 Players = new SupabasePlayerService(supabaseConfig, Auth, Logger);
                 World = new SupabaseWorldStateService(supabaseConfig, Auth, Logger);
+                Commands = new SupabaseCommandService(supabaseConfig, Auth, Logger);
                 Logger.Info("Root", "Application root composed (Supabase live services)");
             }
             else
@@ -57,6 +59,7 @@ namespace NAAD.Core.Bootstrap
                 Auth = new StubAuthService(Logger);
                 Players = new StubPlayerService(Auth, Logger);
                 World = new StubWorldStateService(Logger);
+                Commands = new StubCommandService(Logger);
                 Logger.Warn("Root", "SupabaseConfig missing — using stub services");
             }
         }
