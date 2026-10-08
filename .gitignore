@@ -1,0 +1,95 @@
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors / IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.vs/
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+dist/
+build/
+coverage/
+.turbo/
+*.tsbuildinfo
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+service-role*
+secrets/
+
+# Supabase local
+supabase/.branches
+supabase/.temp
+supabase/.env
+
+# Unity (game/unity)
+game/unity/[Ll]ibrary/
+game/unity/[Tt]emp/
+game/unity/[Oo]bj/
+game/unity/[Bb]uild/
+game/unity/[Bb]uilds/
+game/unity/[Ll]ogs/
+game/unity/[Uu]ser[Ss]ettings/
+game/unity/[Mm]emory[Cc]aptures/
+game/unity/[Rr]ecordings/
+game/unity/Assets/AssetStoreTools/
+game/unity/Assets/Plugins/Editor/JetBrains*
+game/unity/*.csproj
+game/unity/*.unityproj
+game/unity/*.sln
+game/unity/*.suo
+game/unity/*.tmp
+game/unity/*.user
+game/unity/*.userprefs
+game/unity/*.pidb
+game/unity/*.booproj
+game/unity/*.svd
+game/unity/*.pdb
+game/unity/*.mdb
+game/unity/*.opendb
+game/unity/*.VC.db
+game/unity/*.pidb.meta
+game/unity/*.pdb.meta
+game/unity/*.mdb.meta
+game/unity/sysinfo.txt
+game/unity/crashlytics-buildid.txt
+game/unity/*.apk
+game/unity/*.aab
+game/unity/*.unitypackage
+game/unity/ExportedObj/
+game/unity/.gradle/
+game/unity/Assets/StreamingAssets/aa/
+game/unity/Assets/AddressableAssetsData/*/*.bin*
+game/unity/Assets/AddressableAssetsData/link.xml
+
+# Logs
+*.log
+logs/
+
+# Python (tools / future scripts)
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Misc
+*.bak
+*.orig
+.cache/
+tmp/
+temp/
