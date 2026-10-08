@@ -79,11 +79,13 @@ Schema and RLS live in:
 
 `supabase/migrations/0001_initial_world_model.sql`
 
+**Project ref (live):** `unzfqrfyejkyisalzkhc`
+
 On your machine:
 
-1. Create a Supabase project in the dashboard. Record:
+1. Record from dashboard:
    - Project URL
-   - Project ID (ref)
+   - Project ID (ref): `unzfqrfyejkyisalzkhc`
    - anon key
    - service role key (server only — never in Unity)
    - database password
@@ -95,7 +97,7 @@ On your machine:
 
 3. Link:
    ```bash
-   supabase link --project-ref YOUR_PROJECT_ID
+   supabase link --project-ref unzfqrfyejkyisalzkhc
    ```
 
 4. Push schema:
@@ -109,3 +111,14 @@ On your machine:
    Do **not** grant client UPDATE on wallets.
 
 Never put the service-role key inside Unity.
+
+### MCP (Grok)
+
+Supabase MCP is configured for this project in `~/.grok/config.toml`:
+
+```toml
+[mcp_servers.supabase]
+url = "https://mcp.supabase.com/mcp?project_ref=unzfqrfyejkyisalzkhc&features=docs%2Caccount%2Cdatabase%2Cdebugging%2Cdevelopment%2Cfunctions%2Cbranching%2Cstorage"
+```
+
+Complete OAuth when prompted on first use. Verify with `/mcps` or `grok mcp doctor supabase`.
