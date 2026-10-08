@@ -57,14 +57,15 @@ naija-after-dark/
 
 ## Current Gate
 
-GATE 1 — SUPABASE FOUNDATION (schema + RLS in repo)
+GATE 1 — SUPABASE FOUNDATION ✅ (schema applied on live project)
 
-- Migration: `supabase/migrations/0001_initial_world_model.sql`
-- Tables: players, wallets, locations, npcs, relationships, world_state
-- RLS enabled; wallets have **SELECT-only** for authenticated (no client writes)
-- Supabase CLI config initialized (`supabase/config.toml`)
+- Project: `unzfqrfyejkyisalzkhc` (NAAD Project)
+- Migration applied: `0001_initial_world_model.sql`
+- Tables live: players, wallets, locations, npcs, relationships, world_state
+- RLS enabled on all; wallets **SELECT-only** for authenticated
+- `world_state.game_time` (not `current_time` — reserved keyword)
 
-**You still need** (local machine): create Supabase project → `supabase login` → `supabase link` → `supabase db push` → verify create account / player / wallet / read path.
+**Remaining for full pass condition:** create Auth user → insert player → insert wallet → read both (manual or via future game-api).
 
 ## Next
 
