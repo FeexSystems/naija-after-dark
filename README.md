@@ -57,15 +57,13 @@ naija-after-dark/
 
 ## Current Gate
 
-GATE 1 — SUPABASE FOUNDATION ✅ (schema applied on live project)
+GATE 1 — SUPABASE FOUNDATION ✅ PASSED
 
 - Project: `unzfqrfyejkyisalzkhc` (NAAD Project)
-- Migration applied: `0001_initial_world_model.sql`
-- Tables live: players, wallets, locations, npcs, relationships, world_state
-- RLS enabled on all; wallets **SELECT-only** for authenticated
-- `world_state.game_time` (not `current_time` — reserved keyword)
-
-**Remaining for full pass condition:** create Auth user → insert player → insert wallet → read both (manual or via future game-api).
+- Migration applied + verified live
+- Pass path verified:
+  Auth user → player → wallet → read player → read wallet
+- Test player: `55294c60-eb72-4bda-ac5d-4c96bf03268c` (Gate1 Tester, ₦100,000)
 
 ## Next
 
