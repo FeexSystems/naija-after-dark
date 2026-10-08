@@ -1,0 +1,1 @@
+-- GATE 1 seed placeholder — no gameplay seed data yet

@@ -57,10 +57,15 @@ naija-after-dark/
 
 ## Current Gate
 
-GATE 0.1 — PROJECT STRUCTURE
+GATE 1 — SUPABASE FOUNDATION (schema + RLS in repo)
 
-No application logic yet. Structure only.
+- Migration: `supabase/migrations/0001_initial_world_model.sql`
+- Tables: players, wallets, locations, npcs, relationships, world_state
+- RLS enabled; wallets have **SELECT-only** for authenticated (no client writes)
+- Supabase CLI config initialized (`supabase/config.toml`)
+
+**You still need** (local machine): create Supabase project → `supabase login` → `supabase link` → `supabase db push` → verify create account / player / wallet / read path.
 
 ## Next
 
-GATE 1 — SUPABASE FOUNDATION
+GATE 2 — WORLD MODEL schemas (JSON Schema + contracts)
