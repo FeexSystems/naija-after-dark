@@ -93,3 +93,6 @@ venv/
 .cache/
 tmp/
 temp/
+
+# Agent / internal
+.grok/
