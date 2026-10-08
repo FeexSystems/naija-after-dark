@@ -88,7 +88,7 @@ Deno.serve(async (req) => {
   }
   const context = await ctxRes.json();
 
-  const model = "gemini-2.0-flash";
+  const model = Deno.env.get("GEMINI_MODEL") ?? "gemini-3.8-flash";
   const gUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_API_KEY}`;
   const gRes = await fetch(gUrl, {
     method: "POST",

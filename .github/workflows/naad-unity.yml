@@ -1,0 +1,33 @@
+name: NAAD Unity Gate 21
+
+on:
+  push:
+    branches: [main, "feat/naad-*"]
+    paths:
+      - "game/unity/**"
+      - ".github/workflows/naad-unity.yml"
+  pull_request:
+    paths:
+      - "game/unity/**"
+      - ".github/workflows/naad-unity.yml"
+
+jobs:
+  verify-unity:
+    name: Unity compile and Gate 21 verification
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Unity verification
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+        with:
+          projectPath: game/unity
+          unityVersion: 6000.0.32f1
+          targetPlatform: StandaloneLinux64
+          buildMethod: NAAD.Editor.NAADBuild.Verify
+          customParameters: -nographics
