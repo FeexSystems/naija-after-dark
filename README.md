@@ -57,15 +57,17 @@ naija-after-dark/
 
 ## Current Gate
 
-GATE 6 — WORLD TIME ✅ (DAY→SUNSET→NIGHT→LATE_NIGHT verified)
+GATES 7–10 ✅ vertical slice (DB verified)
 
-- Server-owned `game_time` + `time_scale`
-- RPCs: `naad_get_world_clock`, `naad_advance_world_time`, `naad_set_world_period`
-- Periods drive `nightlife_level` + Unity ambient presentation
-- Device clock is never authoritative
+- **7** Night District: Apartment, Street, Suya Spot, Nightclub, Beach
+- **8** NPCs: Tunde (AI), Mama Seyi, Amaka, Emeka, Dami
+- **9** AI orchestrator + Edge Function `npc-dialogue` (Gemini server-side only)
+- **10** `npc_memories` + `naad_commit_npc_memory` (validated, deduped)
 
-GATE 1–5 remain.
+Verified: Mama Seyi greeting, BUY SUYA ₦5,000, Tunde memory + context pack.
+
+Deploy AI: `supabase secrets set GEMINI_API_KEY=...` && `supabase functions deploy npc-dialogue`
 
 ## Next
 
-GATE 7 — FIRST WORLD (One Night District)
+GATE 11 — Economy polish / GATE 12 Relationships / GATE 13 Phone

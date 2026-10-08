@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://naad.game/schemas/npc-dialogue-response.schema.json",
+  "title": "NPCDialogueResponse",
+  "description": "Structured Gemini output. Never applied to DB without server validation.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["dialogue", "emotion"],
+  "properties": {
+    "dialogue": { "type": "string", "minLength": 1, "maxLength": 500 },
+    "emotion": {
+      "type": "string",
+      "enum": ["happy", "excited", "neutral", "angry", "sad", "nervous"]
+    },
+    "intent": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["INVITE_EVENT", "OFFER_JOB", "REQUEST_PAYMENT", "MAKE_PLAN", "REFUSE", "NONE"]
+        },
+        "targetId": { "type": "string" }
+      },
+      "required": ["type"]
+    },
+    "suggestedRelationshipDelta": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "trust": { "type": "integer", "minimum": -10, "maximum": 10 },
+        "respect": { "type": "integer", "minimum": -10, "maximum": 10 },
+        "affection": { "type": "integer", "minimum": -10, "maximum": 10 },
+        "conflict": { "type": "integer", "minimum": -10, "maximum": 10 }
+      }
+    },
+    "memoryCandidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "summary": { "type": "string", "minLength": 3, "maxLength": 280 },
+        "importance": { "type": "number", "minimum": 0, "maximum": 1 },
+        "type": {
+          "type": "string",
+          "enum": ["FAVOR", "INSULT", "SHARED_EVENT", "PROMISE", "TRANSACTION", "INTRO", "OTHER"]
+        }
+      },
+      "required": ["summary", "importance"]
+    }
+  }
+}
