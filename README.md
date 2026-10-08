@@ -68,13 +68,13 @@ GATES 15–20 ✅ foundation verified on live DB
 
 ## Next architecture
 
-See **`docs/NEXT_ARCHITECTURE.md`**
+See **`docs/NEXT_ARCHITECTURE.md`** · Phase A docs: **`docs/PHASE_A_COMMAND_ROUTER.md`**
 
-1. **Phase A** — unified `naad_execute_command` router  
-2. **Phase B** — Unity First Night vertical slice on device  
-3. **Phase C** — deploy Gemini Edge Function  
-4. **Phase D** — contract hardening  
-5. **Phase E** — Realtime presence (optional)  
-6. **Phase F** — Gate 16 mobile profiling  
+- **Phase A ✅** — `naad_execute_command` live (TRAVEL/SPEND/START_NIGHT verified; idempotent; UNSUPPORTED ok)
+- **Phase B** — Unity First Night vertical slice on device  
+- **Phase C** — deploy Gemini Edge Function  
+- **Phase D** — contract hardening  
+- **Phase E** — Realtime presence (optional)  
+- **Phase F** — Gate 16 mobile profiling  
 
 Do not add microservices or expand the city until First Night is playable.

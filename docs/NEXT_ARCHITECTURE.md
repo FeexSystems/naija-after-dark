@@ -49,7 +49,7 @@ Do **not** do these next:
 
 ## 3. Next engineering phases (ordered)
 
-### Phase A — Command surface unification (1–2 days)
+### Phase A — Command surface unification ✅ DONE
 
 **Problem:** Client calls `naad_travel`, `naad_spend`, `naad_start_night`, … as separate RPCs.
 
