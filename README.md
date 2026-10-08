@@ -57,16 +57,15 @@ naija-after-dark/
 
 ## Current Gate
 
-GATE 5 — COMMAND SYSTEM ✅ (TRAVEL verified on live DB)
+GATE 6 — WORLD TIME ✅ (DAY→SUNSET→NIGHT→LATE_NIGHT verified)
 
-- RPC `naad_travel(request_id, to_location_id)` — idempotent + domain event
-- Tables: `player_locations`, `command_receipts`, `domain_events`
-- Seed: Apartment → Suya Spot
-- TS contracts: `backend/game-api/src/contracts/commands.ts`
-- Unity: `ICommandService`, `SupabaseCommandService`, `TravelCommand`
+- Server-owned `game_time` + `time_scale`
+- RPCs: `naad_get_world_clock`, `naad_advance_world_time`, `naad_set_world_period`
+- Periods drive `nightlife_level` + Unity ambient presentation
+- Device clock is never authoritative
 
-GATE 1–4 foundation remains. Device UI still uses Editor for full client path.
+GATE 1–5 remain.
 
 ## Next
 
-GATE 6 — WORLD TIME
+GATE 7 — FIRST WORLD (One Night District)

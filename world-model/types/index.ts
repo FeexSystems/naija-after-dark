@@ -180,12 +180,34 @@ export interface Relationship {
   updatedAt: ISODateTime;
 }
 
+export type WorldPeriod =
+  | "MORNING"
+  | "DAY"
+  | "TRANSITION"
+  | "NIGHT"
+  | "LATE_NIGHT"
+  | "AFTER_HOURS";
+
 export interface WorldState {
   id: 1;
   gameTime: ISODateTime;
   weather: Weather;
   trafficLevel: number; // 0–100
   nightlifeLevel: number; // 0–100
+  timeScale: number;
+  period?: WorldPeriod;
+  minutesSinceMidnight?: number;
+}
+
+export interface WorldClock {
+  gameDate: string;
+  gameTime: ISODateTime;
+  minutesSinceMidnight: number;
+  period: WorldPeriod;
+  timeScale: number;
+  weather: string;
+  trafficLevel: number;
+  nightlifeLevel: number;
 }
 
 export interface Business {

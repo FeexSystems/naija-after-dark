@@ -5,13 +5,9 @@
   "description": "Singleton simulation clock and ambient conditions. Server owns time.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["id", "gameTime", "weather", "trafficLevel", "nightlifeLevel"],
+  "required": ["id", "gameTime", "weather", "trafficLevel", "nightlifeLevel", "timeScale"],
   "properties": {
-    "id": {
-      "type": "integer",
-      "const": 1,
-      "description": "Singleton row only."
-    },
+    "id": { "type": "integer", "const": 1 },
     "gameTime": {
       "type": "string",
       "format": "date-time",
@@ -19,20 +15,24 @@
     },
     "weather": {
       "type": "string",
-      "enum": ["CLEAR", "CLOUDY", "RAIN", "HEAVY_RAIN", "HARMATTAN"],
-      "description": "Presentation + some location rules."
+      "enum": ["CLEAR", "CLOUDY", "RAIN", "HEAVY_RAIN", "HARMATTAN"]
     },
-    "trafficLevel": {
+    "trafficLevel": { "type": "integer", "minimum": 0, "maximum": 100 },
+    "nightlifeLevel": { "type": "integer", "minimum": 0, "maximum": 100 },
+    "timeScale": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "maximum": 10000,
+      "description": "Simulated minutes per real minute."
+    },
+    "period": {
+      "type": "string",
+      "enum": ["MORNING", "DAY", "TRANSITION", "NIGHT", "LATE_NIGHT", "AFTER_HOURS"]
+    },
+    "minutesSinceMidnight": {
       "type": "integer",
       "minimum": 0,
-      "maximum": 100,
-      "description": "Affects travel time commands."
-    },
-    "nightlifeLevel": {
-      "type": "integer",
-      "minimum": 0,
-      "maximum": 100,
-      "description": "Crowd energy bias for night locations."
+      "maximum": 1439
     }
   }
 }
