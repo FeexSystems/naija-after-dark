@@ -100,7 +100,8 @@ namespace NAAD.Core.Bootstrap
 
             state.SetPhase(GamePhase.SceneReady);
             log.Info("Bootstrap", "SCENE");
-            await root.Scenes.LoadSceneAsync(nextSceneName);
+            if (!string.IsNullOrWhiteSpace(nextSceneName))
+                await root.Scenes.LoadSceneAsync(nextSceneName);
 
             log.Info("Bootstrap", "Bootstrap sequence complete");
         }
