@@ -57,16 +57,15 @@ naija-after-dark/
 
 ## Current Gate
 
-GATE 2 — WORLD MODEL ✅ SPEC v0.1
+GATE 3 — UNITY BOOTSTRAP (code in repo; open in Unity Editor to verify)
 
-- JSON Schema for all core entities under `world-model/schemas/`
-- TypeScript contracts: `world-model/types/index.ts`
-- Postgres mapping: `world-model/mappings/postgresql.md`
-- ER diagram: `world-model/diagrams/er.mmd`
-- Ownership answer: **all authoritative state lives in PostgreSQL**
+- `game/unity/Assets/NAAD/` client architecture
+- Flow: BOOT → AUTH → PLAYER → WORLD → SCENE
+- Stub services only (no secrets, no service-role)
+- Real auth = Gate 4
 
-GATE 1 remains passed (live DB + Auth→player→wallet path).
+GATE 1 ✅  GATE 2 ✅
 
 ## Next
 
-GATE 3 — UNITY PROJECT (bootstrap only)
+GATE 4 — AUTHENTICATION (Supabase Auth on device)
