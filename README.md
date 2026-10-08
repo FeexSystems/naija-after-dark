@@ -57,15 +57,15 @@ naija-after-dark/
 
 ## Current Gate
 
-GATE 3 — UNITY BOOTSTRAP (code in repo; open in Unity Editor to verify)
+GATE 4 — AUTHENTICATION (repo + migration live)
 
-- `game/unity/Assets/NAAD/` client architecture
-- Flow: BOOT → AUTH → PLAYER → WORLD → SCENE
-- Stub services only (no secrets, no service-role)
-- Real auth = Gate 4
+- SupabaseAuthService / Player / WorldState (anon key + user JWT only)
+- AuthController UI boundary
+- Migration `0002_auth_player_bootstrap.sql` applied (trigger creates player + wallet)
+- Pass on device: signup → login → load player → logout → login again
 
-GATE 1 ✅  GATE 2 ✅
+GATE 1 ✅  GATE 2 ✅  GATE 3 (editor verify) · GATE 4 code live
 
 ## Next
 
-GATE 4 — AUTHENTICATION (Supabase Auth on device)
+GATE 5 — COMMAND SYSTEM

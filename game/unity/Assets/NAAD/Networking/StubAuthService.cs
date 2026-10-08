@@ -4,8 +4,7 @@ using NAAD.Core.Logging;
 namespace NAAD.Networking
 {
     /// <summary>
-    /// Gate 3 stub — succeeds without network so bootstrap flow can be verified offline.
-    /// Replace with Supabase-backed implementation in Gate 4.
+    /// Offline stub when SupabaseConfig is not assigned.
     /// </summary>
     public sealed class StubAuthService : IAuthService
     {
@@ -19,6 +18,14 @@ namespace NAAD.Networking
         }
 
         public bool IsAuthenticated => !string.IsNullOrEmpty(_token);
+
+        public Task<bool> SignUpAsync(string email, string password, string? displayName = null)
+        {
+            _log.Info("Auth", $"Stub sign-up for {email}");
+            _playerId = "00000000-0000-0000-0000-000000000001";
+            _token = "stub-access-token";
+            return Task.FromResult(true);
+        }
 
         public Task<bool> SignInAsync(string email, string password)
         {
@@ -34,6 +41,11 @@ namespace NAAD.Networking
             _playerId = null;
             _token = null;
             return Task.FromResult(true);
+        }
+
+        public Task<bool> RestoreSessionAsync()
+        {
+            return Task.FromResult(false);
         }
 
         public Task<string?> GetAccessTokenAsync() => Task.FromResult(_token);

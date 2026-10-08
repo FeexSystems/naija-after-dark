@@ -122,3 +122,10 @@ url = "https://mcp.supabase.com/mcp?project_ref=unzfqrfyejkyisalzkhc&features=do
 ```
 
 Complete OAuth when prompted on first use. Verify with `/mcps` or `grok mcp doctor supabase`.
+
+## Gate 4 — Authentication
+
+- Client: `SupabaseAuthService` via anon key only
+- Server: trigger `on_auth_user_created` provisions `players` + `wallets`
+- UI must go through `AuthController` → `IAuthService`
+- Setup: `game/unity/Docs/GATE4_AUTH.md`

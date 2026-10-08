@@ -7,16 +7,16 @@ using UnityEngine;
 namespace NAAD.Core.Bootstrap
 {
     /// <summary>
-    /// Gate 3.1 entry point. Runs:
-    /// BOOT → AUTH → PLAYER → WORLD → SCENE
-    /// Attach to a GameObject in the Bootstrap scene.
-    /// Requires NAADApplicationRoot in the same scene (or already present).
+    /// Entry point. Runs:
+    /// BOOT → AUTH (restore or sign-in) → PLAYER → WORLD → SCENE
     /// </summary>
     public sealed class NAADBootstrap : MonoBehaviour
     {
         [SerializeField] private string nextSceneName = "Main";
-        [SerializeField] private string stubEmail = "gate3@naad.local";
-        [SerializeField] private string stubPassword = "not-a-secret";
+        [Header("Dev sign-in (used when no restored session)")]
+        [SerializeField] private string email = "";
+        [SerializeField] private string password = "";
+        [SerializeField] private bool preferRestoreSession = true;
 
         private async void Start()
         {
@@ -42,32 +42,52 @@ namespace NAAD.Core.Bootstrap
             var log = root.Logger;
             var state = root.GameState;
 
-            // BOOT
             state.SetPhase(GamePhase.Boot);
             log.Info("Bootstrap", "BOOT");
 
-            // AUTH
             state.SetPhase(GamePhase.Auth);
             log.Info("Bootstrap", "AUTH");
-            var signedIn = await root.Auth.SignInAsync(stubEmail, stubPassword);
-            if (!signedIn)
+
+            var authenticated = false;
+            if (preferRestoreSession)
+                authenticated = await root.Auth.RestoreSessionAsync();
+
+            if (!authenticated)
+            {
+                if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
+                {
+                    state.SetError("No session and no email/password configured on NAADBootstrap");
+                    return;
+                }
+
+                authenticated = await root.Auth.SignInAsync(email, password);
+            }
+
+            if (!authenticated)
             {
                 state.SetError("Authentication failed");
                 return;
             }
 
-            // PLAYER
             state.SetPhase(GamePhase.Player);
             log.Info("Bootstrap", "PLAYER");
-            var player = await root.Players.FetchCurrentPlayerAsync();
+
+            // Brief retry — trigger may create player row slightly after signup
+            PlayerDto? player = null;
+            for (var attempt = 0; attempt < 5; attempt++)
+            {
+                player = await root.Players.FetchCurrentPlayerAsync();
+                if (player != null) break;
+                await Task.Delay(400);
+            }
+
             if (player == null)
             {
-                state.SetError("Failed to load player");
+                state.SetError("Failed to load player profile");
                 return;
             }
             state.SetPlayer(player);
 
-            // WORLD
             state.SetPhase(GamePhase.World);
             log.Info("Bootstrap", "WORLD");
             var world = await root.World.FetchWorldStateAsync();
@@ -78,7 +98,6 @@ namespace NAAD.Core.Bootstrap
             }
             state.SetWorldState(world);
 
-            // SCENE
             state.SetPhase(GamePhase.SceneReady);
             log.Info("Bootstrap", "SCENE");
             await root.Scenes.LoadSceneAsync(nextSceneName);
