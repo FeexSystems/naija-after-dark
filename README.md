@@ -57,17 +57,15 @@ naija-after-dark/
 
 ## Current Gate
 
-GATES 7–10 ✅ vertical slice (DB verified)
+GATES 11–14 ✅ First Night loop verified on live DB
 
-- **7** Night District: Apartment, Street, Suya Spot, Nightclub, Beach
-- **8** NPCs: Tunde (AI), Mama Seyi, Amaka, Emeka, Dami
-- **9** AI orchestrator + Edge Function `npc-dialogue` (Gemini server-side only)
-- **10** `npc_memories` + `naad_commit_npc_memory` (validated, deduped)
+- **11** Economy: price_list, `naad_spend`, wallet ledger (₦29k sample night)
+- **12** Relationships: `naad_apply_relationship_delta` (server-clamped)
+- **13** Phone: Tunde beach invite → GO / ASK_DETAILS / DECLINE
+- **14** First Night: start → spend/travel → complete → night summary → home
 
-Verified: Mama Seyi greeting, BUY SUYA ₦5,000, Tunde memory + context pack.
-
-Deploy AI: `supabase secrets set GEMINI_API_KEY=...` && `supabase functions deploy npc-dialogue`
+Sample summary: spent ₦29,000 · met Tunde · trust 55 · returned Apartment
 
 ## Next
 
-GATE 11 — Economy polish / GATE 12 Relationships / GATE 13 Phone
+GATE 15 — Social multiplayer (only after local loop is fun)
