@@ -57,15 +57,15 @@ naija-after-dark/
 
 ## Current Gate
 
-GATES 11–14 ✅ First Night loop verified on live DB
+GATES 15–20 ✅ foundation verified on live DB
 
-- **11** Economy: price_list, `naad_spend`, wallet ledger (₦29k sample night)
-- **12** Relationships: `naad_apply_relationship_delta` (server-clamped)
-- **13** Phone: Tunde beach invite → GO / ASK_DETAILS / DECLINE
-- **14** First Night: start → spend/travel → complete → night summary → home
-
-Sample summary: spent ₦29,000 · met Tunde · trust 55 · returned Apartment
+- **15** Rooms + presence (ephemeral) — join/leave/pose verified
+- **16** Mobile optimization checklist (measure on device)
+- **17** 10 locations + 5 careers
+- **18** Social opportunities (Tunde trust → Meet the DJ)
+- **19** World events (Beach Party, Club Night) + attendance
+- **20** Reactivity: attendance → nightlife/traffic
 
 ## Next
 
-GATE 15 — Social multiplayer (only after local loop is fun)
+Ship First Night on device · deploy Gemini edge function · profile mobile (Gate 16)
