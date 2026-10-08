@@ -84,7 +84,7 @@ Unity  →  POST /rest/v1/rpc/naad_execute_command
 - TS: command registry map type → payload schema  
 - Unity: one `ICommandService.ExecuteAsync` path for all mutations  
 
-### Phase B — Client First Night vertical slice (3–5 days)
+### Phase B — Client First Night vertical slice ✅ DONE (client code)
 
 Wire Unity only:
 

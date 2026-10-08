@@ -70,8 +70,8 @@ GATES 15–20 ✅ foundation verified on live DB
 
 See **`docs/NEXT_ARCHITECTURE.md`** · Phase A docs: **`docs/PHASE_A_COMMAND_ROUTER.md`**
 
-- **Phase A ✅** — `naad_execute_command` live (TRAVEL/SPEND/START_NIGHT verified; idempotent; UNSUPPORTED ok)
-- **Phase B** — Unity First Night vertical slice on device  
+- **Phase A ✅** — `naad_execute_command` live
+- **Phase B ✅** — Unity `FirstNightController` + HUD (mutations via command router)
 - **Phase C** — deploy Gemini Edge Function  
 - **Phase D** — contract hardening  
 - **Phase E** — Realtime presence (optional)  
