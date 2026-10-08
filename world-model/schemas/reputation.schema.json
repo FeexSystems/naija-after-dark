@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://naad.game/schemas/reputation.schema.json",
+  "title": "Reputation",
+  "description": "Player standing in a domain (nightlife, business). Server-only writes.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["playerId", "domain", "score", "updatedAt"],
+  "properties": {
+    "playerId": { "type": "string", "format": "uuid" },
+    "domain": {
+      "type": "string",
+      "enum": ["NIGHTLIFE", "BUSINESS", "STREET", "CREATIVE"]
+    },
+    "score": {
+      "type": "integer",
+      "description": "Can be negative. Used for event access and NPC bias."
+    },
+    "updatedAt": { "type": "string", "format": "date-time" }
+  }
+}

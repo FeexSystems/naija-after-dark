@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://naad.game/schemas/message.schema.json",
+  "title": "Message",
+  "description": "In-game phone message between player and NPC (or system).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "senderType", "senderId", "recipientPlayerId", "body", "createdAt"],
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "senderType": {
+      "type": "string",
+      "enum": ["NPC", "PLAYER", "SYSTEM"]
+    },
+    "senderId": {
+      "type": "string",
+      "description": "NPC id, player id, or system code."
+    },
+    "recipientPlayerId": { "type": "string", "format": "uuid" },
+    "body": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500
+    },
+    "readAt": { "type": "string", "format": "date-time" },
+    "createdAt": { "type": "string", "format": "date-time" }
+  }
+}

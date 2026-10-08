@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://naad.game/schemas/wallet.schema.json",
+  "title": "Wallet",
+  "description": "Authoritative money. Never trust client-provided balance.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["playerId", "currency", "balance", "updatedAt"],
+  "properties": {
+    "playerId": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Owner player id. One wallet per player in v0.1."
+    },
+    "currency": {
+      "type": "string",
+      "const": "NGN",
+      "description": "Only NGN in v0.1."
+    },
+    "balance": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Balance in integer Naira (no fractional kobo in v0.1)."
+    },
+    "updatedAt": { "type": "string", "format": "date-time" }
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://naad.game/schemas/npc.schema.json",
+  "title": "Npc",
+  "description": "Non-player character. Persistent identity for dialogue and schedules.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "name", "mood", "reputation", "createdAt"],
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "name": { "type": "string", "minLength": 1, "maxLength": 64 },
+    "age": { "type": "integer", "minimum": 18, "maximum": 99 },
+    "archetype": {
+      "type": "string",
+      "enum": ["PROMOTER", "VENDOR", "CREATIVE", "DEVELOPER", "SOCIALITE", "OTHER"],
+      "description": "Gameplay role used for dialogue tone and opportunities."
+    },
+    "occupation": { "type": "string", "maxLength": 64 },
+    "currentLocationId": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Where the NPC is right now."
+    },
+    "mood": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100,
+      "description": "0–100 mood for AI/deterministic dialogue bias."
+    },
+    "reputation": {
+      "type": "integer",
+      "description": "NPC's standing in the nightlife scene (can be negative)."
+    },
+    "createdAt": { "type": "string", "format": "date-time" }
+  }
+}

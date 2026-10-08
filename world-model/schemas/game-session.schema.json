@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://naad.game/schemas/game-session.schema.json",
+  "title": "GameSession",
+  "description": "Active client session for a player. Ephemeral presence, not progression.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "playerId", "startedAt"],
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "playerId": { "type": "string", "format": "uuid" },
+    "currentLocationId": { "type": "string", "format": "uuid" },
+    "clientPlatform": {
+      "type": "string",
+      "enum": ["ANDROID", "IOS", "EDITOR", "OTHER"]
+    },
+    "startedAt": { "type": "string", "format": "date-time" },
+    "lastSeenAt": { "type": "string", "format": "date-time" }
+  }
+}

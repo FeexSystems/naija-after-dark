@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://naad.game/schemas/player.schema.json",
+  "title": "Player",
+  "description": "Authoritative player profile. id matches auth.users.id.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "displayName", "createdAt", "updatedAt"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Same as auth.users.id. Ownership: the authenticated user."
+    },
+    "displayName": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "description": "Public display name for nightlife social contexts."
+    },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "updatedAt": { "type": "string", "format": "date-time" }
+  }
+}

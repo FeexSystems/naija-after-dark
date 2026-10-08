@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://naad.game/schemas/vehicle.schema.json",
+  "title": "Vehicle",
+  "description": "Owned or hireable transport. Ownership drives travel options.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "createdAt"],
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "type": {
+      "type": "string",
+      "enum": ["OKADA", "DANFO", "UBER", "PRIVATE_CAR", "BOAT", "OTHER"]
+    },
+    "ownerPlayerId": { "type": "string", "format": "uuid" },
+    "label": { "type": "string", "maxLength": 64 },
+    "createdAt": { "type": "string", "format": "date-time" }
+  }
+}

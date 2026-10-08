@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://naad.game/schemas/mission.schema.json",
+  "title": "Mission",
+  "description": "Player-facing objective (help Tunde book a DJ).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "playerId", "title", "status", "createdAt"],
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "playerId": { "type": "string", "format": "uuid" },
+    "title": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "status": {
+      "type": "string",
+      "enum": ["OFFERED", "ACTIVE", "COMPLETED", "FAILED", "EXPIRED"]
+    },
+    "giverNpcId": { "type": "string", "format": "uuid" },
+    "relatedEventId": { "type": "string", "format": "uuid" },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "completedAt": { "type": "string", "format": "date-time" }
+  }
+}

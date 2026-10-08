@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://naad.game/schemas/business.schema.json",
+  "title": "Business",
+  "description": "Venue or vendor tied to a location (suya stand, club, bar).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "name", "locationId", "createdAt"],
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "name": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "locationId": { "type": "string", "format": "uuid" },
+    "ownerNpcId": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Optional NPC operator (e.g. Mama Seyi)."
+    },
+    "createdAt": { "type": "string", "format": "date-time" }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://naad.game/schemas/wallet-transaction.schema.json",
+  "title": "WalletTransaction",
+  "description": "Immutable ledger entry for earn/spend. Written only by server commands.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "playerId", "type", "amount", "currency", "createdAt"],
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "playerId": { "type": "string", "format": "uuid" },
+    "type": {
+      "type": "string",
+      "enum": ["EARN", "SPEND", "TRANSFER_IN", "TRANSFER_OUT", "ADJUST"],
+      "description": "Ledger direction. ADJUST is admin/server repair only."
+    },
+    "amount": {
+      "type": "integer",
+      "exclusiveMinimum": 0,
+      "description": "Positive magnitude in NGN integer units."
+    },
+    "currency": { "type": "string", "const": "NGN" },
+    "reason": {
+      "type": "string",
+      "maxLength": 128,
+      "description": "Gameplay reason code e.g. BUY_SUYA, CLUB_ENTRY."
+    },
+    "relatedEntityType": {
+      "type": "string",
+      "enum": ["ITEM", "EVENT", "MISSION", "NPC", "LOCATION", "NONE"]
+    },
+    "relatedEntityId": { "type": "string", "format": "uuid" },
+    "requestId": {
+      "type": "string",
+      "description": "Idempotency key from the originating command."
+    },
+    "createdAt": { "type": "string", "format": "date-time" }
+  }
+}

@@ -1,0 +1,75 @@
+erDiagram
+  auth_users ||--|| players : "id"
+  players ||--|| wallets : "player_id"
+  players ||--o{ inventories : "player_id"
+  players ||--o{ wallet_transactions : "player_id"
+  players ||--o{ jobs : "player_id"
+  players ||--o{ missions : "player_id"
+  players ||--o{ reputations : "player_id"
+  players ||--o{ game_sessions : "player_id"
+  players ||--o{ messages : "recipient"
+  players ||--o{ properties : "owner"
+  players ||--o{ vehicles : "owner"
+
+  districts ||--o{ locations : "district_id"
+  locations ||--o{ npcs : "current_location_id"
+  locations ||--o{ businesses : "location_id"
+  locations ||--o{ properties : "location_id"
+  locations ||--o{ events : "location_id"
+
+  npcs ||--o{ npc_memories : "npc_id"
+  players ||--o{ npc_memories : "player_id"
+  npcs ||--o{ businesses : "owner_npc_id"
+
+  players ||--o{ relationships : "subject_id"
+  npcs ||--o{ relationships : "target_id"
+
+  items ||--o{ inventories : "item_id"
+
+  world_state {
+    int id PK
+    timestamptz game_time
+    text weather
+    int traffic_level
+    int nightlife_level
+  }
+
+  players {
+    uuid id PK
+    text display_name
+    timestamptz created_at
+    timestamptz updated_at
+  }
+
+  wallets {
+    uuid player_id PK
+    text currency
+    bigint balance
+    timestamptz updated_at
+  }
+
+  locations {
+    uuid id PK
+    text name
+    text type
+    uuid district_id
+  }
+
+  npcs {
+    uuid id PK
+    text name
+    int mood
+    int reputation
+    uuid current_location_id
+  }
+
+  relationships {
+    uuid id PK
+    uuid subject_id
+    uuid target_id
+    int trust
+    int respect
+    int affection
+    int loyalty
+    int conflict
+  }

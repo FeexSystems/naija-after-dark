@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://naad.game/schemas/relationship.schema.json",
+  "title": "Relationship",
+  "description": "Directed relationship scores subject → target. Server applies deltas; AI only suggests.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "subjectId",
+    "targetId",
+    "trust",
+    "respect",
+    "affection",
+    "loyalty",
+    "conflict",
+    "updatedAt"
+  ],
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "subjectId": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Usually a player id."
+    },
+    "targetId": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Usually an NPC id."
+    },
+    "trust": { "type": "integer", "minimum": 0, "maximum": 100 },
+    "respect": { "type": "integer", "minimum": 0, "maximum": 100 },
+    "affection": { "type": "integer", "minimum": 0, "maximum": 100 },
+    "loyalty": { "type": "integer", "minimum": 0, "maximum": 100 },
+    "conflict": { "type": "integer", "minimum": 0, "maximum": 100 },
+    "relationshipType": {
+      "type": "string",
+      "enum": ["STRANGER", "ACQUAINTANCE", "ALLY", "RIVAL", "ROMANTIC", "BUSINESS", "OTHER"]
+    },
+    "updatedAt": { "type": "string", "format": "date-time" }
+  }
+}

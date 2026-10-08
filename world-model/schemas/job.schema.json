@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://naad.game/schemas/job.schema.json",
+  "title": "Job",
+  "description": "Employment or gig assignment for a player (promoter, driver, etc.).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "playerId", "title", "status", "createdAt"],
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "playerId": { "type": "string", "format": "uuid" },
+    "title": {
+      "type": "string",
+      "enum": ["DEVELOPER", "DJ", "DRIVER", "EVENT_PROMOTER", "RESTAURANT_WORKER", "OTHER"]
+    },
+    "status": {
+      "type": "string",
+      "enum": ["ACTIVE", "PAUSED", "COMPLETED", "FIRED"]
+    },
+    "employerNpcId": { "type": "string", "format": "uuid" },
+    "createdAt": { "type": "string", "format": "date-time" }
+  }
+}

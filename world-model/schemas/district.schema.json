@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://naad.game/schemas/district.schema.json",
+  "title": "District",
+  "description": "Geographic grouping of locations (e.g. Night District). Not live in Gate 1.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "name", "createdAt"],
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "name": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "metro": {
+      "type": "string",
+      "const": "LAGOS",
+      "description": "Metro region. Only LAGOS in v0.1."
+    },
+    "createdAt": { "type": "string", "format": "date-time" }
+  }
+}

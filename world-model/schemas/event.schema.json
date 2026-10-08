@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://naad.game/schemas/event.schema.json",
+  "title": "Event",
+  "description": "Scheduled world event (beach party, club night). Server owns schedule.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "name", "locationId", "startTime", "endTime"],
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "name": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "locationId": { "type": "string", "format": "uuid" },
+    "startTime": { "type": "string", "format": "date-time" },
+    "endTime": { "type": "string", "format": "date-time" },
+    "requiredReputation": {
+      "type": "integer",
+      "description": "Optional gate for entry."
+    },
+    "crowdProfile": {
+      "type": "string",
+      "enum": ["LOW", "MEDIUM", "HIGH", "PACKED"]
+    }
+  }
+}

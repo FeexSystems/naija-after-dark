@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://naad.game/schemas/social-post.schema.json",
+  "title": "SocialPost",
+  "description": "In-game social feed entry (not real social networks).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "authorType", "authorId", "body", "createdAt"],
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "authorType": {
+      "type": "string",
+      "enum": ["PLAYER", "NPC", "SYSTEM"]
+    },
+    "authorId": { "type": "string" },
+    "body": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 280
+    },
+    "locationId": { "type": "string", "format": "uuid" },
+    "eventId": { "type": "string", "format": "uuid" },
+    "createdAt": { "type": "string", "format": "date-time" }
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://naad.game/schemas/location.schema.json",
+  "title": "Location",
+  "description": "A place the player can be (Apartment, Suya Spot, Nightclub, Beach, etc.).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "name", "type", "createdAt"],
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "name": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "type": {
+      "type": "string",
+      "enum": [
+        "APARTMENT",
+        "STREET",
+        "SUYA_SPOT",
+        "NIGHTCLUB",
+        "BEACH",
+        "LOUNGE",
+        "RESTAURANT",
+        "HOTEL",
+        "OTHER"
+      ],
+      "description": "Gameplay location class for rules and presentation."
+    },
+    "districtId": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Optional parent district."
+    },
+    "createdAt": { "type": "string", "format": "date-time" }
+  }
+}

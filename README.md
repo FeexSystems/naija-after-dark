@@ -57,14 +57,16 @@ naija-after-dark/
 
 ## Current Gate
 
-GATE 1 — SUPABASE FOUNDATION ✅ PASSED
+GATE 2 — WORLD MODEL ✅ SPEC v0.1
 
-- Project: `unzfqrfyejkyisalzkhc` (NAAD Project)
-- Migration applied + verified live
-- Pass path verified:
-  Auth user → player → wallet → read player → read wallet
-- Test player: `55294c60-eb72-4bda-ac5d-4c96bf03268c` (Gate1 Tester, ₦100,000)
+- JSON Schema for all core entities under `world-model/schemas/`
+- TypeScript contracts: `world-model/types/index.ts`
+- Postgres mapping: `world-model/mappings/postgresql.md`
+- ER diagram: `world-model/diagrams/er.mmd`
+- Ownership answer: **all authoritative state lives in PostgreSQL**
+
+GATE 1 remains passed (live DB + Auth→player→wallet path).
 
 ## Next
 
-GATE 2 — WORLD MODEL schemas (JSON Schema + contracts)
+GATE 3 — UNITY PROJECT (bootstrap only)

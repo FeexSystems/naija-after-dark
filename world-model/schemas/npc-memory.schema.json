@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://naad.game/schemas/npc-memory.schema.json",
+  "title": "NpcMemory",
+  "description": "Validated memory about a player. AI proposes; server stores after validation.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "npcId", "playerId", "type", "summary", "importance", "createdAt"],
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "npcId": { "type": "string", "format": "uuid" },
+    "playerId": { "type": "string", "format": "uuid" },
+    "type": {
+      "type": "string",
+      "enum": ["FAVOR", "INSULT", "SHARED_EVENT", "PROMISE", "TRANSACTION", "INTRO", "OTHER"],
+      "description": "Memory class for retrieval weighting."
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 280,
+      "description": "Short factual summary — not raw chat log."
+    },
+    "importance": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "0–1 importance for retrieval priority."
+    },
+    "createdAt": { "type": "string", "format": "date-time" }
+  }
+}

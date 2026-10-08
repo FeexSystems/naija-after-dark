@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://naad.game/schemas/inventory.schema.json",
+  "title": "Inventory",
+  "description": "Player-owned stack of an item. Never trust client quantity.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "playerId", "itemId", "quantity", "updatedAt"],
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "playerId": { "type": "string", "format": "uuid" },
+    "itemId": { "type": "string", "format": "uuid" },
+    "quantity": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Stack size. Zero rows may be deleted by server."
+    },
+    "updatedAt": { "type": "string", "format": "date-time" }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://naad.game/schemas/world-state.schema.json",
+  "title": "WorldState",
+  "description": "Singleton simulation clock and ambient conditions. Server owns time.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "gameTime", "weather", "trafficLevel", "nightlifeLevel"],
+  "properties": {
+    "id": {
+      "type": "integer",
+      "const": 1,
+      "description": "Singleton row only."
+    },
+    "gameTime": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Authoritative in-game timestamp (not device clock)."
+    },
+    "weather": {
+      "type": "string",
+      "enum": ["CLEAR", "CLOUDY", "RAIN", "HEAVY_RAIN", "HARMATTAN"],
+      "description": "Presentation + some location rules."
+    },
+    "trafficLevel": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100,
+      "description": "Affects travel time commands."
+    },
+    "nightlifeLevel": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100,
+      "description": "Crowd energy bias for night locations."
+    }
+  }
+}

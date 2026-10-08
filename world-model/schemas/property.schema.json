@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://naad.game/schemas/property.schema.json",
+  "title": "Property",
+  "description": "Housing or real-estate the player can own or rent (e.g. Apartment).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "locationId", "tenure", "createdAt"],
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "locationId": { "type": "string", "format": "uuid" },
+    "ownerPlayerId": { "type": "string", "format": "uuid" },
+    "tenure": {
+      "type": "string",
+      "enum": ["OWNED", "RENTED", "TEMP"],
+      "description": "Affects home spawn and rent commands."
+    },
+    "createdAt": { "type": "string", "format": "date-time" }
+  }
+}

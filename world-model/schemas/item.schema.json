@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://naad.game/schemas/item.schema.json",
+  "title": "Item",
+  "description": "Catalog definition of a consumable or gear piece (e.g. Suya plate).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "sku", "name", "category", "basePriceNgn"],
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "sku": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "description": "Stable product code for commands (BUY_SUYA)."
+    },
+    "name": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "category": {
+      "type": "string",
+      "enum": ["FOOD", "DRINK", "TICKET", "CLOTHING", "MISC"]
+    },
+    "basePriceNgn": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "List price in NGN; actual charge may vary by location."
+    }
+  }
+}
