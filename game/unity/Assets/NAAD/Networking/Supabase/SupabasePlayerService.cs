@@ -46,7 +46,7 @@ namespace NAAD.Networking.Supabase
                 return null;
             }
 
-            // Response is a JSON array
+            // Response is a JSON array — wrap it so the object reader can index row 0.
             var body = result.Body.Trim();
             if (body == "[]" || body.Length < 3)
             {
@@ -54,37 +54,38 @@ namespace NAAD.Networking.Supabase
                 return null;
             }
 
-            var id = ExtractField(body, "id") ?? playerId;
-            var name = ExtractField(body, "display_name") ?? "Player";
-            var created = ExtractField(body, "created_at") ?? "";
-            var updated = ExtractField(body, "updated_at") ?? "";
+            var wrapped = "{\"rows\":" + body + "}";
+            if (!NaadJson.TryGetObject(wrapped, "rows", out var rows) || string.IsNullOrEmpty(rows))
+            {
+                _log.Error("Player", "Fetch failed: malformed player array");
+                return null;
+            }
+
+            // First row object
+            var firstStart = rows.IndexOf('{');
+            var firstEnd = rows.LastIndexOf('}');
+            if (firstStart < 0 || firstEnd <= firstStart)
+            {
+                _log.Error("Player", "Fetch failed: empty player row");
+                return null;
+            }
+            var row = rows.Substring(firstStart, firstEnd - firstStart + 1);
+
+            NaadJson.TryGetString(row, "id", out var id);
+            NaadJson.TryGetString(row, "display_name", out var name);
+            NaadJson.TryGetString(row, "created_at", out var created);
+            NaadJson.TryGetString(row, "updated_at", out var updated);
+            id ??= playerId;
+            name ??= "Player";
 
             _log.Info("Player", $"Loaded {name} ({id})");
             return new PlayerDto
             {
                 Id = id,
                 DisplayName = name,
-                CreatedAt = created,
-                UpdatedAt = updated
+                CreatedAt = created ?? "",
+                UpdatedAt = updated ?? ""
             };
-        }
-
-        private static string? ExtractField(string json, string key)
-        {
-            var pattern = $"\"{key}\"";
-            var idx = json.IndexOf(pattern, System.StringComparison.Ordinal);
-            if (idx < 0) return null;
-            idx = json.IndexOf(':', idx);
-            if (idx < 0) return null;
-            // value may be string or other — handle quoted strings
-            var rest = json.Substring(idx + 1).TrimStart();
-            if (rest.StartsWith("\""))
-            {
-                var end = rest.IndexOf('"', 1);
-                if (end < 0) return null;
-                return rest.Substring(1, end - 1);
-            }
-            return null;
         }
     }
 }

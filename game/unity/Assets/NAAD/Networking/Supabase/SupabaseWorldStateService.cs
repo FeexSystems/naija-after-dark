@@ -81,70 +81,32 @@ namespace NAAD.Networking.Supabase
 
         private static WorldClockDto ParseClock(string json)
         {
-            var success = json.IndexOf("\"success\":true", StringComparison.OrdinalIgnoreCase) >= 0
-                          || json.IndexOf("\"success\": true", StringComparison.OrdinalIgnoreCase) >= 0;
+            var success = NaadJson.ReadSuccess(json);
+            NaadJson.TryGetString(json, "errorCode", out var errorCode);
+            NaadJson.TryGetString(json, "gameDate", out var gameDate);
+            NaadJson.TryGetString(json, "gameTime", out var gameTime);
+            var minutes = NaadJson.TryGetInt(json, "minutesSinceMidnight", out var m) ? m : 0;
+            NaadJson.TryGetString(json, "period", out var period);
+            var timeScale = NaadJson.TryGetDouble(json, "timeScale", out var ts) ? (float)ts : 60f;
+            NaadJson.TryGetString(json, "weather", out var weather);
+            var traffic = NaadJson.TryGetInt(json, "trafficLevel", out var tr) ? tr : 50;
+            var nightlife = NaadJson.TryGetInt(json, "nightlifeLevel", out var nl) ? nl : 50;
             return new WorldClockDto
             {
                 Success = success,
-                ErrorCode = ExtractString(json, "errorCode"),
-                GameDate = ExtractString(json, "gameDate") ?? "",
-                GameTime = ExtractString(json, "gameTime") ?? "",
-                MinutesSinceMidnight = ExtractInt(json, "minutesSinceMidnight") ?? 0,
-                Period = ExtractString(json, "period") ?? "DAY",
-                TimeScale = ExtractFloat(json, "timeScale") ?? 60f,
-                Weather = ExtractString(json, "weather") ?? "CLEAR",
-                TrafficLevel = ExtractInt(json, "trafficLevel") ?? 50,
-                NightlifeLevel = ExtractInt(json, "nightlifeLevel") ?? 50
+                ErrorCode = errorCode,
+                GameDate = gameDate ?? "",
+                GameTime = gameTime ?? "",
+                MinutesSinceMidnight = minutes,
+                Period = period ?? "DAY",
+                TimeScale = timeScale,
+                Weather = weather ?? "CLEAR",
+                TrafficLevel = traffic,
+                NightlifeLevel = nightlife
             };
         }
 
         private static string Escape(string s) =>
             s.Replace("\\", "\\\\").Replace("\"", "\\\"");
-
-        private static string? ExtractString(string json, string key)
-        {
-            var pattern = $"\"{key}\"";
-            var idx = json.IndexOf(pattern, StringComparison.Ordinal);
-            if (idx < 0) return null;
-            idx = json.IndexOf(':', idx);
-            if (idx < 0) return null;
-            var rest = json.Substring(idx + 1).TrimStart();
-            if (rest.StartsWith("null", StringComparison.Ordinal)) return null;
-            if (!rest.StartsWith("\"")) return null;
-            var end = rest.IndexOf('"', 1);
-            if (end < 0) return null;
-            return rest.Substring(1, end - 1);
-        }
-
-        private static int? ExtractInt(string json, string key)
-        {
-            var pattern = $"\"{key}\"";
-            var idx = json.IndexOf(pattern, StringComparison.Ordinal);
-            if (idx < 0) return null;
-            idx = json.IndexOf(':', idx);
-            if (idx < 0) return null;
-            var rest = json.Substring(idx + 1).TrimStart();
-            var end = 0;
-            while (end < rest.Length && (char.IsDigit(rest[end]) || rest[end] == '-')) end++;
-            if (end == 0) return null;
-            return int.TryParse(rest.Substring(0, end), out var n) ? n : null;
-        }
-
-        private static float? ExtractFloat(string json, string key)
-        {
-            var pattern = $"\"{key}\"";
-            var idx = json.IndexOf(pattern, StringComparison.Ordinal);
-            if (idx < 0) return null;
-            idx = json.IndexOf(':', idx);
-            if (idx < 0) return null;
-            var rest = json.Substring(idx + 1).TrimStart();
-            var end = 0;
-            while (end < rest.Length && (char.IsDigit(rest[end]) || rest[end] == '-' || rest[end] == '.'))
-                end++;
-            if (end == 0) return null;
-            return float.TryParse(rest.Substring(0, end),
-                System.Globalization.NumberStyles.Float,
-                System.Globalization.CultureInfo.InvariantCulture, out var n) ? n : null;
-        }
     }
 }

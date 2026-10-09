@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using NAAD.Core.Bootstrap;
 using NAAD.Core.Logging;
 using NAAD.Networking;
+using NAAD.Networking.Supabase;
 using UnityEngine;
 
 namespace NAAD.Gameplay.FirstNight
@@ -283,38 +284,83 @@ namespace NAAD.Gameplay.FirstNight
         private static string ExtractOpenInviteId(string json)
         {
             if (string.IsNullOrEmpty(json)) return null;
-            var threadIdx = json.IndexOf("tunde_beach_invite", StringComparison.Ordinal);
-            if (threadIdx < 0) return ExtractFirstId(json);
-            var sliceStart = Math.Max(0, threadIdx - 200);
-            var slice = json.Substring(sliceStart, Math.Min(400, json.Length - sliceStart));
-            return ExtractFirstId(slice) ?? ExtractFirstId(json);
+            // naad_list_messages returns {success, messages:[...]} — scan each
+            // message object for the open beach invite instead of slicing raw text.
+            if (NaadJson.TryGetObject(json, "messages", out var msgs) && !string.IsNullOrEmpty(msgs))
+            {
+                foreach (var msg in SplitTopLevelObjects(msgs))
+                {
+                    if (!NaadJson.TryGetString(msg, "thread_key", out var thread)) continue;
+                    if (thread != "tunde_beach_invite") continue;
+                    // open invite = no chosen_action yet
+                    if (NaadJson.TryGetString(msg, "chosen_action", out _)) continue;
+                    if (NaadJson.TryGetString(msg, "id", out var inviteId)) return inviteId;
+                }
+            }
+            // Fallback: first message id in the envelope.
+            if (NaadJson.TryGetObject(json, "messages", out var fallback) && !string.IsNullOrEmpty(fallback))
+            {
+                foreach (var msg in SplitTopLevelObjects(fallback))
+                {
+                    if (NaadJson.TryGetString(msg, "id", out var anyId)) return anyId;
+                }
+            }
+            return null;
         }
 
         private static string ExtractOpenInviteBody(string json)
         {
             if (string.IsNullOrEmpty(json)) return null;
-            var key = "\"body\"";
-            var idx = json.IndexOf(key, StringComparison.Ordinal);
-            if (idx < 0) return null;
-            idx = json.IndexOf(':', idx);
-            if (idx < 0) return null;
-            var rest = json.Substring(idx + 1).TrimStart();
-            if (!rest.StartsWith("\"")) return null;
-            var end = rest.IndexOf('"', 1);
-            return end < 0 ? null : rest.Substring(1, end - 1);
+            if (NaadJson.TryGetObject(json, "messages", out var msgs) && !string.IsNullOrEmpty(msgs))
+            {
+                foreach (var msg in SplitTopLevelObjects(msgs))
+                {
+                    if (NaadJson.TryGetString(msg, "thread_key", out var thread)
+                        && thread == "tunde_beach_invite"
+                        && NaadJson.TryGetString(msg, "body", out var body))
+                        return body;
+                }
+                foreach (var msg in SplitTopLevelObjects(msgs))
+                {
+                    if (NaadJson.TryGetString(msg, "body", out var anyBody)) return anyBody;
+                }
+            }
+            return null;
         }
 
-        private static string ExtractFirstId(string json)
+        /// <summary>Yields each top-level {...} inside a JSON array body.</summary>
+        private static System.Collections.Generic.IEnumerable<string> SplitTopLevelObjects(string arrayJson)
         {
-            var key = "\"id\"";
-            var idx = json.IndexOf(key, StringComparison.Ordinal);
-            if (idx < 0) return null;
-            idx = json.IndexOf(':', idx);
-            if (idx < 0) return null;
-            var rest = json.Substring(idx + 1).TrimStart();
-            if (!rest.StartsWith("\"")) return null;
-            var end = rest.IndexOf('"', 1);
-            return end < 0 ? null : rest.Substring(1, end - 1);
+            var start = arrayJson.IndexOf('{');
+            while (start >= 0)
+            {
+                var depth = 0;
+                var inStr = false;
+                for (var i = start; i < arrayJson.Length; i++)
+                {
+                    var c = arrayJson[i];
+                    if (inStr)
+                    {
+                        if (c == '\\') { i++; continue; }
+                        if (c == '"') inStr = false;
+                        continue;
+                    }
+                    if (c == '"') { inStr = true; continue; }
+                    if (c == '{') depth++;
+                    else if (c == '}')
+                    {
+                        depth--;
+                        if (depth == 0)
+                        {
+                            yield return arrayJson.Substring(start, i - start + 1);
+                            start = arrayJson.IndexOf('{', i + 1);
+                            break;
+                        }
+                    }
+                }
+                if (depth != 0) break;
+                if (start < 0) break;
+            }
         }
     }
 }

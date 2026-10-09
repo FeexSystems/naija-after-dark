@@ -36,14 +36,19 @@ namespace NAAD.Networking.Supabase
                 token);
 
             if (!result.Ok) return null;
+            NaadJson.TryGetString(result.Body, "npcId", out var gotNpcId);
+            NaadJson.TryGetString(result.Body, "npcName", out var npcName);
+            NaadJson.TryGetString(result.Body, "dialogue", out var greetDialogue);
+            NaadJson.TryGetString(result.Body, "emotion", out var emotion);
+            NaadJson.TryGetString(result.Body, "dialogueMode", out var mode);
             return new DialogueResult
             {
-                Success = true,
-                NpcId = Extract(result.Body, "npcId") ?? npcId,
-                NpcName = Extract(result.Body, "npcName") ?? "",
-                Dialogue = Extract(result.Body, "dialogue") ?? "",
-                Emotion = Extract(result.Body, "emotion") ?? "neutral",
-                DialogueMode = Extract(result.Body, "dialogueMode") ?? "DETERMINISTIC"
+                Success = NaadJson.ReadSuccess(result.Body),
+                NpcId = gotNpcId ?? npcId,
+                NpcName = npcName ?? "",
+                Dialogue = greetDialogue ?? "",
+                Emotion = emotion ?? "neutral",
+                DialogueMode = mode ?? "DETERMINISTIC"
             };
         }
 
@@ -64,18 +69,34 @@ namespace NAAD.Networking.Supabase
                 return null;
             }
 
-            var dialogue = ExtractNested(result.Body, "dialogue") ?? Extract(result.Body, "dialogue");
+            // The Edge Function may nest the validated Gemini payload under
+            // "response" (or return it flat). Prefer the nested object.
+            string scope = result.Body;
+            if (NaadJson.TryGetObject(result.Body, "response", out var nested)
+                && !string.IsNullOrEmpty(nested))
+                scope = nested;
+
+            NaadJson.TryGetString(scope, "dialogue", out var aiDialogue);
+            NaadJson.TryGetString(scope, "emotion", out var aiEmotion);
+            string? memSummary = null;
+            string? memType = null;
+            if (NaadJson.TryGetObject(scope, "memoryCandidate", out var mem)
+                && !string.IsNullOrEmpty(mem))
+            {
+                NaadJson.TryGetString(mem, "summary", out memSummary);
+                NaadJson.TryGetString(mem, "type", out memType);
+            }
             return new DialogueResult
             {
-                Success = result.Body.IndexOf("\"success\":true", StringComparison.OrdinalIgnoreCase) >= 0,
+                Success = NaadJson.ReadSuccess(result.Body),
                 NpcId = TundeId,
                 NpcName = "Tunde",
-                Dialogue = dialogue ?? "",
-                Emotion = ExtractNested(result.Body, "emotion") ?? "neutral",
+                Dialogue = aiDialogue ?? "",
+                Emotion = aiEmotion ?? "neutral",
                 DialogueMode = "AI",
-                MemorySummary = ExtractNested(result.Body, "summary"),
+                MemorySummary = memSummary,
                 MemoryImportance = null,
-                MemoryType = ExtractNested(result.Body, "type")
+                MemoryType = memType
             };
         }
 
@@ -94,25 +115,10 @@ namespace NAAD.Networking.Supabase
                 body,
                 token);
 
-            return result.Ok && result.Body.IndexOf("\"success\":true", StringComparison.OrdinalIgnoreCase) >= 0;
+            return result.Ok && NaadJson.ReadSuccess(result.Body);
         }
 
         private static string Escape(string s) =>
             s.Replace("\\", "\\\\").Replace("\"", "\\\"");
-
-        private static string? Extract(string json, string key)
-        {
-            var pattern = $"\"{key}\"";
-            var idx = json.IndexOf(pattern, StringComparison.Ordinal);
-            if (idx < 0) return null;
-            idx = json.IndexOf(':', idx);
-            if (idx < 0) return null;
-            var rest = json.Substring(idx + 1).TrimStart();
-            if (!rest.StartsWith("\"")) return null;
-            var end = rest.IndexOf('"', 1);
-            return end < 0 ? null : rest.Substring(1, end - 1);
-        }
-
-        private static string? ExtractNested(string json, string key) => Extract(json, key);
     }
 }

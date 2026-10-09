@@ -25,7 +25,7 @@ namespace NAAD.Networking.Supabase
             var token = await _auth.GetAccessTokenAsync();
             if (string.IsNullOrEmpty(token)) return false;
             var r = await _http.SendAsync($"{_config.RestBaseUrl}/rpc/naad_seed_tunde_beach_invite", "POST", "{}", token);
-            return r.Ok && r.Body.Contains("\"success\":true");
+            return r.Ok && NaadJson.ReadSuccess(r.Body);
         }
 
         public async Task<string?> ListMessagesJsonAsync()
@@ -43,7 +43,7 @@ namespace NAAD.Networking.Supabase
             var body =
                 $"{{\"p_request_id\":\"{requestId}\",\"p_message_id\":\"{messageId}\",\"p_action\":\"{action}\"}}";
             var r = await _http.SendAsync($"{_config.RestBaseUrl}/rpc/naad_respond_message", "POST", body, token);
-            return r.Ok && r.Body.Contains("\"success\":true");
+            return r.Ok && NaadJson.ReadSuccess(r.Body);
         }
 
         public async Task<bool> StartNightAsync(string requestId)
@@ -53,7 +53,7 @@ namespace NAAD.Networking.Supabase
             var body = $"{{\"p_request_id\":\"{requestId}\"}}";
             var r = await _http.SendAsync($"{_config.RestBaseUrl}/rpc/naad_start_night", "POST", body, token);
             _log.Info("Night", r.Body);
-            return r.Ok && r.Body.Contains("\"success\":true");
+            return r.Ok && NaadJson.ReadSuccess(r.Body);
         }
 
         public async Task<NightSummaryDto?> CompleteNightAsync(string requestId)
@@ -63,15 +63,23 @@ namespace NAAD.Networking.Supabase
             var body = $"{{\"p_request_id\":\"{requestId}\"}}";
             var r = await _http.SendAsync($"{_config.RestBaseUrl}/rpc/naad_complete_night", "POST", body, token);
             if (!r.Ok) return null;
+            NaadJson.TryGetString(r.Body, "newConnection", out var newConnection);
+            NaadJson.TryGetString(r.Body, "bestMoment", out var bestMoment);
+            var hasSpent = NaadJson.TryGetInt(r.Body, "spentNgn", out var spent);
+            var hasTx = NaadJson.TryGetInt(r.Body, "transactions", out var tx);
+            var hasPeople = NaadJson.TryGetInt(r.Body, "peopleMet", out var people);
+            var success = NaadJson.ReadSuccess(r.Body);
+            int? trust = NaadJson.TryGetInt(r.Body, "trustWithTunde", out var trustVal) ? trustVal : null;
+            if (!success && !(hasSpent && hasTx && hasPeople)) return null;
             return new NightSummaryDto
             {
-                Success = r.Body.Contains("\"success\":true"),
-                SpentNgn = ExtractInt(r.Body, "spentNgn") ?? 0,
-                Transactions = ExtractInt(r.Body, "transactions") ?? 0,
-                PeopleMet = ExtractInt(r.Body, "peopleMet") ?? 0,
-                NewConnection = ExtractString(r.Body, "newConnection"),
-                TrustWithTunde = ExtractInt(r.Body, "trustWithTunde"),
-                BestMoment = ExtractString(r.Body, "bestMoment") ?? ""
+                Success = success || (hasSpent && hasTx && hasPeople),
+                SpentNgn = spent,
+                Transactions = tx,
+                PeopleMet = people,
+                NewConnection = newConnection,
+                TrustWithTunde = trust,
+                BestMoment = bestMoment ?? ""
             };
         }
 
@@ -80,35 +88,8 @@ namespace NAAD.Networking.Supabase
             var token = await _auth.GetAccessTokenAsync();
             if (string.IsNullOrEmpty(token)) return null;
             var r = await _http.SendAsync($"{_config.RestBaseUrl}/rpc/naad_get_wallet", "POST", "{}", token);
-            return ExtractInt(r.Body, "balance");
-        }
-
-        private static string? ExtractString(string json, string key)
-        {
-            var pattern = $"\"{key}\"";
-            var idx = json.IndexOf(pattern, StringComparison.Ordinal);
-            if (idx < 0) return null;
-            idx = json.IndexOf(':', idx);
-            if (idx < 0) return null;
-            var rest = json.Substring(idx + 1).TrimStart();
-            if (rest.StartsWith("null")) return null;
-            if (!rest.StartsWith("\"")) return null;
-            var end = rest.IndexOf('"', 1);
-            return end < 0 ? null : rest.Substring(1, end - 1);
-        }
-
-        private static int? ExtractInt(string json, string key)
-        {
-            var pattern = $"\"{key}\"";
-            var idx = json.IndexOf(pattern, StringComparison.Ordinal);
-            if (idx < 0) return null;
-            idx = json.IndexOf(':', idx);
-            if (idx < 0) return null;
-            var rest = json.Substring(idx + 1).TrimStart();
-            var end = 0;
-            while (end < rest.Length && (char.IsDigit(rest[end]) || rest[end] == '-')) end++;
-            if (end == 0) return null;
-            return int.TryParse(rest.Substring(0, end), out var n) ? n : null;
+            if (!r.Ok || !NaadJson.ReadSuccess(r.Body)) return null;
+            return NaadJson.TryGetInt(r.Body, "balance", out var balance) ? balance : null;
         }
     }
 }

@@ -130,7 +130,7 @@ namespace NAAD.Networking.Supabase
             }
 
             // Prefer id from response
-            var id = ExtractJsonString(result.Body, "id");
+            NaadJson.TryGetString(result.Body, "id", out var id);
             if (!string.IsNullOrEmpty(id))
                 _userId = id;
 
@@ -146,8 +146,8 @@ namespace NAAD.Networking.Supabase
         private bool ApplySessionJson(string json, string context)
         {
             // signup may return user without session if email confirm required
-            var access = ExtractJsonString(json, "access_token");
-            var refresh = ExtractJsonString(json, "refresh_token");
+            NaadJson.TryGetString(json, "access_token", out var access);
+            NaadJson.TryGetString(json, "refresh_token", out var refresh);
             var userId = ExtractNestedId(json);
 
             if (string.IsNullOrEmpty(access) || string.IsNullOrEmpty(userId))
@@ -194,33 +194,16 @@ namespace NAAD.Networking.Supabase
         private static string Escape(string s) =>
             s.Replace("\\", "\\\\").Replace("\"", "\\\"");
 
-        /// <summary>Naive JSON string extractor — avoids third-party JSON deps in Gate 4.</summary>
-        private static string? ExtractJsonString(string json, string key)
-        {
-            var pattern = $"\"{key}\"";
-            var idx = json.IndexOf(pattern, StringComparison.Ordinal);
-            if (idx < 0) return null;
-            idx = json.IndexOf(':', idx);
-            if (idx < 0) return null;
-            idx = json.IndexOf('"', idx + 1);
-            if (idx < 0) return null;
-            var end = json.IndexOf('"', idx + 1);
-            if (end < 0) return null;
-            return json.Substring(idx + 1, end - idx - 1);
-        }
-
         private static string? ExtractNestedId(string json)
         {
             // try top-level "user":{"id":"..."}
-            var userIdx = json.IndexOf("\"user\"", StringComparison.Ordinal);
-            if (userIdx >= 0)
-            {
-                var slice = json.Substring(userIdx);
-                var id = ExtractJsonString(slice, "id");
-                if (!string.IsNullOrEmpty(id)) return id;
-            }
+            if (NaadJson.TryGetObject(json, "user", out var userObj)
+                && !string.IsNullOrEmpty(userObj)
+                && NaadJson.TryGetString(userObj, "id", out var nestedId)
+                && !string.IsNullOrEmpty(nestedId))
+                return nestedId;
 
-            return ExtractJsonString(json, "id");
+            return NaadJson.TryGetString(json, "id", out var id) ? id : null;
         }
     }
 }

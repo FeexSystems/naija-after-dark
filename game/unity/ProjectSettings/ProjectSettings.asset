@@ -594,7 +594,8 @@ PlayerSettings:
   webWasm2023: 0
   webEnableSubmoduleStrippingCompatibility: 0
   webProgressiveAssetLoading: 0
-  scriptingDefineSymbols: {}
+  scriptingDefineSymbols:
+    Standalone: SENTIS_ANALYTICS_ENABLED;APP_UI_EDITOR_ONLY
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend:
@@ -696,11 +697,11 @@ PlayerSettings:
   activeInputHandler: -1
   windowsGamepadBackendHint: 0
   enableDirectStorage: 0
-  cloudProjectId: 
+  cloudProjectId: 6064ee90-f849-4e52-a88a-c6ed43494390
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: NAIJA AFTER DARK
-  organizationId: feexsystems
+  projectName: Naija-After-Dark
+  organizationId: etsmuyyjhy8
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}

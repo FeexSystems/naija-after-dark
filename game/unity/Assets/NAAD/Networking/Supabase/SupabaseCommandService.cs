@@ -88,12 +88,17 @@ namespace NAAD.Networking.Supabase
 
         private static CommandResult ParseResult(string json, string fallbackRequestId)
         {
-            var success = json.IndexOf("\"success\":true", StringComparison.OrdinalIgnoreCase) >= 0
-                          || json.IndexOf("\"success\": true", StringComparison.OrdinalIgnoreCase) >= 0;
+            var success = NaadJson.ReadSuccess(json);
 
-            var requestId = ExtractString(json, "requestId") ?? fallbackRequestId;
-            var errorCode = ExtractString(json, "errorCode");
-            var errorMessage = ExtractString(json, "errorMessage");
+            NaadJson.TryGetString(json, "requestId", out var requestId);
+            NaadJson.TryGetString(json, "errorCode", out var errorCode);
+            NaadJson.TryGetString(json, "errorMessage", out var errorMessage);
+
+            // Payload may be nested under "payload" (router envelope) or flat
+            // (legacy direct RPCs). Prefer the nested object when present.
+            string? scope = json;
+            if (NaadJson.TryGetObject(json, "payload", out var nested) && !string.IsNullOrEmpty(nested))
+                scope = nested;
 
             var payload = new Dictionary<string, string>();
             foreach (var key in new[]
@@ -101,21 +106,22 @@ namespace NAAD.Networking.Supabase
                          "fromLocationId", "toLocationId", "sku", "amount", "balanceAfter",
                          "sessionId", "messageId", "action", "roomId", "locationId",
                          "eventId", "careerId", "opportunityId", "targetId",
-                         "spentNgn", "bestMoment", "newConnection"
+                         "spentNgn", "transactions", "peopleMet", "trustWithTunde",
+                         "bestMoment", "newConnection"
                      })
             {
-                var v = ExtractString(json, key);
-                if (v != null) payload[key] = v;
-                else
+                if (scope != null && NaadJson.TryGetString(scope, key, out var v) && v != null)
                 {
-                    var n = ExtractNumberString(json, key);
-                    if (n != null) payload[key] = n;
+                    payload[key] = v;
+                    continue;
                 }
+                if (scope != null && NaadJson.TryGetLong(scope, key, out var n))
+                    payload[key] = n.ToString(System.Globalization.CultureInfo.InvariantCulture);
             }
 
             return new CommandResult
             {
-                RequestId = requestId,
+                RequestId = requestId ?? fallbackRequestId,
                 Success = success,
                 ErrorCode = errorCode,
                 ErrorMessage = errorMessage,
@@ -134,35 +140,5 @@ namespace NAAD.Networking.Supabase
 
         private static string Escape(string s) =>
             s.Replace("\\", "\\\\").Replace("\"", "\\\"");
-
-        private static string ExtractString(string json, string key)
-        {
-            var pattern = "\"" + key + "\"";
-            var idx = json.IndexOf(pattern, StringComparison.Ordinal);
-            if (idx < 0) return null;
-            idx = json.IndexOf(':', idx);
-            if (idx < 0) return null;
-            var rest = json.Substring(idx + 1).TrimStart();
-            if (rest.StartsWith("null", StringComparison.Ordinal)) return null;
-            if (!rest.StartsWith("\"")) return null;
-            var end = rest.IndexOf('"', 1);
-            if (end < 0) return null;
-            return rest.Substring(1, end - 1);
-        }
-
-        private static string ExtractNumberString(string json, string key)
-        {
-            var pattern = "\"" + key + "\"";
-            var idx = json.IndexOf(pattern, StringComparison.Ordinal);
-            if (idx < 0) return null;
-            idx = json.IndexOf(':', idx);
-            if (idx < 0) return null;
-            var rest = json.Substring(idx + 1).TrimStart();
-            var end = 0;
-            while (end < rest.Length && (char.IsDigit(rest[end]) || rest[end] == '-' || rest[end] == '.'))
-                end++;
-            if (end == 0) return null;
-            return rest.Substring(0, end);
-        }
     }
 }

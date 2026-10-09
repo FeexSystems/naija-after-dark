@@ -203,6 +203,9 @@ namespace NAAD.Editor
                 var passed = moneyMoved && spentMatchesDelta && summaryShapeOk;
                 Emit($"  {{\"step\":\"GATE_B_PASS\",\"ok\":{B(passed)}}}");
                 if (!passed) throw new Exception("Gate B assertions failed.");
+
+                // Phase D contract probes — negative cases via the live router.
+                await RunContractProbesAsync();
             }
             finally
             {
@@ -249,6 +252,57 @@ namespace NAAD.Editor
                 throw new Exception("Application root failed to install.");
             if (root.Config == null || !root.Config.IsConfigured)
                 throw new Exception("Root did not compose live services.");
+        }
+
+        private static async Task RunContractProbesAsync()
+        {
+            var root = NAADApplicationRoot.Instance;
+            if (root == null) throw new Exception("root missing for probes");
+            var probe = root.Commands;
+            if (probe == null) throw new Exception("commands service missing for probes");
+
+            // (a) Invalid SKU → SKU_NOT_FOUND (never succeeds, never deducts)
+            var badSku = await probe.ExecuteAsync(new GameCommand
+            {
+                RequestId = Guid.NewGuid().ToString("N"),
+                Type = GameCommandType.Spend,
+                Payload = new Dictionary<string, object> { ["sku"] = "NOPE_INVALID" }
+            });
+            Emit("  step=probe_invalid_sku ok=" + B(!badSku.Success) + " errorCode=" + (badSku.ErrorCode ?? "none"));
+            if (badSku.Success) throw new Exception("Invalid SKU unexpectedly succeeded");
+
+            // (b) Double request_id → idempotent replay (same requestId + success flag)
+            var dupId = Guid.NewGuid().ToString("N");
+            var firstTravel = await probe.ExecuteAsync(new GameCommand
+            {
+                RequestId = dupId,
+                Type = GameCommandType.Travel,
+                Payload = new Dictionary<string, object> { ["toLocationId"] = NightDistrictIds.SuyaSpot }
+            });
+            var replayTravel = await probe.ExecuteAsync(new GameCommand
+            {
+                RequestId = dupId,
+                Type = GameCommandType.Travel,
+                Payload = new Dictionary<string, object> { ["toLocationId"] = NightDistrictIds.Street }
+            });
+            var replayMatches = firstTravel.RequestId == replayTravel.RequestId
+                                && firstTravel.Success == replayTravel.Success;
+            Emit("  step=probe_double_request_id ok=" + B(replayMatches)
+                 + " firstSuccess=" + B(firstTravel.Success) + " replaySuccess=" + B(replayTravel.Success));
+            if (!replayMatches) throw new Exception("request_id idempotency replay mismatch");
+
+            // (c) Same-location travel → ALREADY_THERE (no mutation)
+            var sameLoc = Guid.NewGuid().ToString("N");
+            var same = await probe.ExecuteAsync(new GameCommand
+            {
+                RequestId = sameLoc,
+                Type = GameCommandType.Travel,
+                Payload = new Dictionary<string, object> { ["toLocationId"] = NightDistrictIds.Apartment }
+            });
+            Emit("  step=probe_same_location ok=" + B(!same.Success) + " errorCode=" + (same.ErrorCode ?? "none"));
+            if (same.Success) throw new Exception("Same-location travel unexpectedly succeeded");
+
+            Emit("  step=PHASE_D_PASS ok=true");
         }
 
         private static string FmtSummary(NightSummaryDto? s)
