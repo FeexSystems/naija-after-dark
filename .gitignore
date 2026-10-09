@@ -37,6 +37,10 @@ supabase/.branches
 supabase/.temp
 supabase/.env
 
+# Unity third-party / vendored assets (install via UPM, never commit)
+game/unity/Assets/Glitch9/
+game/unity/Assets/Glitch9.meta
+
 # Unity (game/unity)
 game/unity/[Ll]ibrary/
 game/unity/[Tt]emp/

@@ -11,13 +11,13 @@ namespace NAAD.Core.Logging
             {
                 case LogLevel.Debug:
                 case LogLevel.Info:
-                    Debug.Log(line);
+                    UnityEngine.Debug.Log(line);
                     break;
                 case LogLevel.Warn:
-                    Debug.LogWarning(line);
+                    UnityEngine.Debug.LogWarning(line);
                     break;
                 case LogLevel.Error:
-                    Debug.LogError(line);
+                    UnityEngine.Debug.LogError(line);
                     break;
             }
         }

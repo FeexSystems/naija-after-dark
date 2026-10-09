@@ -46,7 +46,7 @@ namespace NAAD.Networking.Supabase
                 : $"{{\"display_name\":\"{Escape(displayName)}\"}}";
 
             var body =
-                $"{{\"email\":\"{Escape(email)}\",\"password\":\"{Escape(password)}\",\"data\":{meta}}";
+                $"{{\"email\":\"{Escape(email)}\",\"password\":\"{Escape(password)}\",\"data\":{meta}}}";
 
             var result = await _http.SendAsync(
                 $"{_config.AuthBaseUrl}/signup",
