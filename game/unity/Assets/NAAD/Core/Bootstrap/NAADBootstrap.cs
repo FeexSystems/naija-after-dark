@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using NAAD.Core.Logging;
 using NAAD.Core.State;
+using NAAD.Networking;
 using UnityEngine;
 
 namespace NAAD.Core.Bootstrap

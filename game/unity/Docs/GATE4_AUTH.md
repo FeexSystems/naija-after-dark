@@ -36,7 +36,10 @@ supabase db push
 3. Paste URL + anon key (not service_role).
 4. Assign the asset to `NAADApplicationRoot.supabaseConfig`.
 5. On `NAADBootstrap`, set email/password for first login (or use AuthController UI later).
-6. Disable email confirmations for dev: Auth → Providers → Email → uncheck “Confirm email” (optional).
+6. **Required for a passing signup on the live project:** Dashboard → Authentication → Providers → Email →
+   uncheck **“Confirm email”**. The live project currently has `mailer_autoconfirm=false`, so `SignUpAsync`
+   returns a user **without a session** and `SignInAsync` then fails with `email_not_confirmed`.
+   With confirmation ON, the flow is: sign up → confirm via email → then sign in.
 
 ## Pass condition
 
@@ -54,6 +57,26 @@ Flow:
 4. `FetchCurrentPlayerAsync` → player row
 5. `SignOutAsync` → clear PlayerPrefs
 6. `SignInAsync` again → restore path works
+
+### Headless live check
+
+`Assets/NAAD/Editor/AuthLiveTest.cs` drives the **real** `SupabaseAuthService` +
+`SupabasePlayerService` against the configured project and writes
+`Library/auth-live-report.json`:
+
+```powershell
+$env:NAAD_TEST_EMAIL    = "you@realdomain.com"
+$env:NAAD_TEST_PASSWORD = "..."
+Unity -batchmode -nographics -quit -projectPath game/unity `
+      -executeMethod NAAD.Editor.AuthLiveTest.Run
+```
+
+Notes observed in practice:
+
+- Supabase rejects `@example.com` addresses (`email_address_invalid`) — use a real-looking domain.
+- Signups are rate-limited (see `[auth.rate_limit] email_sent` in `supabase/config.toml`).
+- `SignUpAsync` returns `false` when email confirmation is required, even though the user
+  **was** created — the log shows `user created but no session (confirm email?)`.
 
 ## Security checklist
 
