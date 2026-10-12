@@ -126,7 +126,7 @@ namespace NAAD.Networking.Supabase
                     continue;
                 }
                 if (c == '"') { inStr = true; continue; }
-                if (json.Substring(i, pattern.Length) == pattern)
+                if (PatternMatchesAt(json, pattern, i))
                 {
                     // ensure it is a key: next non-space char must be ':'
                     var j = i + pattern.Length;
@@ -135,6 +135,15 @@ namespace NAAD.Networking.Supabase
                 }
             }
             return -1;
+        }
+
+        private static bool PatternMatchesAt(string json, string pattern, int index)
+        {
+            for (var k = 0; k < pattern.Length; k++)
+            {
+                if (json[index + k] != pattern[k]) return false;
+            }
+            return true;
         }
 
         private static int IndexOfColonOutsideStrings(string json, int from)
@@ -190,7 +199,7 @@ namespace NAAD.Networking.Supabase
         };
 
         /// <summary>Returns the balanced {...} or [...] substring starting at rest[0].</summary>
-        private static string? ScanBalanced(string rest)
+        public static string? ScanBalanced(string rest)
         {
             if (rest.Length == 0) return null;
             var open = rest[0];

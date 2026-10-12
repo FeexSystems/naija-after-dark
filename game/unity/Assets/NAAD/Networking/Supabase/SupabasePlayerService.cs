@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using NAAD.Core.Logging;
 using NAAD.Networking.Config;
@@ -32,7 +33,7 @@ namespace NAAD.Networking.Supabase
                 return null;
             }
 
-            var url = $"{_config.RestBaseUrl}/players?id=eq.{playerId}&select=id,display_name,created_at,updated_at";
+            var url = $"{_config.RestBaseUrl}/players?id=eq.{Uri.EscapeDataString(playerId)}&select=id,display_name,created_at,updated_at";
             var result = await _http.SendAsync(
                 url,
                 UnityEngine.Networking.UnityWebRequest.kHttpVerbGET,
@@ -61,15 +62,28 @@ namespace NAAD.Networking.Supabase
                 return null;
             }
 
-            // First row object
-            var firstStart = rows.IndexOf('{');
-            var firstEnd = rows.LastIndexOf('}');
-            if (firstStart < 0 || firstEnd <= firstStart)
+            // Extract first array element using balanced brace matching
+            var trimmedRows = rows.Trim();
+            if (trimmedRows.Length < 2 || trimmedRows[0] != '[' || trimmedRows[trimmedRows.Length - 1] != ']')
             {
-                _log.Error("Player", "Fetch failed: empty player row");
+                _log.Error("Player", "Fetch failed: not an array");
                 return null;
             }
-            var row = rows.Substring(firstStart, firstEnd - firstStart + 1);
+
+            var arrayContent = trimmedRows.Substring(1, trimmedRows.Length - 2).Trim();
+            if (string.IsNullOrEmpty(arrayContent))
+            {
+                _log.Warn("Player", "Empty player array");
+                return null;
+            }
+
+            // Use ScanBalanced to extract the first object (handles nested braces correctly)
+            var row = NaadJson.ScanBalanced(arrayContent);
+            if (string.IsNullOrEmpty(row))
+            {
+                _log.Error("Player", "Fetch failed: could not extract player row");
+                return null;
+            }
 
             NaadJson.TryGetString(row, "id", out var id);
             NaadJson.TryGetString(row, "display_name", out var name);
