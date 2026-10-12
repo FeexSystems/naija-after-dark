@@ -1,4 +1,4 @@
-name: NAAD Unity Gate 21
+name: NAAD Unity Gate 22
 
 on:
   push:
@@ -13,12 +13,26 @@ on:
 
 jobs:
   verify-unity:
-    name: Unity compile and Gate 21 verification
+    name: Unity compile and Gate 22 verification
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Check Unity licensing configuration
+        shell: bash
+        env:
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+        run: |
+          if [ -z "$UNITY_LICENSE" ] && { [ -z "$UNITY_EMAIL" ] || [ -z "$UNITY_PASSWORD" ]; }; then
+            echo "::error::Unity licensing is not configured. Set UNITY_LICENSE, or set both UNITY_EMAIL and UNITY_PASSWORD in GitHub Actions secrets."
+            exit 1
+          fi
+          echo "Unity licensing inputs are configured."
+
       - name: Unity verification
         uses: game-ci/unity-builder@v4
         env:
@@ -27,7 +41,8 @@ jobs:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
         with:
           projectPath: game/unity
-          unityVersion: 6000.0.32f1
+          # Keep this aligned with ProjectSettings/ProjectVersion.txt.
+          unityVersion: 6000.6.5f1
           targetPlatform: StandaloneLinux64
           buildMethod: NAAD.Editor.NAADBuild.Verify
           customParameters: -nographics
