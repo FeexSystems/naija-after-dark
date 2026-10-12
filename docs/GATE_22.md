@@ -9,7 +9,13 @@ Make the Unity verification workflow reproducible and ensure its editor version 
 - Project editor version: `6000.6.5f1` (source of truth: `game/unity/ProjectSettings/ProjectVersion.txt`).
 - GitHub Actions uses the same editor version.
 - Workflow checks licensing configuration before invoking Unity.
-- `NAAD.Editor.NAADBuild.Verify` must complete successfully on a clean checkout.
+- `NAAD.Editor.NAADBuild.Verify` opens the actual Bootstrap scene and checks:
+  - build index 0 is enabled and points to Bootstrap;
+  - the scene loads and contains no missing script references;
+  - `NAADApplicationRoot` exists and has a configured `SupabaseConfig`;
+  - `NAADBootstrap`, `FirstNightController`, and `FirstNightHud` exist;
+  - the HUD's serialized controller reference points to the scene controller;
+  - a camera tagged `MainCamera` exists.
 - Compilation and verification output must be retained as CI evidence.
 
 ## Required GitHub Actions secrets
