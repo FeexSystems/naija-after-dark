@@ -107,6 +107,12 @@ namespace NAAD.Networking.Supabase
         }
 
         private static string Escape(string s) =>
-            s.Replace("\\", "\\\\").Replace("\"", "\\\"");
+            s.Replace("\\", "\\\\")
+             .Replace("\"", "\\\"")
+             .Replace("\n", "\\n")
+             .Replace("\r", "\\r")
+             .Replace("\t", "\\t")
+             .Replace("\b", "\\b")
+             .Replace("\f", "\\f");
     }
 }

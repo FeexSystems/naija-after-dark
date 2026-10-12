@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using NAAD.Core.Bootstrap;
 using NAAD.Core.Logging;
+using NAAD.Gameplay;
 using NAAD.Gameplay.FirstNight;
 using NAAD.Networking;
 using NAAD.Networking.Config;

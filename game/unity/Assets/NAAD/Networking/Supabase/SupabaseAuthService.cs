@@ -89,13 +89,18 @@ namespace NAAD.Networking.Supabase
 
         public async Task<bool> SignOutAsync()
         {
-            if (!string.IsNullOrEmpty(_accessToken))
+            if (!string.IsNullOrEmpty(_accessToken) && _config.IsConfigured)
             {
-                await _http.SendAsync(
+                var result = await _http.SendAsync(
                     $"{_config.AuthBaseUrl}/logout",
                     UnityEngine.Networking.UnityWebRequest.kHttpVerbPOST,
                     "{}",
                     _accessToken);
+
+                if (!result.Ok)
+                {
+                    _log.Warn("Auth", $"Server logout failed: {result.StatusCode} {result.Body}");
+                }
             }
 
             ClearSession();
@@ -105,6 +110,12 @@ namespace NAAD.Networking.Supabase
 
         public async Task<bool> RestoreSessionAsync()
         {
+            if (!_config.IsConfigured)
+            {
+                _log.Error("Auth", "SupabaseConfig missing anon key or URL");
+                return false;
+            }
+
             _accessToken = PlayerPrefs.GetString(PrefAccess, "");
             _refreshToken = PlayerPrefs.GetString(PrefRefresh, "");
             _userId = PlayerPrefs.GetString(PrefUserId, "");
@@ -192,7 +203,13 @@ namespace NAAD.Networking.Supabase
         }
 
         private static string Escape(string s) =>
-            s.Replace("\\", "\\\\").Replace("\"", "\\\"");
+            s.Replace("\\", "\\\\")
+             .Replace("\"", "\\\"")
+             .Replace("\n", "\\n")
+             .Replace("\r", "\\r")
+             .Replace("\t", "\\t")
+             .Replace("\b", "\\b")
+             .Replace("\f", "\\f");
 
         private static string? ExtractNestedId(string json)
         {

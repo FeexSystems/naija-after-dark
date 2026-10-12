@@ -11,7 +11,7 @@ namespace NAAD.Editor
             var scenes = EditorBuildSettings.scenes;
             if (scenes == null || scenes.Length == 0)
                 throw new System.Exception("NAAD Gate 21: no build scenes configured.");
-            if (!scenes[0].enabled || scenes[0].path != "Assets/Scenes/Bootstrap.unity")
+            if (!scenes[0].enabled || !scenes[0].path.Equals("Assets/Scenes/Bootstrap.unity", System.StringComparison.OrdinalIgnoreCase))
                 throw new System.Exception("NAAD Gate 21: Bootstrap scene must be enabled at build index 0.");
             if (AssetDatabase.LoadAssetAtPath<Object>("Assets/Scenes/Bootstrap.unity") == null)
                 throw new System.Exception("NAAD Gate 21: Bootstrap.unity could not be loaded.");
