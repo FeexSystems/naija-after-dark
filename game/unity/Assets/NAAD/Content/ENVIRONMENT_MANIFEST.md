@@ -2,7 +2,16 @@
 
 ## Audit Results
 
-**Current State**: No existing environment assets.
+**Current State** (as of 2026-10-13, updated during asset intake):
+- NAAD-authored environment prefabs: **none yet** — `Assets/NAAD/Prefabs/Environment/` exists but is empty
+- Vendor packs imported locally: **6 packs, ~1087 MB, 419 prefabs** (all gitignored; see `ASSET_INTAKE_MAPPING.md` §2)
+- Environment scenes: **2 of 7** blockouts authored (`Apartment`, `CityStreet`) plus `Bootstrap`
+- Content/ directory: **10 documents** (was empty when this manifest was first written)
+
+> The original audit below recorded the pre-intake state. For the current per-asset
+> mapping of these 126 IDs to real vendor prefabs, see **`ASSET_INTAKE_MAPPING.md`**.
+
+Original audit (superseded):
 - No 3D models (FBX, OBJ, etc.)
 - No materials
 - No environment prefabs
