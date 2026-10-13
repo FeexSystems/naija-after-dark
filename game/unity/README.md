@@ -35,6 +35,8 @@ Do **not** point Hub at the monorepo root (`backend/`, `supabase/`, etc.). The p
 4. Empty GameObject → `FirstNightController` + `FirstNightHud`.
 5. Enter Play Mode after auth is configured (see `Docs/PHASE_B_FIRST_NIGHT.md`).
 
+> **Fresh clones are missing the vendor packs.** The six Asset Store packs (`Brick Project Studio`, `Versatile Studio Assets`, `Kevin Iglesias`, `Awbmecreations`, `Marcos Schultz`, `PalmTreePack`) are gitignored, so `Apartment`/`CityStreet` show missing prefabs until they are re-imported — follow section 2 of [`Assets/NAAD/Content/ASSET_INTAKE_MAPPING.md`](Assets/NAAD/Content/ASSET_INTAKE_MAPPING.md). Confirm intake with menu **NAAD → Scenes → Validate Vendor Intake** (report-only; it never fails validation).
+
 ## Architecture rules (client)
 
 1. No service-role credentials.
