@@ -60,6 +60,50 @@ namespace NAAD.Editor
             Debug.Log("[NAAD][Scenes] Validation passed for Bootstrap, Apartment, CityStreet.");
         }
 
+        [MenuItem("NAAD/Scenes/Validate Vendor Intake")]
+        public static void ValidateVendorIntakeMenu() => ValidateVendorIntake();
+
+        /// <summary>
+        /// Non-fatal vendor intake check (see Content/ASSET_INTAKE_MAPPING.md).
+        /// Reports the six gitignored Asset Store pack roots and the five scene-critical
+        /// prefabs already referenced by Bootstrap/Apartment/CityStreet.
+        /// Never throws on absence: a fresh clone without vendor packs must still pass
+        /// batchmode verify. It is intentionally NOT wired into ValidateScenes, which
+        /// keeps failing only on genuine scene/build errors.
+        /// </summary>
+        public static void ValidateVendorIntake()
+        {
+            var packRoots = new[]
+            {
+                "Assets/Brick Project Studio",
+                "Assets/Versatile Studio Assets",
+                "Assets/Kevin Iglesias",
+                "Assets/Awbmecreations",
+                "Assets/Marcos Schultz",
+                "Assets/PalmTreePack"
+            };
+
+            var missingPacks = packRoots.Where(p => !AssetDatabase.IsValidFolder(p)).ToList();
+            var scenePrefabs = new[] { StructurePrefab, DemoCityPrefab, MidHousePrefab, OfficePrefab, LampPrefab };
+            var missingPrefabs = scenePrefabs.Where(p => AssetDatabase.LoadAssetAtPath<GameObject>(p) == null).ToList();
+
+            if (missingPacks.Count == 0 && missingPrefabs.Count == 0)
+            {
+                Debug.Log("[NAAD][Intake] Vendor intake OK: 6/6 packs and 5/5 scene prefabs present.");
+                return;
+            }
+
+            foreach (var pack in missingPacks)
+                Debug.LogWarning($"[NAAD][Intake] Missing vendor pack: {pack}");
+            foreach (var prefab in missingPrefabs)
+                Debug.LogWarning($"[NAAD][Intake] Missing scene prefab: {prefab}");
+
+            Debug.LogWarning(
+                $"[NAAD][Intake] Vendor intake incomplete ({packRoots.Length - missingPacks.Count}/{packRoots.Length} packs, " +
+                $"{scenePrefabs.Length - missingPrefabs.Count}/{scenePrefabs.Length} scene prefabs). " +
+                "Non-fatal by design - re-import per ASSET_INTAKE_MAPPING.md (section 2).");
+        }
+
         private static void EnsureFolders()
         {
             if (!AssetDatabase.IsValidFolder("Assets/NAAD/Scenes"))

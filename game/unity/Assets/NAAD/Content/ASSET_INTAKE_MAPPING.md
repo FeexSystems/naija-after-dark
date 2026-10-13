@@ -261,7 +261,7 @@ These exist in the packs but have no manifest slot. They are recorded so nobody 
 2. **Phase 1 MVP blockers with no vendor match:** `SYU_Stand_Structure`, `SYU_Grill_Open`, `NCL_Entrance_Door_Large`, `NCL_Stage_Platform`, `RD_Surface_Asphalt`, `STR_Sidewalk_Straight`.
 3. **Highest-value existing coverage:** the interior set (15 CONFIRMED) fully outfits the Apartment scene.
 4. **Document the re-import requirement** (§2) wherever a fresh-clone setup is described — scene integrity depends on it.
-5. **Optional hardening:** add a vendor-presence assertion for the five §3 GUIDs to `NaadScenePipeline.ValidateScenes`, so a missing pack fails loudly instead of silently.
+5. **Vendor-presence check (implemented):** `NaadScenePipeline.ValidateVendorIntake` (menu `NAAD/Scenes/Validate Vendor Intake`, or CLI `-executeMethod NAAD.Editor.NaadScenePipeline.ValidateVendorIntake`) reports the six pack roots and the five scene-critical §3 prefabs. It is **non-fatal by design** — it warns instead of throwing, so a fresh clone without the gitignored vendor packs still passes batchmode verify. It is deliberately *not* wired into `ValidateScenes`, which keeps failing only on real scene/build errors.
 
 ## 8. Maintenance
 
