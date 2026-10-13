@@ -8,5 +8,14 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Bootstrap.unity
     guid: 9c9d0e1f2a3b4c5d9e8f7a6b5c4d3014
+  - enabled: 1
+    path: Assets/NAAD/Scenes/Apartment.unity
+    guid: 4e1906ad9c63ad841bdef0cc96a9fa1d
+  - enabled: 1
+    path: Assets/NAAD/Scenes/CityStreet.unity
+    guid: d8151fd26c5fe134ca54b1841ccc0d43
   m_configObjects:
+    com.unity.adaptivePerformance.basic.provider_settings: {fileID: 11400000, guid: 9c9d5fff1c43d8d4280e97a313d29432, type: 2}
+    com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: bcc5e2ac1ab7e88438523bb655a52630, type: 2}
+    com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000, guid: ac0e9f137d1b1404b934e4b895c91856, type: 2}
     com.unity.dt.app-ui: {fileID: 11400000, guid: 1b1c20d82303e4b5781c3ef50ac1449f, type: 2}
