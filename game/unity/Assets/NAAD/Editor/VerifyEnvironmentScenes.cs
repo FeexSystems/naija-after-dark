@@ -14,7 +14,7 @@ namespace NAAD.Editor
     /// </summary>
     public class VerifyEnvironmentScenes
     {
-        private struct SceneRequirement
+        private class SceneRequirement
         {
             public string SceneName;
             public string ScenePath;
@@ -85,12 +85,15 @@ namespace NAAD.Editor
                     // Count game objects
                     req.GameObjectCount = GameObject.FindObjectsOfType<GameObject>().Length;
 
-                    // Check for NavMesh
-                    var navMeshSurface = GameObject.FindObjectOfType<UnityEngine.AI.NavMeshSurface>();
-                    req.HasNavMesh = navMeshSurface != null;
+                    // Check for baked NavMesh using the built-in UnityEngine.AI API so
+                    // this verifier works without the optional AI Navigation package
+                    // (NavMeshSurface). CalculateTriangulation returns the currently
+                    // baked NavMesh for the open scene.
+                    var triangulation = UnityEngine.AI.NavMesh.CalculateTriangulation();
+                    req.HasNavMesh = triangulation.vertices != null && triangulation.vertices.Length > 0;
                     if (!req.HasNavMesh)
                     {
-                        req.Issues.Add("No NavMeshSurface found in scene");
+                        req.Issues.Add("No baked NavMesh found in scene (Window > AI > Navigation, then Bake)");
                     }
 
                     // Check for lighting
