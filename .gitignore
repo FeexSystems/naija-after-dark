@@ -37,9 +37,30 @@ supabase/.branches
 supabase/.temp
 supabase/.env
 
-# Unity third-party / vendored assets (install via UPM, never commit)
+# Unity third-party / vendored assets (install via UPM / Asset Store, never commit)
+# Rationale: ~1.05 GB of Asset Store content incl. a 291 MB LightingData.asset that
+# GitHub rejects (100 MB hard cap). Re-import these from the Asset Store instead.
+# Keep this list in sync with Assets/<Publisher> folders.
 game/unity/Assets/Glitch9/
 game/unity/Assets/Glitch9.meta
+game/unity/Assets/Awbmecreations/
+game/unity/Assets/Awbmecreations.meta
+game/unity/Assets/Brick Project Studio/
+game/unity/Assets/Brick Project Studio.meta
+game/unity/Assets/FreeFlyCamera/
+game/unity/Assets/FreeFlyCamera.meta
+game/unity/Assets/Kevin Iglesias/
+game/unity/Assets/Kevin Iglesias.meta
+game/unity/Assets/Marcos Schultz/
+game/unity/Assets/Marcos Schultz.meta
+game/unity/Assets/PalmTreePack/
+game/unity/Assets/PalmTreePack.meta
+game/unity/Assets/Versatile Studio Assets/
+game/unity/Assets/Versatile Studio Assets.meta
+game/unity/Assets/Unity Cloud/
+game/unity/Assets/Unity Cloud.meta
+game/unity/Assets/Resources/
+game/unity/Assets/Resources.meta
 
 # Unity (game/unity)
 game/unity/[Ll]ibrary/
@@ -100,6 +121,8 @@ temp/
 
 # Agent / internal
 .grok/
+# Cursor MCP config holds a live UNITY_ACP_SESSION_TOKEN + local paths — never commit.
+.cursor/
 
 # Unity
 **/[Ll]ibrary/
