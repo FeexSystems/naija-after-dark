@@ -12,6 +12,7 @@
 > mapping of these 126 IDs to real vendor prefabs, see **`ASSET_INTAKE_MAPPING.md`**.
 
 Original audit (superseded):
+**Current State**: No existing environment assets.
 - No 3D models (FBX, OBJ, etc.)
 - No materials
 - No environment prefabs

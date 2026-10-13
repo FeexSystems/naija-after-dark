@@ -29,6 +29,18 @@ namespace NAAD.Gameplay.FirstNight
         public string LastError { get; private set; }
         public bool IsBusy { get; private set; }
 
+        /// <summary>
+        /// Whether the full-night flow purchases the club ticket step. Backed by the
+        /// serialized <see cref="includeClubTicket"/> field so the Inspector remains
+        /// the source of truth; exposed publicly so the smoke test and other
+        /// orchestrators can configure the flow without reflection.
+        /// </summary>
+        public bool IncludeClubTicket
+        {
+            get => includeClubTicket;
+            set => includeClubTicket = value;
+        }
+
         public event Action Changed;
 
         private NAADApplicationRoot Root => NAADApplicationRoot.Instance;
@@ -42,6 +54,23 @@ namespace NAAD.Gameplay.FirstNight
                 if (Root != null && Root.Auth.IsAuthenticated)
                     await RunFullNightAsync("GO");
             }
+        }
+
+        public async Task<bool> EnterApartmentAsync()
+        {
+            if (!EnsureRoot()) return false;
+            IsBusy = true;
+            SetStep(FirstNightStep.Apartment, "Entering apartment...");
+
+            // Load player data
+            var player = await Root.Players.FetchCurrentPlayerAsync();
+            if (player == null)
+                return Fail("PLAYER_FETCH", "Failed to load player data");
+
+            await RefreshBalanceAsync();
+            SetStep(FirstNightStep.Apartment, "Welcome home, " + player.DisplayName);
+            IsBusy = false;
+            return true;
         }
 
         public async Task<bool> StartNightAsync()
@@ -97,6 +126,71 @@ namespace NAAD.Gameplay.FirstNight
                 return Fail(result.ErrorCode, result.ErrorMessage);
 
             StatusMessage = "Phone: " + action;
+            SetStep(FirstNightStep.DestinationSelection, "Choose your destination");
+            IsBusy = false;
+            Notify();
+            return true;
+        }
+
+        public async Task<bool> SelectDestinationAsync(string destinationId)
+        {
+            if (!EnsureRoot()) return false;
+            IsBusy = true;
+            SetStep(FirstNightStep.DestinationSelection, "Selected: " + destinationId);
+
+            // Store selected destination locally
+            // Travel will be triggered separately
+            await Delay();
+            
+            SetStep(FirstNightStep.Travel, "Traveling to " + destinationId + "...");
+            IsBusy = false;
+            Notify();
+            return true;
+        }
+
+        public async Task<bool> TravelToAsync(string destinationId)
+        {
+            if (!EnsureRoot()) return false;
+            IsBusy = true;
+            SetStep(FirstNightStep.Travel, "Traveling to " + destinationId + "...");
+
+            var travel = NewCommand(GameCommandType.Travel);
+            travel.Payload["toLocationId"] = destinationId;
+            var result = await Root.Commands.ExecuteAsync(travel);
+            if (!result.Success)
+                return Fail(result.ErrorCode, result.ErrorMessage);
+
+            await Delay();
+            
+            // Update step based on destination
+            if (destinationId == NightDistrictIds.SuyaSpot)
+                SetStep(FirstNightStep.SuyaSpot, "Arrived at Suya Spot");
+            else if (destinationId == NightDistrictIds.Nightclub)
+                SetStep(FirstNightStep.Nightclub, "Arrived at Nightclub");
+            else if (destinationId == NightDistrictIds.Beach)
+                SetStep(FirstNightStep.BeachEvent, "Arrived at Beach");
+            
+            IsBusy = false;
+            Notify();
+            return true;
+        }
+
+        public async Task<bool> InteractWithNpcAsync(string npcId)
+        {
+            if (!EnsureRoot()) return false;
+            IsBusy = true;
+            SetStep(FirstNightStep.NpcInteraction, "Talking to " + npcId + "...");
+
+            // Use dialogue service if available
+            if (Root.Dialogue != null)
+            {
+                // TODO: Implement dialogue service call
+                await Task.Delay(500);
+            }
+
+            // Deterministic fallback
+            await Delay();
+            SetStep(FirstNightStep.SuyaSpot, "NPC interaction complete");
             IsBusy = false;
             Notify();
             return true;
@@ -107,12 +201,15 @@ namespace NAAD.Gameplay.FirstNight
             if (!EnsureRoot()) return false;
             IsBusy = true;
 
-            SetStep(FirstNightStep.TravelSuya, "Travel to Suya Spot...");
+            SetStep(FirstNightStep.Travel, "Travel to Suya Spot...");
             var travel = NewCommand(GameCommandType.Travel);
             travel.Payload["toLocationId"] = NightDistrictIds.SuyaSpot;
             var tr = await Root.Commands.ExecuteAsync(travel);
             if (!tr.Success) return Fail(tr.ErrorCode, tr.ErrorMessage);
             await Delay();
+
+            SetStep(FirstNightStep.SuyaSpot, "Arrived at Suya Spot");
+            await InteractWithNpcAsync("suya_vendor");
 
             SetStep(FirstNightStep.BuySuya, "Buying suya...");
             var spend = NewCommand(GameCommandType.Spend);
@@ -122,6 +219,8 @@ namespace NAAD.Gameplay.FirstNight
             if (!sr.Success) return Fail(sr.ErrorCode, sr.ErrorMessage);
 
             await RefreshBalanceAsync();
+            SetStep(FirstNightStep.NightclubInvitation, "Check phone for Nightclub invite");
+            await LoadPhoneInviteAsync();
             StatusMessage = "Ate suya at the spot";
             IsBusy = false;
             Notify();
@@ -140,6 +239,9 @@ namespace NAAD.Gameplay.FirstNight
             if (!tr.Success) return Fail(tr.ErrorCode, tr.ErrorMessage);
             await Delay();
 
+            SetStep(FirstNightStep.Nightclub, "Arrived at Nightclub");
+            await Delay();
+
             SetStep(FirstNightStep.BuyTicket, "Buying club ticket...");
             var spend = NewCommand(GameCommandType.Spend);
             spend.Payload["sku"] = NightDistrictIds.ClubTicketSku;
@@ -148,7 +250,89 @@ namespace NAAD.Gameplay.FirstNight
             if (!sr.Success) return Fail(sr.ErrorCode, sr.ErrorMessage);
 
             await RefreshBalanceAsync();
+            SetStep(FirstNightStep.BeachEvent, "Time to hit the beach");
             StatusMessage = "Inside the club";
+            IsBusy = false;
+            Notify();
+            return true;
+        }
+
+        public async Task<bool> GoToBeachAsync()
+        {
+            if (!EnsureRoot()) return false;
+            IsBusy = true;
+
+            SetStep(FirstNightStep.Travel, "Travel to Beach...");
+            var travel = NewCommand(GameCommandType.Travel);
+            travel.Payload["toLocationId"] = NightDistrictIds.Beach;
+            var tr = await Root.Commands.ExecuteAsync(travel);
+            if (!tr.Success) return Fail(tr.ErrorCode, tr.ErrorMessage);
+            await Delay();
+
+            SetStep(FirstNightStep.BeachEvent, "Enjoying the beach...");
+            await Delay();
+            
+            SetStep(FirstNightStep.RelationshipUpdate, "Updating relationships...");
+            await UpdateRelationshipsAsync();
+            
+            SetStep(FirstNightStep.MemoryCommit, "Committing memories...");
+            await CommitMemoryAsync();
+            
+            IsBusy = false;
+            Notify();
+            return true;
+        }
+
+        public async Task<bool> UpdateRelationshipsAsync()
+        {
+            if (!EnsureRoot()) return false;
+            IsBusy = true;
+
+            var cmd = NewCommand(GameCommandType.RelationshipDelta);
+            cmd.Payload["npcId"] = "tunde";
+            cmd.Payload["delta"] = "1"; // Positive delta for friendship
+            var result = await Root.Commands.ExecuteAsync(cmd);
+            if (!result.Success)
+                return Fail(result.ErrorCode, result.ErrorMessage);
+
+            await Delay();
+            IsBusy = false;
+            Notify();
+            return true;
+        }
+
+        public async Task<bool> CommitMemoryAsync()
+        {
+            if (!EnsureRoot()) return false;
+            IsBusy = true;
+
+            var cmd = NewCommand(GameCommandType.CommitMemory);
+            cmd.Payload["memoryType"] = "first_night";
+            cmd.Payload["description"] = "First night out with Tunde";
+            var result = await Root.Commands.ExecuteAsync(cmd);
+            if (!result.Success)
+                return Fail(result.ErrorCode, result.ErrorMessage);
+
+            await Delay();
+            IsBusy = false;
+            Notify();
+            return true;
+        }
+
+        public async Task<bool> ReturnHomeAsync()
+        {
+            if (!EnsureRoot()) return false;
+            IsBusy = true;
+
+            SetStep(FirstNightStep.ReturnHome, "Returning home...");
+            var travel = NewCommand(GameCommandType.Travel);
+            travel.Payload["toLocationId"] = NightDistrictIds.Apartment;
+            var result = await Root.Commands.ExecuteAsync(travel);
+            if (!result.Success)
+                return Fail(result.ErrorCode, result.ErrorMessage);
+
+            await Delay();
+            SetStep(FirstNightStep.Apartment, "Back at apartment");
             IsBusy = false;
             Notify();
             return true;
@@ -184,9 +368,15 @@ namespace NAAD.Gameplay.FirstNight
 
         public async Task<bool> RunFullNightAsync(string phoneAction = "GO")
         {
+            if (!await EnterApartmentAsync()) return false;
+            await Delay();
             if (!await StartNightAsync()) return false;
             await Delay();
             if (!await RespondToInviteAsync(phoneAction)) return false;
+            await Delay();
+            if (!await SelectDestinationAsync(NightDistrictIds.SuyaSpot)) return false;
+            await Delay();
+            if (!await TravelToAsync(NightDistrictIds.SuyaSpot)) return false;
             await Delay();
             if (!await GoToSuyaAndBuyAsync()) return false;
             await Delay();
@@ -195,6 +385,10 @@ namespace NAAD.Gameplay.FirstNight
                 if (!await GoToClubAndBuyTicketAsync()) return false;
                 await Delay();
             }
+            if (!await GoToBeachAsync()) return false;
+            await Delay();
+            if (!await ReturnHomeAsync()) return false;
+            await Delay();
             return await CompleteNightAsync();
         }
 
