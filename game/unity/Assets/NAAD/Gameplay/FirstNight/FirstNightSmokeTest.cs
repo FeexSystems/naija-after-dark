@@ -39,7 +39,7 @@ namespace NAAD.Gameplay.FirstNight
                 _controller = gameObject.AddComponent<FirstNightController>();
             }
 
-            _controller.includeClubTicket = includeClubTicket;
+            _controller.IncludeClubTicket = includeClubTicket;
 
             _results.Clear();
 
@@ -137,9 +137,13 @@ namespace NAAD.Gameplay.FirstNight
 
             if (failed > 0)
             {
-                var firstFailure = _results.Find(r => !r.Success);
-                if (firstFailure != null)
+                // SmokeTestResult is a struct, so List.Find returns default (never null)
+                // when nothing matches. Use FindIndex (-1 when absent) to detect a real
+                // failure before dereferencing.
+                var firstFailureIndex = _results.FindIndex(r => !r.Success);
+                if (firstFailureIndex >= 0)
                 {
+                    var firstFailure = _results[firstFailureIndex];
                     Debug.LogError($"[SmokeTest] FIRST FAILURE: {firstFailure.StepName}");
                     Debug.LogError($"[SmokeTest] Error: {firstFailure.ErrorMessage}");
                     Debug.LogError($"[SmokeTest] Step: {firstFailure.Step}");

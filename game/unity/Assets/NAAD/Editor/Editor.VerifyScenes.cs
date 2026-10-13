@@ -81,7 +81,7 @@ namespace NAAD.Editor
         public static void VerifyEnvironmentScenes()
         {
             Debug.Log("[NAAD][Verify] Verifying environment scenes...");
-            VerifyEnvironmentScenes.RunVerification();
+            NAAD.Editor.VerifyEnvironmentScenes.RunVerification();
             ExitBatch(0);
         }
     }

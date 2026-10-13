@@ -22,7 +22,7 @@ namespace NAAD.Editor
     /// </summary>
     public class VerifyPlayerNavigation
     {
-        private struct NavigationTestResult
+        private class NavigationTestResult
         {
             public string SceneName;
             public bool HasNavMesh;
@@ -131,38 +131,24 @@ namespace NAAD.Editor
 
         private static void TestNavMesh(NavigationTestResult result)
         {
-            // Check for NavMeshSurface
-            var navMeshSurface = GameObject.FindObjectOfType<NavMeshSurface>();
-            result.HasNavMesh = navMeshSurface != null;
+            // Uses the built-in UnityEngine.AI NavMesh triangulation rather than the
+            // optional AI Navigation package's NavMeshSurface, so this verifier has
+            // no extra package dependency. CalculateTriangulation returns the baked
+            // NavMesh for the currently open scene.
+            var triangulation = NavMesh.CalculateTriangulation();
+            var vertices = triangulation.vertices;
+            result.HasNavMesh = vertices != null && vertices.Length > 0;
 
             if (!result.HasNavMesh)
             {
-                result.Issues.Add("No NavMeshSurface component found in scene");
+                result.Issues.Add("No baked NavMesh found in scene. Bake a NavMesh (Window > AI > Navigation, or legacy Bake) before verifying.");
                 return;
             }
 
-            // Check if NavMesh is baked
-            var navMeshData = navMeshSurface.navMeshData;
-            result.NavMeshBaked = navMeshData != null;
+            result.NavMeshBaked = true;
 
-            if (!result.NavMeshBaked)
-            {
-                result.Issues.Add("NavMesh is not baked. Use NavMeshSurface > Bake button");
-                return;
-            }
-
-            // Check NavMesh configuration
-            if (navMeshSurface.agentTypeID != 0)
-            {
-                result.Warnings.Add($"Custom agentTypeID used: {navMeshSurface.agentTypeID}. Ensure it matches player agent.");
-            }
-
-            // Calculate NavMesh area (approximate)
-            if (navMeshData != null)
-            {
-                result.NavMeshVertices = navMeshData.sourcePositions.Count;
-                result.NavMeshArea = CalculateNavMeshArea(navMeshData);
-            }
+            result.NavMeshVertices = vertices.Length;
+            result.NavMeshArea = CalculateNavMeshArea(vertices);
 
             // Check NavMesh size
             if (result.NavMeshArea < 10f)
@@ -177,16 +163,16 @@ namespace NAAD.Editor
             }
         }
 
-        private static float CalculateNavMeshArea(NavMeshData navMeshData)
+        private static float CalculateNavMeshArea(Vector3[] vertices)
         {
             // Approximate area calculation based on bounding box
-            if (navMeshData.sourcePositions.Count == 0)
+            if (vertices == null || vertices.Length == 0)
                 return 0f;
 
-            var min = navMeshData.sourcePositions[0];
-            var max = navMeshData.sourcePositions[0];
+            var min = vertices[0];
+            var max = vertices[0];
 
-            foreach (var pos in navMeshData.sourcePositions)
+            foreach (var pos in vertices)
             {
                 min = Vector3.Min(min, pos);
                 max = Vector3.Max(max, pos);

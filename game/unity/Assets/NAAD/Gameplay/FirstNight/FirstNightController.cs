@@ -29,6 +29,18 @@ namespace NAAD.Gameplay.FirstNight
         public string LastError { get; private set; }
         public bool IsBusy { get; private set; }
 
+        /// <summary>
+        /// Whether the full-night flow purchases the club ticket step. Backed by the
+        /// serialized <see cref="includeClubTicket"/> field so the Inspector remains
+        /// the source of truth; exposed publicly so the smoke test and other
+        /// orchestrators can configure the flow without reflection.
+        /// </summary>
+        public bool IncludeClubTicket
+        {
+            get => includeClubTicket;
+            set => includeClubTicket = value;
+        }
+
         public event Action Changed;
 
         private NAADApplicationRoot Root => NAADApplicationRoot.Instance;
@@ -189,7 +201,7 @@ namespace NAAD.Gameplay.FirstNight
             if (!EnsureRoot()) return false;
             IsBusy = true;
 
-            SetStep(FirstNightStep.TravelSuya, "Travel to Suya Spot...");
+            SetStep(FirstNightStep.Travel, "Travel to Suya Spot...");
             var travel = NewCommand(GameCommandType.Travel);
             travel.Payload["toLocationId"] = NightDistrictIds.SuyaSpot;
             var tr = await Root.Commands.ExecuteAsync(travel);

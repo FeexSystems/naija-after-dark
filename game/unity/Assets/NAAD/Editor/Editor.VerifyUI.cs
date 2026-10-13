@@ -22,10 +22,13 @@ namespace NAAD.Editor
             var report = new VerificationReport();
 
             VerifyController<NAAD.UI.AuthController>(report, "AuthController", "SignUpAsync", "SignInAsync", "SignOutAsync", "RestoreSessionAsync");
-            VerifyController<NAAD.UI.PhoneController>(report, "PhoneController", "LoadMessagesAsync", "RespondAsync", "StartNightAsync", "CompleteNightAsync", "GetBalanceAsync");
-            VerifyController<NAAD.UI.NightSummaryController>(report, "NightSummaryController", "ShowSummaryAsync");
-            VerifyController<NAAD.UI.DestinationController>(report, "DestinationController", "LoadDestinationsAsync", "SelectDestinationAsync");
-            VerifyController<NAAD.UI.DialogueController>(report, "DialogueController", "OpenAsync", "SubmitChoiceAsync", "CloseAsync");
+            VerifyController<NAAD.UI.BootstrapScreenController>(report, "BootstrapScreenController", "GetData", "Retry");
+            VerifyController<NAAD.UI.MainHudController>(report, "MainHudController", "ShowInteractionPrompt", "HideInteractionPrompt", "UpdateLocation", "UpdateBalance", "GetData");
+            VerifyController<NAAD.UI.PhoneHomeController>(report, "PhoneHomeController", "OnAppTapped", "UpdateUnreadCount", "Refresh", "GetData");
+            VerifyController<NAAD.UI.PingMessagingController>(report, "PingMessagingController", "SelectContact", "SendMessage", "RespondToMessage", "Refresh", "GetData");
+            VerifyController<NAAD.UI.NightSummaryController>(report, "NightSummaryController", "Continue", "Skip", "Retry", "GetData");
+            VerifyController<NAAD.UI.ConfigurationUIController>(report, "ConfigurationUIController", "Refresh", "Retry", "GetData");
+            VerifyController<NAAD.UI.BottomNavigationController>(report, "BottomNavigationController", "SwitchTab", "UpdateBadgeCount", "GetActiveTab", "GetData");
 
             if (typeof(NAAD.UI.BaseScreenController).IsClass && !typeof(NAAD.UI.BaseScreenController).IsAbstract)
                 Debug.LogWarning("[NAAD][Verify] BaseScreenController is concrete; expected an abstract base for the view layer.");
@@ -55,16 +58,21 @@ namespace NAAD.Editor
                     continue;
                 }
 
-                if (method.ReturnType != typeof(Task) && method.ReturnType != typeof(Task<bool>) &&
-                    !(method.ReturnType.IsGenericType && method.ReturnType.GetGenericTypeDefinition() == typeof(Task<>)))
-                {
-                    Debug.LogWarning($"[NAAD][Verify] {label}.{methodName} returns {method.ReturnType.Name}; expected a Task.");
-                }
-                else
-                {
-                    Pass(report, $"{label}.{methodName} present.");
-                }
+                // Existence of the public binding method is the contract; a present
+                // method always passes. Return type is advisory: only flag a method
+                // that is named *Async but does not return an awaitable Task, rather
+                // than silently skipping non-async action methods (Refresh, GetData...).
+                Pass(report, $"{label}.{methodName} present.");
+
+                if (methodName.EndsWith("Async", StringComparison.Ordinal) && !IsAwaitable(method.ReturnType))
+                    Debug.LogWarning($"[NAAD][Verify] {label}.{methodName} is named *Async but returns {method.ReturnType.Name}.");
             }
+        }
+
+        private static bool IsAwaitable(Type returnType)
+        {
+            return returnType == typeof(Task)
+                || (returnType.IsGenericType && returnType.GetGenericTypeDefinition() == typeof(Task<>));
         }
 
         /// <summary>
@@ -85,7 +93,7 @@ namespace NAAD.Editor
             VerifyInterfaceImplemented<NAAD.Networking.IPhoneService>(report);
             VerifyInterfaceImplemented<NAAD.Networking.IPlayerService>(report);
             VerifyInterfaceImplemented<NAAD.Networking.IWorldStateService>(report);
-            VerifyInterfaceImplemented<NAAD.Networking.IMemoryService>(report);
+            VerifyInterfaceImplemented<NAAD.Networking.IDialogueService>(report);
 
             VerifyApplicationRoot(report);
             VerifyConfiguration(report);

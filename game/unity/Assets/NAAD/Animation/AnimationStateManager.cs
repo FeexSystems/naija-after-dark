@@ -124,7 +124,7 @@ namespace NAAD.Animation
             if (_currentState == AnimationCommandType.LocomotionWalk && Mathf.Approximately(_currentSpeed, speed))
                 return;
 
-            TransitionTo(AnimationCommand.LocomotionWalk(speed));
+            TransitionTo(AnimationCommand.Walk(speed));
             _isMoving = true;
             _currentSpeed = speed;
         }
@@ -137,7 +137,7 @@ namespace NAAD.Animation
             if (_currentState == AnimationCommandType.LocomotionRun && Mathf.Approximately(_currentSpeed, speed))
                 return;
 
-            TransitionTo(AnimationCommand.LocomotionRun(speed));
+            TransitionTo(AnimationCommand.Run(speed));
             _isMoving = true;
             _currentSpeed = speed;
         }

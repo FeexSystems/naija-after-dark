@@ -12,7 +12,7 @@ namespace NAAD.Editor
     /// </summary>
     public class VerifyAnimationAssets
     {
-        private struct AnimationRequirement
+        private class AnimationRequirement
         {
             public string Category;
             public string Name;
