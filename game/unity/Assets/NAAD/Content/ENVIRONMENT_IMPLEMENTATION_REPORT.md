@@ -1,6 +1,12 @@
 # NAAD Nigerian Megacity Environment Pack - Implementation Report
 
 **Generated**: 2026-10-13  
+**Status**: Infrastructure Complete, Assets Imported (mapping in `ASSET_INTAKE_MAPPING.md`)
+
+> **2026-10-13 intake update:** the "0/100+ assets" and "0/7 scenes" figures below
+> describe the pre-intake state. Six vendor packs (419 prefabs) are now imported
+> locally and `Apartment` + `CityStreet` scenes are authored. Manifest coverage is
+> 21 CONFIRMED / 13 PARTIAL / 92 NONE — see `ASSET_INTAKE_MAPPING.md`.
 **Status**: Infrastructure Complete, Assets Missing
 
 ## Summary
@@ -8,6 +14,8 @@
 The NAAD Nigerian Megacity Environment Pack infrastructure has been successfully implemented. The project now has comprehensive documentation, naming conventions, and verification tools ready for asset production.
 
 **Infrastructure Status**: ✓ Complete  
+**3D Assets Status**: ◐ Imported (419 vendor prefabs, 21/126 manifest IDs CONFIRMED)  
+**Scenes Status**: ◐ 2 of 7 authored (Apartment, CityStreet)
 **3D Assets Status**: ✗ Missing (0/100+ assets)  
 **Scenes Status**: ✗ Missing (0/7 scenes)
 

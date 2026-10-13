@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &1
+MonoBehaviour:
+  m_ObjectHideFlags: 53
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2bfbed778aee3cb409ea5c5a3a6851d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Glitch9.AI.Editor::Glitch9.AI.Editor.Playgrounds.PlaygroundSettings
+  generatedFilePath: C:/Users/user/naija-after-dark/game/unity/Assets/Generated
+  promptGenerationModel: 
+  scriptNamespace: 
+  textViewBackgroundColor: {r: 0, g: 0, b: 0, a: 1}
+  recentGenerationListLimit: 20
+  textViewFontSize: 12
+  applyProjectContextToPrompts: 1
+  measureLatency: 1
+  debugMode: 1
+  costWarningThreshold: 1
