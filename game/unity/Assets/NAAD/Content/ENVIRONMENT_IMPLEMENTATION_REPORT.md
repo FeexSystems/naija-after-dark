@@ -7,6 +7,7 @@
 > describe the pre-intake state. Six vendor packs (419 prefabs) are now imported
 > locally and `Apartment` + `CityStreet` scenes are authored. Manifest coverage is
 > 21 CONFIRMED / 13 PARTIAL / 92 NONE — see `ASSET_INTAKE_MAPPING.md`.
+**Status**: Infrastructure Complete, Assets Missing
 
 ## Summary
 
@@ -15,6 +16,8 @@ The NAAD Nigerian Megacity Environment Pack infrastructure has been successfully
 **Infrastructure Status**: ✓ Complete  
 **3D Assets Status**: ◐ Imported (419 vendor prefabs, 21/126 manifest IDs CONFIRMED)  
 **Scenes Status**: ◐ 2 of 7 authored (Apartment, CityStreet)
+**3D Assets Status**: ✗ Missing (0/100+ assets)  
+**Scenes Status**: ✗ Missing (0/7 scenes)
 
 ## Completed Infrastructure
 

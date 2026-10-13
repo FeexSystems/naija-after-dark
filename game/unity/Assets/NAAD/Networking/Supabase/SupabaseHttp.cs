@@ -48,8 +48,7 @@ namespace NAAD.Networking.Supabase
                 req.SetRequestHeader(key, value);
 
             var op = req.SendWebRequest();
-            while (!op.isDone)
-                await Task.Yield();
+            await op;
 
             var code = (int)req.responseCode;
             var text = req.downloadHandler?.text ?? string.Empty;

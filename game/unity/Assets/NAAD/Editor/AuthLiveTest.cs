@@ -91,7 +91,11 @@ namespace NAAD.Editor
             var cfg = AssetDatabase.LoadAssetAtPath<SupabaseConfig>(
                 "Assets/NAAD/Networking/Config/Resources/SupabaseConfig.asset");
             if (cfg == null)
-                throw new Exception("SupabaseConfig asset not found at Resources path.");
+            {
+                cfg = Resources.Load<SupabaseConfig>("SupabaseConfig");
+            }
+            if (cfg == null)
+                throw new Exception("SupabaseConfig asset not found. Expected at Assets/NAAD/Networking/Config/Resources/SupabaseConfig.asset or Resources/SupabaseConfig");
 
             Emit($"{{\"configUrl\":\"{cfg.projectUrl}\",\"configured\":{B(cfg.IsConfigured)},\"steps\":[");
 
