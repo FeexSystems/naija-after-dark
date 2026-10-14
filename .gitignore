@@ -139,3 +139,6 @@ _tmp*.py
 **/[Uu]ser[Ss]ettings/
 *.csproj
 *.sln
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
