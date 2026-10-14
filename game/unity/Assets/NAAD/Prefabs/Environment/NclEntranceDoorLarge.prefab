@@ -47,7 +47,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 38f62356be014c1f9cecd3c75a2557e3, type: 3}
-  m_Name:
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NAAD.World.NaadPlaceholderTag
   assetId: NCL_Entrance_Door_Large
   description: Double glass entrance doors (3m wide x 2.5m high).
 --- !u!1 &5948728839287474382
