@@ -25,11 +25,24 @@ namespace NAAD.Editor
     /// Pass condition: summary shape matches server (spent, transactions, peopleMet,
     /// connection, trust, moment) and wallet balance moved from its starting value.
     ///
-    ///   Unity -batchmode -nographics -quit -projectPath game/unity \
-    ///     -executeMethod NAAD.Editor.FirstNightLiveTest.Run
+    /// IMPORTANT: do NOT pass -quit. This test is ASYNC and self-terminating:
+    /// Pump (on EditorApplication.update) drives the flow and calls
+    /// EditorApplication.Exit itself with the real code. Under -quit, Unity
+    /// shuts down right after import and aborts the in-flight network await,
+    /// so the task never completes and the report is never written.
     ///
-    /// Env: NAAD_TEST_EMAIL / NAAD_TEST_PASSWORD (any password 6+ chars).
-    /// Report: Library/first-night-report.json
+    ///   Unity.exe -batchmode -nographics -projectPath game/unity \
+    ///     -buildTarget StandaloneWindows64 \
+    ///     -executeMethod NAAD.Editor.FirstNightLiveTest.Run \
+    ///     -logFile Logs/firstnight-run.log
+    ///
+    /// Env: NAAD_TEST_EMAIL / NAAD_TEST_PASSWORD — MUST be valid, verified
+    /// credentials for the live Supabase project. A bad password yields
+    /// sign-in 400 invalid_credentials and, because the account already exists,
+    /// sign-up returns an anti-enumeration empty body — the run FAULTS (exit 2)
+    /// with no report. Exit codes: 0=PASS (report written), 2=FAULTED,
+    /// 4=missing env creds, 5=timeout(240s).
+    /// Report: Library/first-night-report.json (success path only).
     /// </summary>
     public static class FirstNightLiveTest
     {

@@ -15,12 +15,11 @@ Verified 2026-10-14 via `NAAD.Editor.NAADBuild.Verify` (exit 0) and
 | 2 | `Assets/NAAD/Scenes/CityStreet.unity` | Travel / pedestrians / markers | Verified (`ValidateScenes` PASS) |
 | 3 | `Assets/NAAD/Scenes/SuyaSpot.unity` | Food purchase / NPC encounter | Verified (`ValidateScenes` PASS) |
 | 4 | `Assets/NAAD/Scenes/Nightclub.unity` | Event / dance / social | Verified (`ValidateScenes` PASS) |
+| 5 | `Assets/NAAD/Scenes/Beach.unity` | Coast event / late-night close | Verified (`NAADBuild.Verify` PASS, `BuildScenes=6`; `ValidateScenes` PASS) |
 
 ## Required MVP scenes (not yet registered)
 
-| Logical name | Intended path (proposed) | Role | Status |
-|---|---|---|---|
-| Beach | `Assets/NAAD/Scenes/Beach.unity` | Coast event / late-night close | Planned (server flow uses `NightDistrictIds.Beach` but no scene file/build entry exists) |
+None — all MVP scenes are now registered.
 
 Do not call `SceneManager.LoadScene` for names that are not registered and verified.
 
@@ -38,6 +37,6 @@ These exist under third-party folders and must not be treated as NAAD scene cont
 
 `NAADBootstrap.nextSceneName` is currently empty in the serialized Bootstrap scene (verified 2026-10-14 against `Assets/Scenes/Bootstrap.unity`). First Night presentation currently runs inside Bootstrap. Apartment, CityStreet, SuyaSpot and Nightclub are now registered and validated, but no verified scene-transition code paths load them yet — the travel flow is authoritative-server travel (`GameCommandType.Travel`), not scene loading. Set `nextSceneName` only to a Build Settings–registered scene name and extend `NAADBuild.Verify` accordingly when a transition is added.
 
-## Unverified verifier (known drift)
+## Unverified verifier (resolved 2026-10-14)
 
-`NAAD/Editor/VerifyEnvironmentScenes.cs` checks for `Assets/NAAD/Content/Scenes/Blockout/*.unity` scenes that do not exist in the current tree and exposes no Batchmode entry point. It is not part of the CI gate and its requirements do not match this registry. Do not use it as scene evidence until reconciled.
+`NAAD/Editor/VerifyEnvironmentScenes.cs` previously checked for `Assets/NAAD/Content/Scenes/Blockout/*.unity` scenes that do not exist in this tree and exposed no Batchmode entry point. It was never part of the CI gate and its requirements never matched this registry. It has been removed (staged deletion on this branch). The canonical scene gate is `NAAD.Editor.NaadScenePipeline.ValidateScenes` + `NAAD.Editor.NaadScenePipeline`/`NAADBuild.Verify`; use those as scene evidence.
