@@ -20,6 +20,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/NAAD/Scenes/Nightclub.unity
     guid: 691ac924f15ad704daff5cb7393ae06e
+  - enabled: 1
+    path: Assets/NAAD/Scenes/Beach.unity
+    guid: 856b1121199fefc499144d97bdc3a2f4
   m_configObjects:
     com.unity.adaptivePerformance.basic.provider_settings: {fileID: 11400000, guid: 9c9d5fff1c43d8d4280e97a313d29432, type: 2}
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: bcc5e2ac1ab7e88438523bb655a52630, type: 2}
