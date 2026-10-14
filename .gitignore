@@ -128,6 +128,28 @@ temp/
 _tmp_*/
 _tmp*.txt
 _tmp*.py
+# Local audit / diagnostic scratch (never commit; safe to delete)
+_c_*.diff
+_d_*.diff
+_fn*.txt
+_fnt_*.txt
+_tmp*.json
+_authprobe.ps1
+_firstnight_out.txt
+_run_firstnight.bat
+_gitstate.txt
+_realbody.json
+_commitmsg.txt
+naad_assets.txt
+naad_list.txt
+naad_status.txt
+procs.txt
+# Local reference PDFs (distill into docs/UNITY_KNOWLEDGE_BASE/, don't commit binaries)
+unity_best_practices/
+# Local agent tooling checkout
+unity-agent-plugin/
+
+
 
 # Unity
 **/[Ll]ibrary/
