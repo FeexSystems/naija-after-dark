@@ -26,6 +26,14 @@ namespace NAAD.Editor
         private const string LampPrefab =
             "Assets/Versatile Studio Assets/Demo City By Versatile Studio/Prefabs/lamp_pole_single_orange.prefab";
 
+        // Gate B Phase 1 — NAAD-authored Environment placeholders.
+        private const string RdSurfaceAsphaltPrefab = "Assets/NAAD/Prefabs/Environment/RdSurfaceAsphalt.prefab";
+        private const string StrSidewalkStraightPrefab = "Assets/NAAD/Prefabs/Environment/StrSidewalkStraight.prefab";
+        private const string SyuStandStructurePrefab = "Assets/NAAD/Prefabs/Environment/SyuStandStructure.prefab";
+        private const string SyuGrillOpenPrefab = "Assets/NAAD/Prefabs/Environment/SyuGrillOpen.prefab";
+        private const string NclEntranceDoorLargePrefab = "Assets/NAAD/Prefabs/Environment/NclEntranceDoorLarge.prefab";
+        private const string NclStagePlatformPrefab = "Assets/NAAD/Prefabs/Environment/NclStagePlatform.prefab";
+
         [MenuItem("NAAD/Scenes/Build Apartment And CityStreet")]
         public static void BuildApartmentAndCityStreet()
         {
@@ -167,6 +175,40 @@ namespace NAAD.Editor
             CreateGround("StreetAsphalt", Vector3.zero, new Vector3(80f, 1f, 24f), new Color(0.12f, 0.12f, 0.13f));
             CreateGround("SidewalkNorth", new Vector3(0f, 0.05f, 10f), new Vector3(80f, 1f, 6f), new Color(0.25f, 0.24f, 0.22f));
             CreateGround("SidewalkSouth", new Vector3(0f, 0.05f, -10f), new Vector3(80f, 1f, 6f), new Color(0.25f, 0.24f, 0.22f));
+
+            // Gate B Phase 1 — NAAD-authored Environment placeholders, with
+            // blockout fallback so fresh clones still build the scene.
+            // Road tiles (8m modules) along the street axis; sidewalks north.
+            var roadStartX = -9f;
+            for (var i = 0; i < 3; i++)
+            {
+                var p = new Vector3(roadStartX + i * 8f, 0f, 0f);
+                if (TryInstantiate(RdSurfaceAsphaltPrefab, root.transform, p, $"RoadTile_{i}") == null)
+                    CreateBox($"RoadTile_{i}_Fallback", root.transform, p + Vector3.up * 0.25f,
+                        new Vector3(8f, 0.5f, 6f), new Color(0.12f, 0.12f, 0.13f));
+                var sp = new Vector3(roadStartX + i * 8f, 0f, 10f);
+                if (TryInstantiate(StrSidewalkStraightPrefab, root.transform, sp, $"SidewalkTile_{i}") == null)
+                    CreateBox($"SidewalkTile_{i}_Fallback", root.transform, sp + Vector3.up * 0.1f,
+                        new Vector3(8f, 0.2f, 3f), new Color(0.25f, 0.24f, 0.22f));
+            }
+
+            // Suya cluster near the suya landmark (8, 0, -4).
+            var suyaPos = new Vector3(8f, 0f, -4f);
+            if (TryInstantiate(SyuStandStructurePrefab, root.transform, suyaPos, "SuyaStand") == null)
+                CreateBox("SuyaStand_Fallback", root.transform, suyaPos + Vector3.up * 1.4f,
+                    new Vector3(4f, 2.8f, 4f), new Color(0.55f, 0.35f, 0.12f));
+            if (TryInstantiate(SyuGrillOpenPrefab, root.transform, suyaPos + new Vector3(1.2f, 0f, 0.5f), "SuyaGrill") == null)
+                CreateBox("SuyaGrill_Fallback", root.transform, suyaPos + new Vector3(1.2f, 0.65f, 0.5f),
+                    new Vector3(1f, 0.5f, 0.5f), new Color(0.18f, 0.18f, 0.19f));
+
+            // Nightclub cluster near the club landmark (14, 0, -4).
+            var clubPos = new Vector3(14f, 0f, -4f);
+            if (TryInstantiate(NclEntranceDoorLargePrefab, root.transform, clubPos + new Vector3(0f, 0f, 3f), "ClubDoors") == null)
+                CreateBox("ClubDoors_Fallback", root.transform, clubPos + new Vector3(0f, 1.25f, 3f),
+                    new Vector3(3f, 2.5f, 0.3f), new Color(0.35f, 0.55f, 0.75f));
+            if (TryInstantiate(NclStagePlatformPrefab, root.transform, clubPos + new Vector3(0f, 0f, -6f), "ClubStage") == null)
+                CreateBox("ClubStage_Fallback", root.transform, clubPos + new Vector3(0f, 0.3f, -6f),
+                    new Vector3(8f, 0.6f, 4f), new Color(0.30f, 0.22f, 0.16f));
 
             // Compact street block — prefer modular houses over the full city mega-prefab.
             TryInstantiate(MidHousePrefab, root.transform, new Vector3(-18f, 0f, 14f), "House_A");

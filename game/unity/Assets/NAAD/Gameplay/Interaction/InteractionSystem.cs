@@ -51,7 +51,7 @@ namespace NAAD.Gameplay.Interaction
             var focus = FindBestTarget();
             SetTarget(focus);
 
-            if (CurrentTarget != null && Input.GetKeyDown(interactKey))
+            if (CurrentTarget != null && UnityEngine.Input.GetKeyDown(interactKey))
                 TryInteract();
         }
 
