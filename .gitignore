@@ -124,6 +124,11 @@ temp/
 # Cursor MCP config holds a live UNITY_ACP_SESSION_TOKEN + local paths — never commit.
 .cursor/
 
+# Local PDF-extraction scratch (guides distill into docs/UNITY_KNOWLEDGE_BASE/)
+_tmp_*/
+_tmp*.txt
+_tmp*.py
+
 # Unity
 **/[Ll]ibrary/
 **/[Tt]emp/

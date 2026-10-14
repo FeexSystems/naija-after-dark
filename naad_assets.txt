@@ -1,0 +1,14 @@
+Adaptive Performance
+Adaptive Performance.meta
+AssistantCustomInstructions.txt
+AssistantCustomInstructions.txt.meta
+csc.rsp
+csc.rsp.meta
+NAAD
+NAAD.meta
+New Mesh.prefab
+New Mesh.prefab.meta
+Scenes
+Scenes.meta
+_Recovery
+_Recovery.meta
