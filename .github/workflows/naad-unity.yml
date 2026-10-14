@@ -114,3 +114,72 @@ jobs:
           targetPlatform: StandaloneLinux64
           buildMethod: NAAD.Editor.ListPackages
           customParameters: -nographics
+  # Gate B / Phase D — First Night vertical slice against the LIVE Supabase project.
+  # Drives the real FirstNightController through the authoritative server router
+  # (sign-in → START_NIGHT → phone replies → travel → spend → COMPLETE_NIGHT → summary)
+  # and asserts money-moved / spent-matches-delta / summary-shape, plus adversarial
+  # probes (invalid SKU, duplicate request-id idempotency, same-location travel).
+  #
+  # CRITICAL: NAAD.Editor.FirstNightLiveTest is ASYNC and self-terminating — its Pump
+  # handler calls EditorApplication.Exit itself (0=PASS, 2=FAULTED, 4=missing creds,
+  # 5=timeout). `manualExit: true` suppresses the `-quit` game-ci injects by default;
+  # without it Unity quits during import, aborts the in-flight network await, and the
+  # report is never written — a silent false result. Do not remove `manualExit: true`.
+  #
+  # Requires secrets: UNITY_* licensing (P0) AND NAAD_TEST_EMAIL / NAAD_TEST_PASSWORD
+  # (valid, verified credentials for the live project). The preflight fails fast with a
+  # clear message until both are set, then the job runs automatically.
+  # NOTE: this mutates the LIVE project (real currency/spend on the test account).
+  first-night-live-test:
+    name: First Night live end-to-end (Gate B / Phase D)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: verify-unity
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check Unity licensing and First Night test-credential configuration
+        shell: bash
+        env:
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          NAAD_TEST_EMAIL: ${{ secrets.NAAD_TEST_EMAIL }}
+          NAAD_TEST_PASSWORD: ${{ secrets.NAAD_TEST_PASSWORD }}
+        run: |
+          if [ -z "$UNITY_LICENSE" ] && { [ -z "$UNITY_EMAIL" ] || [ -z "$UNITY_PASSWORD" ]; }; then
+            echo "::error::Unity licensing is not configured. Set UNITY_LICENSE, or set both UNITY_EMAIL and UNITY_PASSWORD in GitHub Actions secrets."
+            exit 1
+          fi
+          if [ -z "$NAAD_TEST_EMAIL" ] || [ -z "$NAAD_TEST_PASSWORD" ]; then
+            echo "::error::First Night test credentials are not configured. Set NAAD_TEST_EMAIL and NAAD_TEST_PASSWORD in GitHub Actions secrets (valid, verified credentials for the live Supabase project)."
+            exit 1
+          fi
+          echo "Unity licensing and First Night test credentials are configured."
+
+      - name: Run First Night live test
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          NAAD_TEST_EMAIL: ${{ secrets.NAAD_TEST_EMAIL }}
+          NAAD_TEST_PASSWORD: ${{ secrets.NAAD_TEST_PASSWORD }}
+        with:
+          projectPath: game/unity
+          # Keep this aligned with ProjectSettings/ProjectVersion.txt.
+          unityVersion: 6000.6.5f1
+          targetPlatform: StandaloneLinux64
+          buildMethod: NAAD.Editor.FirstNightLiveTest.Run
+          customParameters: -nographics
+          manualExit: true
+
+      - name: Upload First Night report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: naad-first-night-report
+          path: game/unity/Library/first-night-report.json
+          if-no-files-found: warn
+
