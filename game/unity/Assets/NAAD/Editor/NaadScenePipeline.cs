@@ -1,4 +1,4 @@
-using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using NAAD.Core.Bootstrap;
@@ -40,9 +40,11 @@ namespace NAAD.Editor
             EnsureFolders();
             BuildApartmentScene();
             BuildCityStreetScene();
+            BuildSuyaSpotScene();
+            BuildNightclubScene();
             EnsureBuildSettings();
             ValidateScenes();
-            Debug.Log("[NAAD][Scenes] Apartment + CityStreet built and validated.");
+            Debug.Log("[NAAD][Scenes] Apartment + CityStreet + SuyaSpot + Nightclub built and validated.");
         }
 
         [MenuItem("NAAD/Scenes/Validate Registered Scenes")]
@@ -54,18 +56,24 @@ namespace NAAD.Editor
             ValidateSceneFile(NaadSceneNames.BootstrapPath, errors);
             ValidateSceneFile(NaadSceneNames.ApartmentPath, errors);
             ValidateSceneFile(NaadSceneNames.CityStreetPath, errors);
+            ValidateSceneFile(NaadSceneNames.SuyaSpotPath, errors);
+            ValidateSceneFile(NaadSceneNames.NightclubPath, errors);
 
             ValidateBuildEntry(0, NaadSceneNames.BootstrapPath, errors);
             ValidateBuildContains(NaadSceneNames.ApartmentPath, errors);
             ValidateBuildContains(NaadSceneNames.CityStreetPath, errors);
+            ValidateBuildContains(NaadSceneNames.SuyaSpotPath, errors);
+            ValidateBuildContains(NaadSceneNames.NightclubPath, errors);
 
             ValidateAnchors(NaadSceneNames.ApartmentPath, requireSpawn: true, requireExit: true, errors);
             ValidateAnchors(NaadSceneNames.CityStreetPath, requireSpawn: true, requireExit: true, errors);
+            ValidateAnchors(NaadSceneNames.SuyaSpotPath, requireSpawn: true, requireExit: true, errors);
+            ValidateAnchors(NaadSceneNames.NightclubPath, requireSpawn: true, requireExit: true, errors);
 
             if (errors.Count > 0)
                 throw new Exception("NAAD scene validation failed:\n - " + string.Join("\n - ", errors));
 
-            Debug.Log("[NAAD][Scenes] Validation passed for Bootstrap, Apartment, CityStreet.");
+            Debug.Log("[NAAD][Scenes] Validation passed for Bootstrap, Apartment, CityStreet, SuyaSpot, Nightclub.");
         }
 
         [MenuItem("NAAD/Scenes/Validate Vendor Intake")]
@@ -245,14 +253,15 @@ namespace NAAD.Editor
 
             EditorSceneManager.SaveScene(scene, NaadSceneNames.CityStreetPath);
         }
-
         private static void EnsureBuildSettings()
         {
             var desired = new[]
             {
                 NaadSceneNames.BootstrapPath,
                 NaadSceneNames.ApartmentPath,
-                NaadSceneNames.CityStreetPath
+                NaadSceneNames.CityStreetPath,
+                NaadSceneNames.SuyaSpotPath,
+                NaadSceneNames.NightclubPath
             };
 
             var scenes = desired
@@ -262,6 +271,81 @@ namespace NAAD.Editor
 
             EditorBuildSettings.scenes = scenes;
             AssetDatabase.SaveAssets();
+        }
+
+        private static void BuildSuyaSpotScene()
+        {
+            var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+            var root = new GameObject("SuyaSpot");
+            var content = new GameObject("Content");
+            content.transform.SetParent(root.transform, false);
+            CreateGround("Ground", new Vector3(0f, 0.52f, 0f), new Vector3(14f, 0.1f, 12f), new Color(0.23f, 0.18f, 0.13f));
+
+            var stand = TryInstantiate(SyuStandStructurePrefab, content.transform, new Vector3(0f, 0f, 0f), "SYU_Stand_Structure");
+            if (stand == null)
+                CreateBox("SYU_Stand_Structure", content.transform, new Vector3(0f, 1.1f, 0f), new Vector3(4f, 2.2f, 3f), new Color(0.55f, 0.32f, 0.15f));
+
+            var grill = TryInstantiate(SyuGrillOpenPrefab, content.transform, new Vector3(2.6f, 0f, 0.6f), "SYU_Grill_Open");
+            if (grill == null)
+                CreateBox("SYU_Grill_Open", content.transform, new Vector3(2.6f, 0.55f, 0.6f), new Vector3(1.2f, 0.9f, 0.8f), Color.black);
+
+            CreateBox("SYU_Counter", content.transform, new Vector3(-2.6f, 0.55f, 0.4f), new Vector3(1.6f, 1.1f, 0.9f), new Color(0.4f, 0.25f, 0.12f));
+            CreateBox("SYU_Seating_Bench_A", content.transform, new Vector3(0f, 0.3f, 3.4f), new Vector3(2.4f, 0.5f, 0.6f), new Color(0.45f, 0.3f, 0.16f));
+            CreateBox("SYU_Seating_Bench_B", content.transform, new Vector3(0f, 0.3f, 4.4f), new Vector3(2.4f, 0.5f, 0.6f), new Color(0.45f, 0.3f, 0.16f));
+            CreateBox("SYU_Lighting_Warm", content.transform, new Vector3(0f, 2.6f, 1.2f), new Vector3(0.5f, 0.3f, 0.5f), new Color(1f, 0.75f, 0.4f));
+
+            CreateAnchor("Spawn_SuyaSpot", SceneAnchor.AnchorKind.PlayerSpawn, NightDistrictIdsSafe("suya-spot"),
+                "Suya Spot Spawn", new Vector3(0f, 0f, -4f), NaadSceneNames.CityStreet);
+            CreateAnchor("Exit_SuyaSpot_To_CityStreet", SceneAnchor.AnchorKind.ExitTravel, NightDistrictIdsSafe("suya-spot-exit"),
+                "Exit to City Street", new Vector3(0f, 0f, -5f), NaadSceneNames.CityStreet);
+            CreateAnchor("Vendor_MamaSeyi", SceneAnchor.AnchorKind.Interaction, "npc.crew.mama-seyi",
+                "Mama Seyi", new Vector3(1.2f, 0f, 1.6f), null);
+            CreateAnchor("Interact_Grill", SceneAnchor.AnchorKind.Interaction, "syu.grill.open",
+                "Charcoal Grill", new Vector3(2.6f, 0f, 0.6f), null);
+            CreateAnchor("Interact_Counter", SceneAnchor.AnchorKind.Interaction, "syu.counter.order",
+                "Order Counter", new Vector3(-2.6f, 0f, 0.4f), null);
+
+            CreateMainCamera(new Vector3(0f, 2.2f, -7.5f), Quaternion.Euler(12f, 0f, 0f));
+            CreateDirectionalLight(new Vector3(50f, -30f, 0f), new Color(1f, 0.85f, 0.6f), 0.9f);
+            EditorSceneManager.SaveScene(scene, NaadSceneNames.SuyaSpotPath);
+        }
+
+        private static void BuildNightclubScene()
+        {
+            var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+            var root = new GameObject("Nightclub");
+            var content = new GameObject("Content");
+            content.transform.SetParent(root.transform, false);
+            CreateGround("Ground", new Vector3(0f, 0.46f, 0f), new Vector3(20f, 0.1f, 16f), new Color(0.1f, 0.08f, 0.14f));
+
+            var entrance = TryInstantiate(NclEntranceDoorLargePrefab, content.transform, new Vector3(0f, 0f, 6f), "NCL_Entrance_Door_Large");
+            if (entrance == null)
+                CreateBox("NCL_Entrance_Door_Large", content.transform, new Vector3(0f, 1.25f, 6f), new Vector3(3f, 2.5f, 0.4f), new Color(0.6f, 0.1f, 0.4f));
+
+            var stage = TryInstantiate(NclStagePlatformPrefab, content.transform, new Vector3(0f, 0f, -5f), "NCL_Stage_Platform");
+            if (stage == null)
+                CreateBox("NCL_Stage_Platform", content.transform, new Vector3(0f, 0.3f, -5f), new Vector3(8f, 0.6f, 4f), new Color(0.15f, 0.1f, 0.25f));
+
+            CreateBox("NCL_Bar_Counter", content.transform, new Vector3(-6.5f, 0.55f, 0f), new Vector3(3.5f, 1.1f, 1.2f), new Color(0.25f, 0.08f, 0.2f));
+            CreateBox("NCL_Booth_VIP_A", content.transform, new Vector3(6.5f, 0.5f, -1f), new Vector3(2.5f, 1f, 2.5f), new Color(0.4f, 0.1f, 0.35f));
+            CreateBox("NCL_Booth_VIP_B", content.transform, new Vector3(6.5f, 0.5f, 2.5f), new Vector3(2.5f, 1f, 2.5f), new Color(0.4f, 0.1f, 0.35f));
+            CreateBox("NCL_Lighting_Neon", content.transform, new Vector3(0f, 3.4f, 0f), new Vector3(6f, 0.3f, 0.6f), new Color(1f, 0f, 0.55f));
+            CreateBox("NCL_DanceFloor", content.transform, new Vector3(0f, 0.06f, 0.5f), new Vector3(6f, 0.12f, 5f), new Color(0.12f, 0.05f, 0.2f));
+
+            CreateAnchor("Spawn_Nightclub", SceneAnchor.AnchorKind.PlayerSpawn, NightDistrictIdsSafe("nightclub"),
+                "Nightclub Spawn", new Vector3(0f, 0f, 5f), NaadSceneNames.CityStreet);
+            CreateAnchor("Exit_Nightclub_To_CityStreet", SceneAnchor.AnchorKind.ExitTravel, NightDistrictIdsSafe("nightclub-exit"),
+                "Exit to City Street", new Vector3(0f, 0f, 7f), NaadSceneNames.CityStreet);
+            CreateAnchor("Vendor_Emeka", SceneAnchor.AnchorKind.Interaction, "npc.crew.emeka",
+                "Emeka", new Vector3(-6.5f, 0f, 1.2f), null);
+            CreateAnchor("Interact_Bar", SceneAnchor.AnchorKind.Interaction, "ncl.bar.order",
+                "Bar Counter", new Vector3(-6.5f, 0f, 0f), null);
+            CreateAnchor("Interact_Stage", SceneAnchor.AnchorKind.Interaction, "ncl.stage.perform",
+                "Stage", new Vector3(0f, 0f, -5f), null);
+
+            CreateMainCamera(new Vector3(0f, 2.6f, 10f), Quaternion.Euler(10f, 180f, 0f));
+            CreateDirectionalLight(new Vector3(50f, -30f, 0f), new Color(0.7f, 0.4f, 1f), 0.7f);
+            EditorSceneManager.SaveScene(scene, NaadSceneNames.NightclubPath);
         }
 
         private static void ValidateSceneFile(string path, List<string> errors)
