@@ -26,7 +26,7 @@ Violating any MUST is a failed task. Cite the rule ID in your summary.
   namespace shadowing.
 - `NaadPlaceholderTag.AssetId/Description` need setters (author sets them).
 - Batchmode method names are case-sensitive:
-  `NAAD.Editor.NaAdPrefabAuthor.AuthorPlaceholders` (note `NaAd`, not `Naad`).
+  `NAAD.Editor.NaadPrefabAuthor.AuthorPlaceholders` (note `Naad`, not `NaAd`).
 
 ## G5. Render pipeline freeze (MUST)
 - Project is Built-in RP. Shader lookup: `URP/Lit ?? Standard`. Do NOT

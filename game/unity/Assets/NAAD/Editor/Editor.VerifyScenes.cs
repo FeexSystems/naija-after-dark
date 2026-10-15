@@ -71,18 +71,5 @@ namespace NAAD.Editor
             Pass(report, $"Scenes verified: {string.Join(", ", loadedNames)}");
             Finish("VerifyScenes", report);
         }
-
-        /// <summary>
-        /// `-executeMethod NAAD.Editor.VerifyEnvironmentScenes`
-        ///
-        /// Delegates to the existing environment verifier (menu entry: NAAD > Verify Environment
-        /// Scenes) so CLI and menu share one implementation. Exits the batch editor when finished.
-        /// </summary>
-        public static void VerifyEnvironmentScenes()
-        {
-            Debug.Log("[NAAD][Verify] Verifying environment scenes...");
-            NAAD.Editor.VerifyEnvironmentScenes.RunVerification();
-            ExitBatch(0);
-        }
     }
 }

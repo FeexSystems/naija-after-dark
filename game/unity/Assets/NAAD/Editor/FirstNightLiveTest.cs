@@ -25,11 +25,24 @@ namespace NAAD.Editor
     /// Pass condition: summary shape matches server (spent, transactions, peopleMet,
     /// connection, trust, moment) and wallet balance moved from its starting value.
     ///
-    ///   Unity -batchmode -nographics -quit -projectPath game/unity \
-    ///     -executeMethod NAAD.Editor.FirstNightLiveTest.Run
+    /// IMPORTANT: do NOT pass -quit. This test is ASYNC and self-terminating:
+    /// Pump (on EditorApplication.update) drives the flow and calls
+    /// EditorApplication.Exit itself with the real code. Under -quit, Unity
+    /// shuts down right after import and aborts the in-flight network await,
+    /// so the task never completes and the report is never written.
     ///
-    /// Env: NAAD_TEST_EMAIL / NAAD_TEST_PASSWORD (any password 6+ chars).
-    /// Report: Library/first-night-report.json
+    ///   Unity.exe -batchmode -nographics -projectPath game/unity \
+    ///     -buildTarget StandaloneWindows64 \
+    ///     -executeMethod NAAD.Editor.FirstNightLiveTest.Run \
+    ///     -logFile Logs/firstnight-run.log
+    ///
+    /// Env: NAAD_TEST_EMAIL / NAAD_TEST_PASSWORD — MUST be valid, verified
+    /// credentials for the live Supabase project. A bad password yields
+    /// sign-in 400 invalid_credentials and, because the account already exists,
+    /// sign-up returns an anti-enumeration empty body — the run FAULTS (exit 2)
+    /// with no report. Exit codes: 0=PASS (report written), 2=FAULTED,
+    /// 4=missing env creds, 5=timeout(240s).
+    /// Report: Library/first-night-report.json (success path only).
     /// </summary>
     public static class FirstNightLiveTest
     {
@@ -160,6 +173,21 @@ namespace NAAD.Editor
                 var rootRestored = await rootLive.Auth.RestoreSessionAsync();
                 Emit($"  {{\"step\":\"root_restore_session\",\"ok\":{B(rootRestored)},\"isAuthenticated\":{B(rootLive.Auth.IsAuthenticated)}}},");
                 if (!rootRestored) throw new Exception("Root could not restore the persisted session.");
+
+                // Precondition: deterministic starting location. The First Night
+                // canonically begins at home, and the scripted first leg below is
+                // TRAVEL->SuyaSpot. Prior runs may leave the player parked at any
+                // location (e.g. SuyaSpot), which would make that first leg hit the
+                // server's legitimate ALREADY_THERE idempotency guard. Move home
+                // first so the run is repeatable. A fresh account is already home,
+                // so ALREADY_THERE here is expected and treated as success.
+                var resetHome = await cmdLive.ExecuteAsync(new GameCommand
+                {
+                    RequestId = Guid.NewGuid().ToString("N"),
+                    Type = GameCommandType.Travel,
+                    Payload = new Dictionary<string, object> { ["toLocationId"] = NightDistrictIds.Apartment }
+                });
+                Emit($"  {{\"step\":\"reset_home\",\"ok\":{B(resetHome.Success || resetHome.ErrorCode == "ALREADY_THERE")},\"errorCode\":\"{(resetHome.ErrorCode ?? "none")}\"}},");
 
                 var started = await controller.StartNightAsync();
                 Emit($"  {{\"step\":\"start_night\",\"ok\":{B(started)},\"controllerStep\":\"{controller.Step}\"}},");
@@ -293,15 +321,25 @@ namespace NAAD.Editor
                  + " firstSuccess=" + B(firstTravel.Success) + " replaySuccess=" + B(replayTravel.Success));
             if (!replayMatches) throw new Exception("request_id idempotency replay mismatch");
 
-            // (c) Same-location travel → ALREADY_THERE (no mutation)
+            // (c) Same-location travel → ALREADY_THERE (no mutation).
+            // The player is currently at firstTravel's DESTINATION (the idempotent
+            // replay in (b) re-returns the same result and does NOT re-execute, so the
+            // second toLocationId=Street never happened). Derive the current location
+            // from the server-confirmed result rather than assuming a fixed scene, then
+            // travel to THAT same location — the server must reject it with
+            // ALREADY_THERE and leave the player untouched.
+            var currentLocation = firstTravel.Payload != null
+                && firstTravel.Payload.TryGetValue("toLocationId", out var cur) && !string.IsNullOrEmpty(cur)
+                ? cur : NightDistrictIds.SuyaSpot;
             var sameLoc = Guid.NewGuid().ToString("N");
             var same = await probe.ExecuteAsync(new GameCommand
             {
                 RequestId = sameLoc,
                 Type = GameCommandType.Travel,
-                Payload = new Dictionary<string, object> { ["toLocationId"] = NightDistrictIds.Apartment }
+                Payload = new Dictionary<string, object> { ["toLocationId"] = currentLocation }
             });
-            Emit("  step=probe_same_location ok=" + B(!same.Success) + " errorCode=" + (same.ErrorCode ?? "none"));
+            Emit("  step=probe_same_location ok=" + B(!same.Success)
+                 + " errorCode=" + (same.ErrorCode ?? "none") + " at=" + currentLocation);
             if (same.Success) throw new Exception("Same-location travel unexpectedly succeeded");
 
             Emit("  step=PHASE_D_PASS ok=true");
