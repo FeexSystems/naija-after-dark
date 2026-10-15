@@ -11,7 +11,7 @@
 | Vendor / Asset Store packs | **Keep original vendor names. Never rename.** Renaming breaks `.meta` GUIDs, scene references, and vendor updates. | `Assets/<Publisher>/...` (gitignored) |
 | NAAD-authored prefabs | **Must follow `ASSET_NAMING_CONVENTION.md`** — `APT_*`, `STR_*`, `SHP_*`, `NCL_*`, `BCH_*`, etc. | `Assets/NAAD/Prefabs/Environment/` |
 
-`Assets/NAAD/Prefabs/Environment/` currently contains **no prefabs** — it exists (folder `.meta` files are tracked) but is empty, so there is nothing to rename yet. Any prefab authored there must carry its manifest Asset ID as its name (for example `APT_Building_Low.prefab`).
+`Assets/NAAD/Prefabs/Environment/` contains **6 Gate B Phase-1 placeholders** (headless-validated 2026-10-14; see `ENVIRONMENT_MANIFEST.md` header). Any further prefab authored there must carry its manifest Asset ID as its name (for example `APT_Building_Low.prefab`).
 
 The mapping in this document is the bridge: it records which vendor prefab satisfies each manifest ID, so scenes can reference the manifest ID concept while the bytes stay under the vendor's own name.
 
@@ -102,7 +102,7 @@ All vendor paths below are relative to `Assets/` and were verified to exist on d
 | Manifest ID | Status | Vendor prefab |
 |-------------|--------|---------------|
 | `STR_Streetlight_Standard` | CONFIRMED | `Versatile Studio Assets/Demo City By Versatile Studio/Prefabs/lamp_pole_single_orange.prefab` (+ `_blue`, `_pink`, `_white`, `lamp_pole_dual_*`, `lamp_pole_small`) |
-| `STR_Sidewalk_Straight` | NONE | Scene builds sidewalks as primitive boxes |
+| `STR_Sidewalk_Straight` | CONFIRMED placeholder | `NAAD/Prefabs/Environment/StrSidewalkStraight.prefab` (Gate B Phase-1) |
 | `STR_Sidewalk_Corner` | NONE | — |
 | `STR_Curb_Straight` | NONE | — |
 | `STR_Curb_Corner` | NONE | — |
@@ -112,9 +112,17 @@ All vendor paths below are relative to `Assets/` and were verified to exist on d
 
 ### 4.3 RD — Road (7)
 
-All **NONE**: `RD_Surface_Asphalt`, `RD_Surface_Paved`, `RD_Marking_Center`, `RD_Marking_Crosswalk`, `RD_Marking_Stop`, `RD_Pothole_Small`, `RD_Pothole_Large`.
+| Manifest ID | Status | Vendor / NAAD prefab |
+|-------------|--------|----------------------|
+| `RD_Surface_Asphalt` | CONFIRMED placeholder | `NAAD/Prefabs/Environment/RdSurfaceAsphalt.prefab` (Gate B Phase-1) |
+| `RD_Surface_Paved` | NONE | — |
+| `RD_Marking_Center` | NONE | — |
+| `RD_Marking_Crosswalk` | NONE | — |
+| `RD_Marking_Stop` | NONE | — |
+| `RD_Pothole_Small` | NONE | — |
+| `RD_Pothole_Large` | NONE | — |
 
-`CityStreet.unity` uses a primitive `StreetAsphalt` ground quad. Road geometry exists only baked inside `demo_city_by_versatile_studio.prefab`, which is not modular.
+`CityStreet.unity` instantiates 3 `RD_Surface_Asphalt` road tiles (prefab `908f225a47d8c644995e46ec04d1ed46`) alongside the legacy primitive `StreetAsphalt` ground quad. Road geometry also exists baked inside `demo_city_by_versatile_studio.prefab`, which is not modular.
 
 ### 4.4 SHP — Shopfront (8)
 
@@ -153,8 +161,8 @@ Note: `RR_Restroom_Men_Sign`, `RR_Restroom_Woman_Sign`, `RR_Restroom_Unisex_Sign
 | `SYU_Seating_Chair` | PARTIAL | `Brick Project Studio/.../Furniture/Living Room/Chair_Apt_01.prefab` (indoor chair reused outdoors) |
 | `SYU_Table_Rect` | PARTIAL | `.../Furniture/Living Room/Table_Dining_Apt_01.prefab` |
 | `SYU_Counter_Wood` | PARTIAL | `.../Furniture/Kitchen/Cabinets/Cabinet_Base_Sink_01.prefab` (needs re-skin) |
-| `SYU_Stand_Structure` | NONE | — |
-| `SYU_Grill_Open` | NONE | — |
+| `SYU_Stand_Structure` | CONFIRMED placeholder | `NAAD/Prefabs/Environment/SyuStandStructure.prefab` (Gate B Phase-1) |
+| `SYU_Grill_Open` | CONFIRMED placeholder | `NAAD/Prefabs/Environment/SyuGrillOpen.prefab` (Gate B Phase-1) |
 | `SYU_Grill_Covered` | NONE | — |
 | `SYU_Table_Round` | NONE | — |
 | `SYU_Canopy_Fabric` | NONE | — |
@@ -165,14 +173,14 @@ Note: `RR_Restroom_Men_Sign`, `RR_Restroom_Woman_Sign`, `RR_Restroom_Unisex_Sign
 | Manifest ID | Status | Vendor prefab |
 |-------------|--------|---------------|
 | `NCL_Speaker_Large` | PARTIAL | `Brick Project Studio/.../Props/Electronics/Speaker Sub.prefab` |
-| `NCL_Entrance_Door_Large` | NONE | — |
+| `NCL_Entrance_Door_Large` | CONFIRMED placeholder | `NAAD/Prefabs/Environment/NclEntranceDoorLarge.prefab` (Gate B Phase-1) |
 | `NCL_Entrance_Rope` | NONE | — |
 | `NCL_Entrance_Stanchion` | NONE | — |
 | `NCL_Entrance_Canopy` | NONE | — |
 | `NCL_Signage_Neon` | NONE | — |
 | `NCL_Signage_LED` | NONE | — |
 | `NCL_Bouncer_Stand` | NONE | — |
-| `NCL_Stage_Platform` | NONE | — |
+| `NCL_Stage_Platform` | CONFIRMED placeholder | `NAAD/Prefabs/Environment/NclStagePlatform.prefab` (Gate B Phase-1) |
 | `NCL_Stage_Railing` | NONE | — |
 | `NCL_Stage_Steps` | NONE | — |
 | `NCL_Booth_VIP` | NONE | — |

@@ -2,8 +2,8 @@
 
 ## Audit Results
 
-**Current State** (as of 2026-10-13, updated during asset intake):
-- NAAD-authored environment prefabs: **none yet** — `Assets/NAAD/Prefabs/Environment/` exists but is empty
+**Current State** (as of 2026-10-14, Gate B Phase-1 validated headless):
+- NAAD-authored environment prefabs: **6 placeholders** in `Assets/NAAD/Prefabs/Environment/` (`RdSurfaceAsphalt`, `StrSidewalkStraight`, `SyuStandStructure`, `SyuGrillOpen`, `NclEntranceDoorLarge`, `NclStagePlatform`), tagged `NAAD.World.NaAdPlaceholderTag`, wired into `CityStreet.unity` via `NaadScenePipeline` (10 instances), `BuildApartmentAndCityStreet` + `ValidateScenes` PASS in Unity 6000.6.5f1 batchmode
 - Vendor packs imported locally: **6 packs, ~1087 MB, 419 prefabs** (all gitignored; see `ASSET_INTAKE_MAPPING.md` §2)
 - Environment scenes: **2 of 7** blockouts authored (`Apartment`, `CityStreet`) plus `Bootstrap`
 - Content/ directory: **10 documents** (was empty when this manifest was first written)
@@ -46,7 +46,7 @@ Original audit (superseded):
 #### Residential Streets
 | Asset ID | Name | Description | Priority | Status |
 |----------|------|-------------|----------|--------|
-| `STR_Sidewalk_Straight` | Straight Sidewalk | Standard sidewalk module | HIGH | MISSING |
+| `STR_Sidewalk_Straight` | Straight Sidewalk | Standard sidewalk module | HIGH | CONFIRMED placeholder (`Prefabs/Environment/StrSidewalkStraight.prefab`) |
 | `STR_Sidewalk_Corner` | Corner Sidewalk | Curved sidewalk for corners | HIGH | MISSING |
 | `STR_Curb_Straight` | Straight Curb | Road curb module | HIGH | MISSING |
 | `STR_Curb_Corner` | Corner Curb | Curbed corner | HIGH | MISSING |
@@ -83,7 +83,7 @@ Original audit (superseded):
 #### Roads
 | Asset ID | Name | Description | Priority | Status |
 |----------|------|-------------|----------|--------|
-| `RD_Surface_Asphalt` | Asphalt Road | Standard asphalt road surface | HIGH | MISSING |
+| `RD_Surface_Asphalt` | Asphalt Road | Standard asphalt road surface | HIGH | CONFIRMED placeholder (`Prefabs/Environment/RdSurfaceAsphalt.prefab`) |
 | `RD_Surface_Paved` | Paved Road | Brick/paved road surface | MEDIUM | MISSING |
 | `RD_Marking_Center` | Center Line | Road center line marking | HIGH | MISSING |
 | `RD_Marking_Crosswalk` | Crosswalk | Pedestrian crossing marking | HIGH | MISSING |
@@ -132,8 +132,8 @@ Original audit (superseded):
 #### Suya Stands
 | Asset ID | Name | Description | Priority | Status |
 |----------|------|-------------|----------|--------|
-| `SYU_Stand_Structure` | Suya Stand Structure | Main stand frame | HIGH | MISSING |
-| `SYU_Grill_Open` | Open Grill | Open charcoal grill | HIGH | MISSING |
+| `SYU_Stand_Structure` | Suya Stand Structure | Main stand frame | HIGH | CONFIRMED placeholder (`Prefabs/Environment/SyuStandStructure.prefab`) |
+| `SYU_Grill_Open` | Open Grill | Open charcoal grill | HIGH | CONFIRMED placeholder (`Prefabs/Environment/SyuGrillOpen.prefab`) |
 | `SYU_Grill_Covered` | Covered Grill | Grill with metal cover | HIGH | MISSING |
 | `SYU_Counter_Wood` | Wooden Counter | Service counter | HIGH | MISSING |
 | `SYU_Seating_Bench` | Wooden Bench | Simple wooden bench | HIGH | MISSING |
@@ -148,7 +148,7 @@ Original audit (superseded):
 #### Nightclub Entrance
 | Asset ID | Name | Description | Priority | Status |
 |----------|------|-------------|----------|-------- |
-| `NCL_Entrance_Door_Large` | Large Entrance Door | Double glass doors | HIGH | MISSING |
+| `NCL_Entrance_Door_Large` | Large Entrance Door | Double glass doors | HIGH | CONFIRMED placeholder (`Prefabs/Environment/NclEntranceDoorLarge.prefab`) |
 | `NCL_Entrance_Rope` | Velvet Rope | Queue barrier rope | HIGH | MISSING |
 | `NCL_Entrance_Stanchion` | Stanchion Post | Rope support post | HIGH | MISSING |
 | `NCL_Entrance_Canopy` | Entrance Canopy | Covered entrance area | HIGH | MISSING |
@@ -159,7 +159,7 @@ Original audit (superseded):
 #### Nightclub Stage
 | Asset ID | Name | Description | Priority | Status |
 |----------|------|-------------|----------|-------- |
-| `NCL_Stage_Platform` | Stage Platform | Raised stage floor | HIGH | MISSING |
+| `NCL_Stage_Platform` | Stage Platform | Raised stage floor | HIGH | CONFIRMED placeholder (`Prefabs/Environment/NclStagePlatform.prefab`) |
 | `NCL_Stage_Railing` | Stage Railing | Safety railing | HIGH | MISSING |
 | `NCL_Stage_Steps` | Stage Steps | Access stairs | HIGH | MISSING |
 | `NCL_Booth_VIP` | VIP Booth | Seated VIP area | HIGH | MISSING |

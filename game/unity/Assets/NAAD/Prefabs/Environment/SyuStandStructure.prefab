@@ -384,7 +384,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 38f62356be014c1f9cecd3c75a2557e3, type: 3}
-  m_Name:
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NAAD.World.NaadPlaceholderTag
   assetId: SYU_Stand_Structure
   description: 'Suya stand frame: 4 posts + canopy (4m x 2.8m x 4m).'
 --- !u!1 &7334892640773451478

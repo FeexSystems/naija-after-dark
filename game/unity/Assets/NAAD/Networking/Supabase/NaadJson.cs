@@ -115,9 +115,23 @@ namespace NAAD.Networking.Supabase
 
         private static int IndexOfOutsideStrings(string json, string pattern, int from)
         {
+            // The caller searches for a full key token INCLUDING its quotes
+            // (e.g. "\"access_token\""). We must test the pattern at position i
+            // BEFORE treating a leading '"' as a string boundary — otherwise the
+            // opening quote of every key is consumed as "entering a string" and the
+            // match can never fire at a top-level key (the bug that made every lookup
+            // return false). When the token is followed by ':' it is a key: return its
+            // index. Otherwise fall through so the '"' opens a string normally.
             var inStr = false;
             for (var i = from; i <= json.Length - pattern.Length; i++)
             {
+                if (!inStr && PatternMatchesAt(json, pattern, i))
+                {
+                    var j = i + pattern.Length;
+                    while (j < json.Length && char.IsWhiteSpace(json[j])) j++;
+                    if (j < json.Length && json[j] == ':') return i;
+                }
+
                 var c = json[i];
                 if (inStr)
                 {
@@ -126,13 +140,6 @@ namespace NAAD.Networking.Supabase
                     continue;
                 }
                 if (c == '"') { inStr = true; continue; }
-                if (PatternMatchesAt(json, pattern, i))
-                {
-                    // ensure it is a key: next non-space char must be ':'
-                    var j = i + pattern.Length;
-                    while (j < json.Length && char.IsWhiteSpace(json[j])) j++;
-                    if (j < json.Length && json[j] == ':') return i;
-                }
             }
             return -1;
         }
