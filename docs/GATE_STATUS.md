@@ -53,6 +53,42 @@ In progress. Auth UI + First Night HUD exist; phone apps / Android device accept
    That assignment was missing (`supabaseConfig: {fileID: 0}`) and is the first foundation blocker for CI/local Gate 22 verification.
 2. After Verify passes: missing NAAD production scenes and player locomotion remain the next blockers for Gate B/D — not more package installs.
 
+## First Night runtime verification (extends Gate B / Phase D) — 2026-10-14
+
+The First Night vertical slice is driven end-to-end by
+`NAAD.Editor.FirstNightLiveTest.Run` against the LIVE Supabase project
+(`unzfqrfyejkyisalzkhc`): sign-in → fetch player → balance → live graph probe →
+`reset_home` → START_NIGHT → phone reply → TRAVEL+SPEND (suya) → TRAVEL+TICKET
+(club) → COMPLETE_NIGHT → summary, all commands routed through
+`ICommandService` → `naad_execute_command`.
+
+| Assertion / probe | Status | Evidence |
+|---|---|---|
+| `assert_money_moved` | Verified (local) | before ₦75,000 → after ₦50,000 |
+| `assert_spent_matches_delta` | Verified (local) | spent ₦25,000 == 75,000 − 50,000 |
+| `assert_summary_shape` | Verified (local) | transactions 2, peopleMet 1, newConnection "Tunde", trust 70 |
+| `GATE_B_PASS` | Verified (local) | `Library/first-night-report.json` ok:true |
+| `probe_invalid_sku` | Verified (local) | correctly rejected `SKU_NOT_FOUND` |
+| `probe_double_request_id` | Verified (local) | idempotent replay (first + replay both success) |
+| `probe_same_location` | Verified (local) | `ALREADY_THERE`, no mutation |
+| `PHASE_D_PASS` | Verified (local) | `Library/first-night-report.json` ok:true |
+| CI green run (`verify-unity`, `verify-project-structure`, `first-night-live-test`) | **Pending** | run URL + SHA to be recorded after first green Actions run |
+
+## Next gate and exit criteria
+
+Gate: **First Night runtime verification in CI** (extends Gate B). Measurable exits:
+
+1. Green CI run on `feat/audit-gate-recovery-2026-10-14` — record run URL + commit SHA here
+   once green (unblocks Gate 22 for real). Repository Actions secrets `UNITY_EMAIL` +
+   `UNITY_PASSWORD` and `NAAD_TEST_EMAIL` + `NAAD_TEST_PASSWORD` are required.
+   - Run URL: `___FILL_AFTER_GREEN_RUN___`
+   - Commit SHA: `30b176c` (branch head at time of push)
+2. `FirstNightLiveTest.Run` exits 0 in CI with `GATE_B_PASS` and `PHASE_D_PASS` in
+   `game/unity/Library/first-night-report.json` (uploaded as the
+   `naad-first-night-report` artifact); money-moved and spent-matches-delta both true.
+3. Registry stays in sync: any new scene must appear in `EditorBuildSettings.asset`
+   and pass `NaadScenePipeline.ValidateScenes` before the registry references it.
+
 ## What this audit deliberately did not do
 
 - Did not invent Apartment/Street/Nightclub scenes.
