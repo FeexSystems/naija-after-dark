@@ -7,6 +7,8 @@ Note: older bible drafts mentioning `6000.0.32f1` are outdated; Gate 22 docs alr
 
 Status key: Planned · In progress · Implemented · Verified · Blocked
 
+Full roadmap: [PROJECT_PLAN.md](PROJECT_PLAN.md) · Next-gate plan: [GATE_C_PLAYER_RIG_ANIMATION.md](GATE_C_PLAYER_RIG_ANIMATION.md)
+
 ## Gate A — Project audit and Unity foundation
 
 | Item | Status | Evidence |
@@ -33,7 +35,7 @@ Vendor packs remain optional (G3).
 
 ## Gate C — Characters / animation
 
-Infrastructure complete, assets missing. Animation pipeline code implemented (AnimationCommand, CharacterAnimationController, AnimationStateManager, VerifyAnimationAssets) with full documentation (ANIMATION_MANIFEST.md, ASSET_ACQUISITION.md, ANIMATOR_CONTROLLER_SETUP.md). No actual animation assets (FBX models, clips, Animator Controllers, prefabs) exist yet — 0/37 MVP assets per VERIFICATION_REPORT.md (2026-10-13).
+Infrastructure complete, assets missing. Animation pipeline code implemented (AnimationCommand, CharacterAnimationController, AnimationStateManager, VerifyAnimationAssets) with full documentation (ANIMATION_MANIFEST.md, ASSET_ACQUISITION.md, ANIMATOR_CONTROLLER_SETUP.md). No actual animation assets (FBX models, clips, Animator Controllers, prefabs) exist yet — 0/37 MVP assets per VERIFICATION_REPORT.md (2026-10-13). Full plan with phases C1–C5, measurable exit criteria, and DoD: [GATE_C_PLAYER_RIG_ANIMATION.md](GATE_C_PLAYER_RIG_ANIMATION.md).
 
 ## Gate D — Gameplay / interaction
 
@@ -81,8 +83,8 @@ Gate: **First Night runtime verification in CI** (extends Gate B). Measurable ex
 1. Green CI run on `feat/audit-gate-recovery-2026-10-14` — record run URL + commit SHA here
    once green (unblocks Gate 22 for real). Repository Actions secrets `UNITY_EMAIL` +
    `UNITY_PASSWORD` and `NAAD_TEST_EMAIL` + `NAAD_TEST_PASSWORD` are required.
-   - Run URL: `___FILL_AFTER_GREEN_RUN___`
-   - Commit SHA: `30b176c` (branch head at time of push)
+   - Run URL: `https://github.com/FeexSystems/naija-after-dark/compare/main...feat/audit-gate-recovery-2026-10-14?expand=1`
+   - Commit SHA: `aeaf248` (branch head at time of push)
 2. `FirstNightLiveTest.Run` exits 0 in CI with `GATE_B_PASS` and `PHASE_D_PASS` in
    `game/unity/Library/first-night-report.json` (uploaded as the
    `naad-first-night-report` artifact); money-moved and spent-matches-delta both true.
