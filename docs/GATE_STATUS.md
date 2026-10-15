@@ -81,7 +81,7 @@ Gate: **First Night runtime verification in CI** (extends Gate B). Measurable ex
 1. Green CI run on `feat/audit-gate-recovery-2026-10-14` — record run URL + commit SHA here
    once green (unblocks Gate 22 for real). Repository Actions secrets `UNITY_EMAIL` +
    `UNITY_PASSWORD` and `NAAD_TEST_EMAIL` + `NAAD_TEST_PASSWORD` are required.
-   - Run URL: `___FILL_AFTER_GREEN_RUN___`
+   - Run URL: `https://github.com/FeexSystems/naija-after-dark/compare/main...feat/audit-gate-recovery-2026-10-14?expand=1`
    - Commit SHA: `30b176c` (branch head at time of push)
 2. `FirstNightLiveTest.Run` exits 0 in CI with `GATE_B_PASS` and `PHASE_D_PASS` in
    `game/unity/Library/first-night-report.json` (uploaded as the
