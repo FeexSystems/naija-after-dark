@@ -10,6 +10,13 @@ on:
     paths:
       - "game/unity/**"
       - ".github/workflows/naad-unity.yml"
+  workflow_dispatch:
+    inputs:
+      run_live_first_night_test:
+        description: "Run the live Supabase First Night test (mutates test-account state)"
+        required: true
+        type: boolean
+        default: false
 
 jobs:
   verify-unity:
@@ -126,11 +133,13 @@ jobs:
   # without it Unity quits during import, aborts the in-flight network await, and the
   # report is never written — a silent false result. Do not remove `manualExit: true`.
   #
-  # Requires secrets: UNITY_* licensing (P0) AND NAAD_TEST_EMAIL / NAAD_TEST_PASSWORD
-  # (valid, verified credentials for the live project). The preflight fails fast with a
-  # clear message until both are set, then the job runs automatically.
-  # NOTE: this mutates the LIVE project (real currency/spend on the test account).
+  # This test currently targets the configured live Supabase project and mutates
+  # wallet/game state. It is therefore opt-in via workflow_dispatch, never an automatic
+  # pull-request or push gate. Before making this a required CI gate, move it to an
+  # isolated staging project with a disposable account and repeatable state reset.
+  # Requires UNITY_* licensing and NAAD_TEST_EMAIL / NAAD_TEST_PASSWORD secrets.
   first-night-live-test:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.run_live_first_night_test }}
     name: First Night live end-to-end (Gate B / Phase D)
     runs-on: ubuntu-latest
     timeout-minutes: 30
