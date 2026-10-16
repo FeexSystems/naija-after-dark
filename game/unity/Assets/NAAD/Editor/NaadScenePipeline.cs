@@ -124,6 +124,46 @@ namespace NAAD.Editor
                 "Non-fatal by design - re-import per ASSET_INTAKE_MAPPING.md (section 2).");
         }
 
+        [MenuItem("NAAD/Scenes/Validate Vendor Intake (Strict)")]
+        public static void ValidateVendorIntakeStrictMenu() => ValidateVendorIntakeStrict();
+
+        /// <summary>
+        /// Strict full-art gate. Unlike ValidateVendorIntake, this fails when vendor packs
+        /// or scene-critical prefabs are missing. Use it on a developer workstation after
+        /// licensed packs have been imported; do not run it as the portable clean-clone gate.
+        /// </summary>
+        public static void ValidateVendorIntakeStrict()
+        {
+            var packRoots = new[]
+            {
+                "Assets/Brick Project Studio",
+                "Assets/Versatile Studio Assets",
+                "Assets/Kevin Iglesias",
+                "Assets/Awbmecreations",
+                "Assets/Marcos Schultz",
+                "Assets/PalmTreePack"
+            };
+
+            var scenePrefabs = new[] { StructurePrefab, DemoCityPrefab, MidHousePrefab, OfficePrefab, LampPrefab };
+            var missingPacks = packRoots.Where(p => !AssetDatabase.IsValidFolder(p)).ToList();
+            var missingPrefabs = scenePrefabs.Where(p => AssetDatabase.LoadAssetAtPath<GameObject>(p) == null).ToList();
+
+            if (missingPacks.Count == 0 && missingPrefabs.Count == 0)
+            {
+                Debug.Log("[NAAD][Intake] STRICT PASS: all 6 vendor pack roots and 5 scene-critical prefabs are present.");
+                return;
+            }
+
+            foreach (var pack in missingPacks)
+                Debug.LogError($"[NAAD][Intake] STRICT FAIL: missing vendor pack root: {pack}");
+            foreach (var prefab in missingPrefabs)
+                Debug.LogError($"[NAAD][Intake] STRICT FAIL: missing scene-critical prefab: {prefab}");
+
+            throw new Exception(
+                $"NAAD strict vendor intake failed ({missingPacks.Count} missing pack roots, " +
+                $"{missingPrefabs.Count} missing prefabs). Re-import licensed packs per Content/ASSET_INTAKE_MAPPING.md.");
+        }
+
         private static void EnsureFolders()
         {
             if (!AssetDatabase.IsValidFolder("Assets/NAAD/Scenes"))
