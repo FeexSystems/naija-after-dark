@@ -139,8 +139,6 @@ namespace NAAD.Animation
             {
                 if (_wasMoving)
                     _animationStateManager.Stop();
-                else if (_animationStateManager.GetCurrentState() != AnimationCommandType.LocomotionIdle)
-                    _animationStateManager.SetIdle();
             }
             else if (running)
             {
