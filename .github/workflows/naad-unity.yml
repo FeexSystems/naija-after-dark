@@ -78,7 +78,7 @@ jobs:
           projectPath: game/unity
           unityVersion: 6000.6.5f1
           targetPlatform: StandaloneLinux64
-          buildMethod: NAAD.Editor.VerifyProject
+          buildMethod: NAAD.Editor.Editor.VerifyProject
           customParameters: -nographics
 
       - name: Upload verification report
@@ -112,7 +112,7 @@ jobs:
           projectPath: game/unity
           unityVersion: 6000.6.5f1
           targetPlatform: StandaloneLinux64
-          buildMethod: NAAD.Editor.ListPackages
+          buildMethod: NAAD.Editor.Editor.ListPackages
           customParameters: -nographics
   # Gate B / Phase D — First Night vertical slice against the LIVE Supabase project.
   # Drives the real FirstNightController through the authoritative server router
