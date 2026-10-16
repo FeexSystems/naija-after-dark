@@ -1,206 +1,197 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEditor;
+using UnityEditor.Animations;
 using UnityEngine;
 
 namespace NAAD.Editor
 {
     /// <summary>
-    /// Verification script to check for missing animation assets.
-    /// Run this from the Unity Editor menu: NAAD > Verify Animation Assets
+    /// Headless-capable Gate C contract verifier. It checks real imported assets and
+    /// Animator wiring; a file-existence-only pass is deliberately insufficient.
     /// </summary>
-    public class VerifyAnimationAssets
+    public static class VerifyAnimationAssets
     {
-        private class AnimationRequirement
-        {
-            public string Category;
-            public string Name;
-            public string ExpectedPath;
-            public bool IsRequired;
-            public bool IsFound;
-        }
+        private const string Root = "Assets/NAAD/Animation/";
+        private const string RigPath = Root + "Characters/Player/PlayerRig.fbx";
+        private const string PrefabPath = Root + "Characters/Player/PlayerRig.prefab";
+        private const string ControllerPath = Root + "Controllers/PlayerController.controller";
+        private const string AvatarPath = Root + "Avatars/PlayerAvatar.asset";
+        private const string MaskPath = Root + "Avatars/UpperBodyMask.mask";
+        private const string ReportRelativePath = "Logs/animation-verification-report.json";
 
-        private static List<AnimationRequirement> _requirements;
+        private static readonly string[] RequiredClipPaths =
+        {
+            Root + "Animations/Locomotion/Idle.anim",
+            Root + "Animations/Locomotion/Walk.anim",
+            Root + "Animations/Locomotion/Run.anim",
+            Root + "Animations/Phone/Retrieve.anim",
+            Root + "Animations/Phone/Hold.anim",
+            Root + "Animations/Phone/Browse.anim",
+            Root + "Animations/Phone/PutAway.anim",
+            Root + "Animations/Social/Greeting.anim"
+        };
+
+        [Serializable]
+        private sealed class VerificationReport
+        {
+            public bool success;
+            public int passed;
+            public int failed;
+            public string[] failures;
+            public string generatedUtc;
+        }
 
         [MenuItem("NAAD/Verify Animation Assets")]
         public static void RunVerification()
         {
-            Debug.Log("[NAAD] Starting animation asset verification...");
-            
-            InitializeRequirements();
-            CheckAssets();
-            ReportResults();
-        }
+            var failures = new List<string>();
+            var passed = 0;
 
-        private static void InitializeRequirements()
-        {
-            _requirements = new List<AnimationRequirement>();
+            Check("PlayerRig FBX exists", AssetDatabase.LoadAssetAtPath<GameObject>(RigPath) != null, failures, ref passed);
+            Check("PlayerRig prefab exists", AssetDatabase.LoadAssetAtPath<GameObject>(PrefabPath) != null, failures, ref passed);
+            Check("PlayerController exists", AssetDatabase.LoadAssetAtPath<AnimatorController>(ControllerPath) != null, failures, ref passed);
+            Check("PlayerAvatar exists", AssetDatabase.LoadAssetAtPath<Avatar>(AvatarPath) != null, failures, ref passed);
+            Check("UpperBodyMask exists", AssetDatabase.LoadAssetAtPath<AvatarMask>(MaskPath) != null, failures, ref passed);
 
-            // Locomotion
-            AddRequirement("Locomotion", "Idle", "Assets/NAAD/Animation/Animations/Locomotion/Idle.anim", true);
-            AddRequirement("Locomotion", "Walk", "Assets/NAAD/Animation/Animations/Locomotion/Walk.anim", true);
-            AddRequirement("Locomotion", "Run", "Assets/NAAD/Animation/Animations/Locomotion/Run.anim", true);
-            AddRequirement("Locomotion", "Start", "Assets/NAAD/Animation/Animations/Locomotion/Start.anim", false);
-            AddRequirement("Locomotion", "Stop", "Assets/NAAD/Animation/Animations/Locomotion/Stop.anim", false);
-            AddRequirement("Locomotion", "TurnLeft", "Assets/NAAD/Animation/Animations/Locomotion/TurnLeft.anim", false);
-            AddRequirement("Locomotion", "TurnRight", "Assets/NAAD/Animation/Animations/Locomotion/TurnRight.anim", false);
+            var importer = AssetImporter.GetAtPath(RigPath) as ModelImporter;
+            var humanoidImport = importer != null && importer.animationType == ModelImporterAnimationType.Human;
+            Check("PlayerRig is imported as Humanoid", humanoidImport, failures, ref passed);
 
-            // Social
-            AddRequirement("Social", "Greeting", "Assets/NAAD/Animation/Animations/Social/Greeting.anim", true);
-            AddRequirement("Social", "Conversation", "Assets/NAAD/Animation/Animations/Social/Conversation.anim", false);
-            AddRequirement("Social", "Listening", "Assets/NAAD/Animation/Animations/Social/Listening.anim", false);
-            AddRequirement("Social", "Laugh", "Assets/NAAD/Animation/Animations/Social/Laugh.anim", false);
-            AddRequirement("Social", "Celebrate", "Assets/NAAD/Animation/Animations/Social/Celebrate.anim", false);
+            var importedAvatar = AssetDatabase.LoadAllAssetsAtPath(RigPath)
+                .OfType<Avatar>()
+                .FirstOrDefault(avatar => avatar != null && avatar.isValid && avatar.isHuman);
+            Check("PlayerRig contains a valid humanoid Avatar", importedAvatar != null, failures, ref passed);
 
-            // Phone
-            AddRequirement("Phone", "Retrieve", "Assets/NAAD/Animation/Animations/Phone/Retrieve.anim", true);
-            AddRequirement("Phone", "Hold", "Assets/NAAD/Animation/Animations/Phone/Hold.anim", true);
-            AddRequirement("Phone", "Browse", "Assets/NAAD/Animation/Animations/Phone/Browse.anim", true);
-            AddRequirement("Phone", "PutAway", "Assets/NAAD/Animation/Animations/Phone/PutAway.anim", true);
-
-            // Food
-            AddRequirement("Food", "Order", "Assets/NAAD/Animation/Animations/Food/Order.anim", false);
-            AddRequirement("Food", "Serve", "Assets/NAAD/Animation/Animations/Food/Serve.anim", false);
-            AddRequirement("Food", "Eat", "Assets/NAAD/Animation/Animations/Food/Eat.anim", false);
-            AddRequirement("Food", "Drink", "Assets/NAAD/Animation/Animations/Food/Drink.anim", false);
-
-            // Nightlife
-            AddRequirement("Nightlife", "Dance", "Assets/NAAD/Animation/Animations/Nightlife/Dance.anim", false);
-            AddRequirement("Nightlife", "Cheer", "Assets/NAAD/Animation/Animations/Nightlife/Cheer.anim", false);
-            AddRequirement("Nightlife", "Perform", "Assets/NAAD/Animation/Animations/Nightlife/Perform.anim", false);
-            AddRequirement("Nightlife", "Socialise", "Assets/NAAD/Animation/Animations/Nightlife/Socialise.anim", false);
-
-            // Seating
-            AddRequirement("Seating", "Sit", "Assets/NAAD/Animation/Animations/Seating/Sit.anim", false);
-            AddRequirement("Seating", "IdleSeated", "Assets/NAAD/Animation/Animations/Seating/IdleSeated.anim", false);
-            AddRequirement("Seating", "Stand", "Assets/NAAD/Animation/Animations/Seating/Stand.anim", false);
-
-            // Vehicle
-            AddRequirement("Vehicle", "Enter", "Assets/NAAD/Animation/Animations/Vehicle/Enter.anim", false);
-            AddRequirement("Vehicle", "Exit", "Assets/NAAD/Animation/Animations/Vehicle/Exit.anim", false);
-            AddRequirement("Vehicle", "Driver", "Assets/NAAD/Animation/Animations/Vehicle/Driver.anim", false);
-            AddRequirement("Vehicle", "Passenger", "Assets/NAAD/Animation/Animations/Vehicle/Passenger.anim", false);
-
-            // NPC Work
-            AddRequirement("NPCWork", "Vending", "Assets/NAAD/Animation/Animations/NPCWork/Vending.anim", false);
-            AddRequirement("NPCWork", "DJ", "Assets/NAAD/Animation/Animations/NPCWork/DJ.anim", false);
-            AddRequirement("NPCWork", "Serving", "Assets/NAAD/Animation/Animations/NPCWork/Serving.anim", false);
-            AddRequirement("NPCWork", "Security", "Assets/NAAD/Animation/Animations/NPCWork/Security.anim", false);
-
-            // Character Rigs
-            AddRequirement("Characters", "PlayerRig", "Assets/NAAD/Animation/Characters/Player/PlayerRig.fbx", true);
-            AddRequirement("Characters", "PlayerPrefab", "Assets/NAAD/Animation/Characters/Player/PlayerRig.prefab", true);
-
-            // Controllers
-            AddRequirement("Controllers", "PlayerController", "Assets/NAAD/Animation/Controllers/PlayerController.controller", true);
-
-            // Avatars
-            AddRequirement("Avatars", "PlayerAvatar", "Assets/NAAD/Animation/Avatars/PlayerAvatar.asset", true);
-            AddRequirement("Avatars", "UpperBodyMask", "Assets/NAAD/Animation/Avatars/UpperBodyMask.mask", true);
-        }
-
-        private static void AddRequirement(string category, string name, string expectedPath, bool isRequired)
-        {
-            _requirements.Add(new AnimationRequirement
+            foreach (var clipPath in RequiredClipPaths)
             {
-                Category = category,
-                Name = name,
-                ExpectedPath = expectedPath,
-                IsRequired = isRequired,
-                IsFound = false
-            });
-        }
-
-        private static void CheckAssets()
-        {
-            foreach (var req in _requirements)
-            {
-                req.IsFound = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(req.ExpectedPath) != null;
+                var clip = AssetDatabase.LoadAssetAtPath<AnimationClip>(clipPath);
+                Check("AnimationClip is valid: " + clipPath, clip != null && clip.length > 0f, failures, ref passed);
             }
-        }
 
-        private static void ReportResults()
-        {
-            var missingRequired = _requirements.Where(r => r.IsRequired && !r.IsFound).ToList();
-            var missingOptional = _requirements.Where(r => !r.IsRequired && !r.IsFound).ToList();
-            var foundCount = _requirements.Count(r => r.IsFound);
-            var totalCount = _requirements.Count;
-
-            Debug.Log($"[NAAD] Animation Asset Verification Complete");
-            Debug.Log($"[NAAD] Found: {foundCount}/{totalCount} assets");
-
-            if (missingRequired.Count > 0)
+            var controller = AssetDatabase.LoadAssetAtPath<AnimatorController>(ControllerPath);
+            var requiredParameters = new Dictionary<string, AnimatorControllerParameterType>
             {
-                Debug.LogError($"[NAAD] MISSING REQUIRED ASSETS ({missingRequired.Count}):");
-                foreach (var req in missingRequired)
+                { "LocomotionSpeed", AnimatorControllerParameterType.Float },
+                { "LocomotionState", AnimatorControllerParameterType.Int },
+                { "SocialState", AnimatorControllerParameterType.Int },
+                { "PhoneState", AnimatorControllerParameterType.Int },
+                { "SeatingState", AnimatorControllerParameterType.Int },
+                { "Trigger", AnimatorControllerParameterType.Trigger }
+            };
+
+            if (controller != null)
+            {
+                var parameters = controller.parameters;
+                foreach (var expected in requiredParameters)
                 {
-                    Debug.LogError($"  - {req.Category}/{req.Name}: {req.ExpectedPath}");
+                    var actual = parameters.FirstOrDefault(parameter => parameter.name == expected.Key);
+                    Check(
+                        "Animator parameter " + expected.Key + " has type " + expected.Value,
+                        actual != null && actual.type == expected.Value,
+                        failures,
+                        ref passed);
                 }
+
+                var mask = AssetDatabase.LoadAssetAtPath<AvatarMask>(MaskPath);
+                var hasMaskedOverlay = mask != null && controller.layers.Any(
+                    layer => layer.avatarMask == mask && layer.name != "Base Layer");
+                Check("Animator has a non-base layer using UpperBodyMask", hasMaskedOverlay, failures, ref passed);
             }
             else
             {
-                Debug.Log("[NAAD] ✓ All required animation assets are present");
+                Check("Animator parameter contract can be inspected", false, failures, ref passed);
+                Check("Animator overlay layer can be inspected", false, failures, ref passed);
             }
 
-            if (missingOptional.Count > 0)
+            var playerPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(PrefabPath);
+            var animator = playerPrefab != null ? playerPrefab.GetComponentInChildren<Animator>(true) : null;
+            Check("PlayerRig prefab contains an Animator", animator != null, failures, ref passed);
+            Check(
+                "PlayerRig prefab Animator references PlayerController",
+                animator != null && animator.runtimeAnimatorController == controller && controller != null,
+                failures,
+                ref passed);
+            Check(
+                "PlayerRig prefab Animator uses a valid humanoid Avatar",
+                animator != null && animator.avatar != null && animator.avatar.isValid && animator.avatar.isHuman,
+                failures,
+                ref passed);
+            Check(
+                "PlayerRig prefab contains CharacterAnimationController",
+                playerPrefab != null && playerPrefab.GetComponentInChildren<NAAD.Animation.CharacterAnimationController>(true) != null,
+                failures,
+                ref passed);
+            Check(
+                "PlayerRig prefab contains AnimationStateManager",
+                playerPrefab != null && playerPrefab.GetComponentInChildren<NAAD.Animation.AnimationStateManager>(true) != null,
+                failures,
+                ref passed);
+            Check(
+                "PlayerRig prefab contains CharacterController for script-driven movement",
+                playerPrefab != null && playerPrefab.GetComponentInChildren<CharacterController>(true) != null,
+                failures,
+                ref passed);
+            Check(
+                "PlayerRig prefab contains PlayerLocomotionController",
+                playerPrefab != null && playerPrefab.GetComponentInChildren<NAAD.Animation.PlayerLocomotionController>(true) != null,
+                failures,
+                ref passed);
+
+            var report = new VerificationReport
             {
-                Debug.LogWarning($"[NAAD] Missing optional assets ({missingOptional.Count}):");
-                foreach (var req in missingOptional)
-                {
-                    Debug.LogWarning($"  - {req.Category}/{req.Name}: {req.ExpectedPath}");
-                }
-            }
+                success = failures.Count == 0,
+                passed = passed,
+                failed = failures.Count,
+                failures = failures.ToArray(),
+                generatedUtc = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ")
+            };
+            WriteReport(report);
 
-            // Generate report file
-            GenerateReportFile(missingRequired, missingOptional, foundCount, totalCount);
+            if (report.success)
+                Debug.Log($"[NAAD][GateC] PASS: {passed} animation/rig contract checks.");
+            else
+                Debug.LogError($"[NAAD][GateC] FAIL: {report.failed} of {passed + report.failed} checks failed. See {ReportRelativePath}.");
+
+            if (Application.isBatchMode)
+                EditorApplication.Exit(report.success ? 0 : 1);
         }
 
-        private static void GenerateReportFile(List<AnimationRequirement> missingRequired, 
-            List<AnimationRequirement> missingOptional, int foundCount, int totalCount)
+        private static void Check(string name, bool condition, List<string> failures, ref int passed)
         {
-            var reportPath = "Assets/NAAD/Animation/VERIFICATION_REPORT.txt";
-            var report = new System.Text.StringBuilder();
-
-            report.AppendLine("NAAD Animation Asset Verification Report");
-            report.AppendLine($"Generated: {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
-            report.AppendLine();
-            report.AppendLine($"Summary: {foundCount}/{totalCount} assets found");
-            report.AppendLine($"Missing Required: {missingRequired.Count}");
-            report.AppendLine($"Missing Optional: {missingOptional.Count}");
-            report.AppendLine();
-
-            if (missingRequired.Count > 0)
+            if (condition)
             {
-                report.AppendLine("MISSING REQUIRED ASSETS:");
-                foreach (var req in missingRequired)
-                {
-                    report.AppendLine($"  [X] {req.Category}/{req.Name}");
-                    report.AppendLine($"      Path: {req.ExpectedPath}");
-                    report.AppendLine($"      Action: Acquire from Mixamo, Asset Store, or create custom");
-                    report.AppendLine();
-                }
+                passed++;
+                Debug.Log("[NAAD][GateC] PASS: " + name);
+                return;
             }
 
-            if (missingOptional.Count > 0)
-            {
-                report.AppendLine("MISSING OPTIONAL ASSETS:");
-                foreach (var req in missingOptional)
-                {
-                    report.AppendLine($"  [ ] {req.Category}/{req.Name}");
-                    report.AppendLine($"      Path: {req.ExpectedPath}");
-                    report.AppendLine();
-                }
-            }
+            failures.Add(name);
+            Debug.LogError("[NAAD][GateC] FAIL: " + name);
+        }
 
-            if (missingRequired.Count == 0 && missingOptional.Count == 0)
+        private static void WriteReport(VerificationReport report)
+        {
+            try
             {
-                report.AppendLine("✓ All animation assets are present and accounted for.");
-            }
+                var projectRoot = Path.GetDirectoryName(Application.dataPath);
+                if (string.IsNullOrEmpty(projectRoot))
+                    throw new InvalidOperationException("Unable to resolve Unity project root.");
 
-            System.IO.File.WriteAllText(reportPath, report.ToString());
-            Debug.Log($"[NAAD] Verification report saved to: {reportPath}");
-            AssetDatabase.Refresh();
+                var reportPath = Path.Combine(projectRoot, ReportRelativePath);
+                var reportDirectory = Path.GetDirectoryName(reportPath);
+                if (!string.IsNullOrEmpty(reportDirectory))
+                    Directory.CreateDirectory(reportDirectory);
+
+                File.WriteAllText(reportPath, JsonUtility.ToJson(report, true));
+                Debug.Log("[NAAD][GateC] Wrote report: " + ReportRelativePath);
+            }
+            catch (Exception exception)
+            {
+                Debug.LogError("[NAAD][GateC] Could not write report: " + exception.Message);
+            }
         }
     }
 }
