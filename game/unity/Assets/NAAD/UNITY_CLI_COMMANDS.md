@@ -34,12 +34,12 @@ Adjust the `-projectPath` parameter if your project is located elsewhere.
 Verify project structure, references, and configuration.
 
 ```bash
-unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity" -executeMethod NAAD.Editor.VerifyProject -logFile "Logs/ProjectVerification.log"
+unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity" -executeMethod NAAD.Editor.Editor.VerifyProject -logFile "Logs/ProjectVerification.log"
 ```
 
 **Expected Output**: Success or detailed error report
 
-**Implementation Required**: Create `NAAD.Editor.VerifyProject()` static method
+**Implementation Required**: Create `NAAD.Editor.Editor.VerifyProject()` static method
 
 ---
 
@@ -104,12 +104,12 @@ unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity
 Verify UI controllers and views are properly configured.
 
 ```bash
-unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity" -executeMethod NAAD.Editor.VerifyUI -logFile "Logs/UIVerification.log"
+unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity" -executeMethod NAAD.Editor.Editor.VerifyUI -logFile "Logs/UIVerification.log"
 ```
 
 **Expected Output**: UI verification report
 
-**Implementation Required**: Create `NAAD.Editor.VerifyUI()` static method
+**Implementation Required**: Create `NAAD.Editor.Editor.VerifyUI()` static method
 
 ---
 
@@ -228,12 +228,12 @@ unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity
 Reimport all textures with new compression settings.
 
 ```bash
-unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity" -executeMethod NAAD.Editor.ReimportTextures -logFile "Logs/TextureReimport.log"
+unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity" -executeMethod NAAD.Editor.Editor.ReimportTextures -logFile "Logs/TextureReimport.log"
 ```
 
 **Expected Output**: All textures reimported with new settings
 
-**Implementation Required**: Create `NAAD.Editor.ReimportTextures()` static method
+**Implementation Required**: Create `NAAD.Editor.Editor.ReimportTextures()` static method
 
 ---
 
@@ -244,12 +244,12 @@ unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity
 List all installed Unity packages.
 
 ```bash
-unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity" -executeMethod NAAD.Editor.ListPackages -logFile "Logs/PackageList.log"
+unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity" -executeMethod NAAD.Editor.Editor.ListPackages -logFile "Logs/PackageList.log"
 ```
 
 **Expected Output**: List of installed packages
 
-**Implementation Required**: Create `NAAD.Editor.ListPackages()` static method
+**Implementation Required**: Create `NAAD.Editor.Editor.ListPackages()` static method
 
 ---
 
@@ -258,12 +258,12 @@ unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity
 Add a Unity package by name or Git URL.
 
 ```bash
-unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity" -executeMethod NAAD.Editor.AddPackage -package "com.unity.textmeshpro" -logFile "Logs/AddPackage.log"
+unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity" -executeMethod NAAD.Editor.Editor.AddPackage -package "com.unity.textmeshpro" -logFile "Logs/AddPackage.log"
 ```
 
 **Expected Output**: Package installed
 
-**Implementation Required**: Create `NAAD.Editor.AddPackage()` static method
+**Implementation Required**: Create `NAAD.Editor.Editor.AddPackage()` static method
 
 ---
 
@@ -285,7 +285,7 @@ unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity
 
 ## Required Editor Methods
 
-### NAAD.Editor.VerifyProject()
+### NAAD.Editor.Editor.VerifyProject()
 
 ```csharp
 using UnityEditor;
@@ -337,7 +337,7 @@ namespace NAAD.Editor
 }
 ```
 
-### NAAD.Editor.VerifyUI()
+### NAAD.Editor.Editor.VerifyUI()
 
 ```csharp
 using UnityEditor;
@@ -520,7 +520,7 @@ namespace NAAD.Editor
 }
 ```
 
-### NAAD.Editor.ReimportTextures()
+### NAAD.Editor.Editor.ReimportTextures()
 
 ```csharp
 using UnityEditor;
@@ -549,7 +549,7 @@ namespace NAAD.Editor
 }
 ```
 
-### NAAD.Editor.ListPackages()
+### NAAD.Editor.Editor.ListPackages()
 
 ```csharp
 using UnityEditor;
@@ -589,7 +589,7 @@ namespace NAAD.Editor
 }
 ```
 
-### NAAD.Editor.AddPackage()
+### NAAD.Editor.Editor.AddPackage()
 
 ```csharp
 using UnityEditor;
@@ -645,7 +645,7 @@ echo NAAD Verification Script
 echo ========================
 
 echo 1. Project Verification
-unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity" -executeMethod NAAD.Editor.VerifyProject -logFile "Logs\ProjectVerification.log"
+unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity" -executeMethod NAAD.Editor.Editor.VerifyProject -logFile "Logs\ProjectVerification.log"
 
 echo 2. Scene Verification
 unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity" -executeMethod NAAD.Editor.VerifyScenes -logFile "Logs\SceneVerification.log"
@@ -660,7 +660,7 @@ echo 5. Navigation Verification
 unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity" -executeMethod NAAD.Editor.VerifyPlayerNavigation -logFile "Logs\NavigationVerification.log"
 
 echo 6. UI Verification
-unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity" -executeMethod NAAD.Editor.VerifyUI -logFile "Logs\UIVerification.log"
+unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity" -executeMethod NAAD.Editor.Editor.VerifyUI -logFile "Logs\UIVerification.log"
 
 echo 7. Service Verification
 unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity" -executeMethod NAAD.Editor.VerifyServices -logFile "Logs\ServiceVerification.log"
@@ -713,7 +713,7 @@ jobs:
         projectPath: .
         buildName: NAAD
         buildsPath: Build
-        buildMethod: NAAD.Editor.VerifyProject
+        buildMethod: NAAD.Editor.Editor.VerifyProject
         version: 6000.6.5f1
         allowDirtyBuild: true
     

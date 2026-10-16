@@ -7,7 +7,7 @@ namespace NAAD.Editor
     public static partial class Editor
     {
         /// <summary>
-        /// `-executeMethod NAAD.Editor.VerifyProject`
+        /// `-executeMethod NAAD.Editor.Editor.VerifyProject`
         ///
         /// Verifies the project skeleton the runtime actually depends on: the bootstrap scene is in
         /// Build Settings at index 0, the core service/bootstrap scripts exist, and the
