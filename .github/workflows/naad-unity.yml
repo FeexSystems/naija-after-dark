@@ -96,6 +96,39 @@ jobs:
           path: game/unity/Logs/verification-report.json
           if-no-files-found: warn
 
+  # Gate C — fail the PR when the committed player rig / Animator contract is incomplete.
+  # This is intentionally strict: missing FBX/clip/controller/prefab assets are a real
+  # release blocker, not a warning that source inspection can waive.
+  verify-animation:
+    name: Gate C humanoid rig and Animator contract
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: verify-unity
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify humanoid rig, clips, prefab wiring, and Animator contract
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+        with:
+          projectPath: game/unity
+          unityVersion: 6000.6.5f1
+          targetPlatform: StandaloneLinux64
+          buildMethod: NAAD.Editor.VerifyAnimationAssets.RunVerification
+          customParameters: -nographics
+
+      - name: Upload Gate C report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: naad-animation-verification-report
+          path: game/unity/Logs/animation-verification-report.json
+          if-no-files-found: warn
+
   # Package inventory is advisory only: it records what the build actually resolved,
   # which is the evidence needed to reproduce a build. A listing failure is reported
   # but does not fail the pipeline, because it cannot indicate a defect in the project.
