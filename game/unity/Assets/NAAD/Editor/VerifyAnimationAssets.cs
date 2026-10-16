@@ -99,6 +99,17 @@ namespace NAAD.Editor
                 var hasMaskedOverlay = mask != null && controller.layers.Any(
                     layer => layer.avatarMask == mask && layer.name != "Base Layer");
                 Check("Animator has a non-base layer using UpperBodyMask", hasMaskedOverlay, failures, ref passed);
+
+                var controllerClips = controller.animationClips;
+                foreach (var clipPath in RequiredClipPaths)
+                {
+                    var requiredClip = AssetDatabase.LoadAssetAtPath<AnimationClip>(clipPath);
+                    Check(
+                        "PlayerController references required clip: " + clipPath,
+                        requiredClip != null && controllerClips.Contains(requiredClip),
+                        failures,
+                        ref passed);
+                }
             }
             else
             {
