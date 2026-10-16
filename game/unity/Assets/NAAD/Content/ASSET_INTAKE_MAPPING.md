@@ -269,7 +269,9 @@ These exist in the packs but have no manifest slot. They are recorded so nobody 
 2. **Phase 1 MVP blockers with no vendor match:** `SYU_Stand_Structure`, `SYU_Grill_Open`, `NCL_Entrance_Door_Large`, `NCL_Stage_Platform`, `RD_Surface_Asphalt`, `STR_Sidewalk_Straight`.
 3. **Highest-value existing coverage:** the interior set (15 CONFIRMED) fully outfits the Apartment scene.
 4. **Document the re-import requirement** (§2) wherever a fresh-clone setup is described — scene integrity depends on it.
-5. **Vendor-presence check (implemented):** `NaadScenePipeline.ValidateVendorIntake` (menu `NAAD/Scenes/Validate Vendor Intake`, or CLI `-executeMethod NAAD.Editor.NaadScenePipeline.ValidateVendorIntake`) reports the six pack roots and the five scene-critical §3 prefabs. It is **non-fatal by design** — it warns instead of throwing, so a fresh clone without the gitignored vendor packs still passes batchmode verify. It is deliberately *not* wired into `ValidateScenes`, which keeps failing only on real scene/build errors.
+5. **Vendor-presence check (implemented):** `NaadScenePipeline.ValidateVendorIntake` (menu `NAAD/Scenes/Validate Vendor Intake`) reports the six pack roots and five scene-critical §3 prefabs. It is **non-fatal by design** for portable clean-clone validation.
+6. **Strict full-art check:** `NaadScenePipeline.ValidateVendorIntakeStrict` (menu `NAAD/Scenes/Validate Vendor Intake (Strict)`) throws a verification failure when any of the six pack roots or five scene-critical prefabs are missing. Run this only after importing the licensed vendor packs. It is intentionally separate from the portable build gate and is not wired into `ValidateScenes`.
+7. **Provenance remains a release blocker:** this inventory still lacks exact Asset Store product IDs/URLs and verified license evidence for every pack. Do not treat folder presence as proof of commercial redistribution rights.
 
 ## 8. Maintenance
 
