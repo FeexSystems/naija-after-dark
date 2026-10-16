@@ -14,7 +14,7 @@ namespace NAAD.Editor
         private static string _packageName = string.Empty;
 
         /// <summary>
-        /// `-executeMethod NAAD.Editor.ListPackages`
+        /// `-executeMethod NAAD.Editor.Editor.ListPackages`
         ///
         /// The package manager client is asynchronous. The documented sample used
         /// Thread.Sleep polling on the main thread, which can deadlock the editor's synchronisation
@@ -50,7 +50,7 @@ namespace NAAD.Editor
         }
 
         /// <summary>
-        /// `-executeMethod NAAD.Editor.AddPackage`
+        /// `-executeMethod NAAD.Editor.Editor.AddPackage`
         ///
         /// Unity passes custom `-package &lt;value&gt;` arguments into Environment.GetCommandLineArgs();
         /// the `public static string packageName` field in the documented sample is never populated
@@ -108,7 +108,7 @@ namespace NAAD.Editor
         }
 
         /// <summary>
-        /// `-executeMethod NAAD.Editor.ReimportTextures`
+        /// `-executeMethod NAAD.Editor.Editor.ReimportTextures`
         ///
         /// Forces a reimport of every Texture2D so platform compression settings are reapplied.
         /// </summary>
