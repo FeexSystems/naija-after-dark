@@ -471,14 +471,6 @@
       },
       "url": "https://packages.unity.com"
     },
-    "com.vehiclephysics.pro-community": {
-      "version": "file:com.vehiclephysics.pro-community",
-      "depth": 0,
-      "source": "embedded",
-      "dependencies": {
-        "com.unity.ugui": "2.0.0"
-      }
-    },
     "org.christowm.unity.mcp": {
       "version": "https://github.com/mitchchristow/unity-mcp.git?path=/Packages/org.christowm.unity.mcp",
       "depth": 0,
