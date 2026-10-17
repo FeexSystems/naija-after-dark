@@ -4,8 +4,17 @@ How this agent reasons on NAAD Unity tasks, which skills to invoke, and what
 to remember across sessions.
 
 ## Memories (persist these)
-- M1. Active project = `c:/Users/user/naija-after-dark-1/game/unity`
-  (NOT the stale `naija-after-dark` clone). Branch `main@ce3ac67`, Gate B WIP.
+- M1. Active project = `c:/Users/user/naija-after-dark-1/game/unity`.
+  Working branch = `feat/audit-gate-recovery-2026-10-14` (was `main@ce3ac67`,
+  Gate B WIP). HEAD `a668cf1` "feat(scenes): rebuild CityStreet as flagship
+  Lagos night district" — pushed, in sync with origin.
+- M1a. Duplicate/stale Unity project = `naad-fntest/` at repo ROOT (NOT under
+  `game/`). 38 `.cs` vs 74 in `game/unity`, older/minimal `Packages/manifest.json`
+  (no UniTask/URP/InputSystem), last touched 2026-10-09. Still TRACKED in git
+  (109 files) and referenced by NO doc/CI — superseded by `game/unity`. Safe to
+  remove: `git rm -r --cached naad-fntest` + delete dir.
+- M1b. `.naad-authtest/` (repo root) is another throwaway probe project — only
+  `Packages/manifest.json` tracked. Also safe to remove.
 - M2. Unity 6000.6.5f1 at `C:/Program Files/Unity/Hub/Editor/6000.6.5f1/Editor/Unity.exe`;
   second install 6000.7.0b4 exists — NEVER use beta for gates.
 - M3. Shell capture is unreliable here: prefer `read_files` for content;
@@ -18,6 +27,12 @@ to remember across sessions.
 - M6. `_tmp_*` scratch + `_tmp_pdftext/` + `_tmp_pylibs/` are LOCAL extraction
   scaffolding — gitignored, never committed. KB in `docs/UNITY_KNOWLEDGE_BASE/`
   is the durable artifact.
+- M7. Untracked top-level dirs ignored via `.gitignore`: `Library/`, `.vs/`,
+  `unity_best_practices/` (reference PDFs), `unity-agent-plugin/` (local tooling
+  checkout). All local-only — never commit.
+- M8. `.git` bloats with unreachable loose objects; `git prune` reclaimed
+  211.5 MB → 5.1 MB (2026-10-17). Run it when git warns; `git fsck` shows only
+  harmless dangling blobs afterwards.
 
 ## Reasoning flows (plan before tools; batch independent calls)
 1. **Explore**: read AGENTS/README/ARCHITECTURE/DEVELOPMENT + registry + manifest
