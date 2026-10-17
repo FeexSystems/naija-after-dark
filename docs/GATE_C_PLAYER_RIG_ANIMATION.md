@@ -1,6 +1,6 @@
 # NAAD Gate C — Player Rig & Animation
 
-**Status:** Planned (next gate after First Night runtime / Gate B).  
+**Status:** In progress — runtime locomotion and strict CI contract check implemented; real rig/clip assets remain blocking.  
 **Date:** 2026-10-14 · **Branch:** `feat/audit-gate-recovery-2026-10-14`  
 **Editor:** `6000.6.5f1` · **Target:** StandaloneWindows64 (CI: StandaloneLinux64)
 
@@ -66,11 +66,11 @@ Already built (compile-clean, in `Assets/NAAD/Animation/`):
 
 ### Phase C4 — Player prefab + wiring
 - Assemble `PlayerRig.prefab`: `Animator` (controller + avatar assigned), `CharacterAnimationController`, `AnimationStateManager`, capsule/character controller for movement.
-- **Locomotion decision (design fork):** choose **script-driven** (code moves the capsule; tight nav, matches the scene anchor/travel model) OR **root-motion** (clip drives). Recommendation: **script-driven** — `FirstNightController` already drives travel authoritatively; root motion would fight it.
+- **Decision: script-driven locomotion.** `PlayerLocomotionController` moves the `CharacterController` and accepts injected `Vector2` input via `SetMoveInput`, so a mobile virtual joystick can drive it without binding gameplay to a specific input package. `SetRunHeld` supports a mobile run button. This controls local movement/presentation only; authoritative travel, wallet, and game-state mutations remain in the service/backend layer.
 
 ### Phase C5 — Verify + CI
 1. Extend `VerifyAnimationAssets` to assert the contract (exit criteria).
-2. Add a `verify-animation` job to `.github/workflows/naad-unity.yml` mirroring `verify-unity` (same licensing preflight, `buildMethod: NAAD.Editor.VerifyAnimationAssets`).
+2. A strict `verify-animation` job now runs `NAAD.Editor.VerifyAnimationAssets.RunVerification` and uploads `Logs/animation-verification-report.json`. It validates the imported Humanoid Avatar, eight MVP clips, Animator parameters/types, upper-body mask layer, prefab references, and locomotion components.
 3. Re-run headless locally (single-instance, kill-lock pattern used for Gate 22).
 
 ## Exit criteria (measurable)
@@ -98,11 +98,11 @@ Gate C is **PASS** only when all hold in a **clean headless run** (`exit 0`):
 
 ## Definition of done
 
-- [ ] `PlayerRig.fbx` (Humanoid) + `PlayerRig.prefab` committed.
+- [ ] `PlayerRig.fbx` (Humanoid) + `PlayerRig.prefab` committed. (Still blocked: assets are not present in the repository.)
 - [ ] MVP clips (Idle/Walk/Run, 4 Phone, Greeting) committed.
 - [ ] `PlayerController.controller` + `UpperBodyMask.mask` committed and assigned.
-- [ ] `VerifyAnimationAssets` extended + `verify-animation` CI job green.
-- [ ] `AnimationTestComponent` MVP sequence passes headless.
+- [x] `VerifyAnimationAssets` extended + `verify-animation` CI job added. [ ] Green CI remains blocked until the real required assets are committed.
+- [ ] `AnimationTestComponent` MVP sequence passes headless. (Requires real clips/controller; not yet run.)
 - [ ] Run URL + SHA recorded; `docs/GATE_STATUS.md` Gate C → Verified.
 
 - **MVP locomotion** (Idle/Walk/Run) + **Phone** (Retrieve/Hold/Browse/PutAway) + **Social greeting**.
