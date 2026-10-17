@@ -1,1 +1,0 @@
-Refer to the file README.pdf (PDF version) instead.

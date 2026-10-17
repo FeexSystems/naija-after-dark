@@ -164,3 +164,23 @@ unity-agent-plugin/
 *.vcxproj
 *.vcxproj.filters
 *.vcxproj.user
+
+# Unity auto-imported vendor / generated content (never commit; re-import via UPM/Asset Store)
+# Rationale: Unity Hub re-imports these on project open and they generate huge diffs
+# (a single open produced 459 changed files). Keep this list in sync with vendor assets.
+game/unity/Assets/TextMesh Pro/
+game/unity/Assets/TextMesh Pro.meta
+game/unity/Assets/_Recovery/
+game/unity/Assets/_Recovery.meta
+game/unity/Assets/Unity.VisualScripting.Generated/
+game/unity/Assets/Unity.VisualScripting.Generated.meta
+game/unity/Assets/XR/
+game/unity/Assets/XR.meta
+game/unity/Assets/CertificatePins.meta
+game/unity/Assets/Assembly-CSharp.Build.props
+game/unity/Assets/Assembly-CSharp.Build.props.meta
+game/unity/Assets/Assembly-CSharp-Editor.Build.props
+game/unity/Assets/Assembly-CSharp-Editor.Build.props.meta
+# Auth-gated Asset Store package — requires an entitled Unity account; CI cannot
+# sign in non-interactively (401). Removed in e5e0810; do not re-add.
+game/unity/Packages/com.vehiclephysics.pro-community/
