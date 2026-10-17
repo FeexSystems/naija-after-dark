@@ -1,0 +1,31 @@
+{
+  "name": "com.vehiclephysics.pro-community",
+  "displayName": "Vehicle Physics Pro - Community Edition",
+  "version": "1.7.1",
+  "unity": "6000.0",
+  "unityRelease": "0f1",
+  "description": "Advanced vehicle simulation package providing fully realistic and accurate vehicle dynamics. Vehicle Physics Pro implements an industry-grade, AAA-class vehicle dynamics simulation model comparable with major vehicle simulation franchises.\r\n\r\n ▪ Physically accurate vehicle dynamics model.\r\n ▪ Modular drivetrain model: Engine, clutch/torque converter, gearbox, differential.\r\n ▪ Advanced tire friction model: static, adherent and sliding forces.\r\n ▪ Highly efficient design with minimal CPU impact.\r\n ▪ Consistent with Unity: components, gizmos, inspectors, menus...\r\n ▪ Simple integration into existing projects.\r\n\r\nCommunity Edition:\r\n\r\n ▪ Vehicle Controller and essential add-on components\r\n ▪ 2 axles - 4 wheels per vehicle\r\n ▪ 1 vehicle per scene\r\n ▪ Single ground material\r\n ▪ Support desktop builds only",
+  "author": {
+    "name": "Vehicle Physics",
+    "url": "https://assetstore.unity.com/publishers/119",
+    "email": "info@vehiclephysics.com"
+  },
+  "documentationUrl": "https://vehiclephysics.com/",
+  "licensesUrl": "https://vehiclephysics.com/about/licensing",
+  "dependencies": {
+    "com.unity.ugui": "2.0.0"
+  },
+  "samples": [
+    {
+      "displayName": "Demo Scenes and Vehicles",
+      "description": "Sample scenes and demo content, including preconfigured vehicle prefabs and scenery assets.",
+      "path": "Samples~/Demos"
+    }
+  ],
+  "repository": {
+    "url": "ssh://git@vehiclephysics.repositoryhosting.com/vehiclephysics/vehicle-physics-pro-community.git",
+    "type": "git",
+    "revision": "f42d09dd78dedaaa2703eb9d0d63651fdf3e2284"
+  },
+  "_fingerprint": "f3ec60c9406556cb5a29b20214421b38ecc8705e"
+}
