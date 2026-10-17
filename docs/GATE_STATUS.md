@@ -35,8 +35,9 @@ Vendor packs remain optional (G3).
 
 ## Gate C — Characters / animation
 
-Infrastructure complete, assets missing. Animation pipeline code implemented (AnimationCommand, CharacterAnimationController, AnimationStateManager, VerifyAnimationAssets) with full documentation (ANIMATION_MANIFEST.md, ASSET_ACQUISITION.md, ANIMATOR_CONTROLLER_SETUP.md). No actual animation assets (FBX models, clips, Animator Controllers, prefabs) exist yet — 0/37 MVP assets per VERIFICATION_REPORT.md (2026-10-13). Full plan with phases C1–C5, measurable exit criteria, and DoD: [GATE_C_PLAYER_RIG_ANIMATION.md](GATE_C_PLAYER_RIG_ANIMATION.md).
+**In progress; not release-ready.** Added `PlayerLocomotionController` with script-driven, camera-relative movement and input injection for mobile joystick/run controls. Extended `VerifyAnimationAssets.RunVerification` into a strict headless contract check and added a `verify-animation` CI job. The check now requires a valid Humanoid FBX/avatar, eight MVP clips, typed Animator parameters, an upper-body mask layer, and a wired player prefab containing Animator, animation bridge/state manager, CharacterController, and locomotion controller.
 
+**Hard blocker:** real rig/clip/controller/prefab assets are still absent from the clean repository checkout. The strict job is expected to fail until licensed assets are imported and committed with stable `.meta` files. No Unity Editor compile or animation playback test has been executed by this change. Full exit criteria: [GATE_C_PLAYER_RIG_ANIMATION.md](GATE_C_PLAYER_RIG_ANIMATION.md).
 ## Gate D — Gameplay / interaction
 
 In progress (backend-backed First Night controller/HUD exist; no third-person controller or interaction framework in `Assets/NAAD`).
