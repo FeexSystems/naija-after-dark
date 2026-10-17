@@ -26,9 +26,8 @@ namespace NAAD.Editor
         private const string LampPrefab =
             "Assets/Versatile Studio Assets/Demo City By Versatile Studio/Prefabs/lamp_pole_single_orange.prefab";
 
-        // Gate B Phase 1 — NAAD-authored Environment placeholders.
-        private const string RdSurfaceAsphaltPrefab = "Assets/NAAD/Prefabs/Environment/RdSurfaceAsphalt.prefab";
-        private const string StrSidewalkStraightPrefab = "Assets/NAAD/Prefabs/Environment/StrSidewalkStraight.prefab";
+        // Gate B Phase 1 Environment prefabs. Road tiles are owned by
+        // NaadCityStreetBuilder now; Suya/Nightclub scenes still build here.
         private const string SyuStandStructurePrefab = "Assets/NAAD/Prefabs/Environment/SyuStandStructure.prefab";
         private const string SyuGrillOpenPrefab = "Assets/NAAD/Prefabs/Environment/SyuGrillOpen.prefab";
         private const string NclEntranceDoorLargePrefab = "Assets/NAAD/Prefabs/Environment/NclEntranceDoorLarge.prefab";
@@ -172,90 +171,9 @@ namespace NAAD.Editor
 
         private static void BuildCityStreetScene()
         {
-            var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
-            var root = new GameObject("NAAD_CityStreet");
-
-            CreateDirectionalLight(new Vector3(35f, -40f, 10f), new Color(0.55f, 0.65f, 1f), 0.85f);
-            // Warm night fill
-            var fill = new GameObject("Fill Light");
-            var fillLight = fill.AddComponent<Light>();
-            fillLight.type = LightType.Directional;
-            fillLight.color = new Color(1f, 0.55f, 0.25f);
-            fillLight.intensity = 0.35f;
-            fill.transform.rotation = Quaternion.Euler(15f, 140f, 0f);
-
-            CreateGround("StreetAsphalt", Vector3.zero, new Vector3(80f, 1f, 24f), new Color(0.12f, 0.12f, 0.13f));
-            CreateGround("SidewalkNorth", new Vector3(0f, 0.05f, 10f), new Vector3(80f, 1f, 6f), new Color(0.25f, 0.24f, 0.22f));
-            CreateGround("SidewalkSouth", new Vector3(0f, 0.05f, -10f), new Vector3(80f, 1f, 6f), new Color(0.25f, 0.24f, 0.22f));
-
-            // Gate B Phase 1 — NAAD-authored Environment placeholders, with
-            // blockout fallback so fresh clones still build the scene.
-            // Road tiles (8m modules) along the street axis; sidewalks north.
-            var roadStartX = -9f;
-            for (var i = 0; i < 3; i++)
-            {
-                var p = new Vector3(roadStartX + i * 8f, 0f, 0f);
-                if (TryInstantiate(RdSurfaceAsphaltPrefab, root.transform, p, $"RoadTile_{i}") == null)
-                    CreateBox($"RoadTile_{i}_Fallback", root.transform, p + Vector3.up * 0.25f,
-                        new Vector3(8f, 0.5f, 6f), new Color(0.12f, 0.12f, 0.13f));
-                var sp = new Vector3(roadStartX + i * 8f, 0f, 10f);
-                if (TryInstantiate(StrSidewalkStraightPrefab, root.transform, sp, $"SidewalkTile_{i}") == null)
-                    CreateBox($"SidewalkTile_{i}_Fallback", root.transform, sp + Vector3.up * 0.1f,
-                        new Vector3(8f, 0.2f, 3f), new Color(0.25f, 0.24f, 0.22f));
-            }
-
-            // Suya cluster near the suya landmark (8, 0, -4).
-            var suyaPos = new Vector3(8f, 0f, -4f);
-            if (TryInstantiate(SyuStandStructurePrefab, root.transform, suyaPos, "SuyaStand") == null)
-                CreateBox("SuyaStand_Fallback", root.transform, suyaPos + Vector3.up * 1.4f,
-                    new Vector3(4f, 2.8f, 4f), new Color(0.55f, 0.35f, 0.12f));
-            if (TryInstantiate(SyuGrillOpenPrefab, root.transform, suyaPos + new Vector3(1.2f, 0f, 0.5f), "SuyaGrill") == null)
-                CreateBox("SuyaGrill_Fallback", root.transform, suyaPos + new Vector3(1.2f, 0.65f, 0.5f),
-                    new Vector3(1f, 0.5f, 0.5f), new Color(0.18f, 0.18f, 0.19f));
-
-            // Nightclub cluster near the club landmark (14, 0, -4).
-            var clubPos = new Vector3(14f, 0f, -4f);
-            if (TryInstantiate(NclEntranceDoorLargePrefab, root.transform, clubPos + new Vector3(0f, 0f, 3f), "ClubDoors") == null)
-                CreateBox("ClubDoors_Fallback", root.transform, clubPos + new Vector3(0f, 1.25f, 3f),
-                    new Vector3(3f, 2.5f, 0.3f), new Color(0.35f, 0.55f, 0.75f));
-            if (TryInstantiate(NclStagePlatformPrefab, root.transform, clubPos + new Vector3(0f, 0f, -6f), "ClubStage") == null)
-                CreateBox("ClubStage_Fallback", root.transform, clubPos + new Vector3(0f, 0.3f, -6f),
-                    new Vector3(8f, 0.6f, 4f), new Color(0.30f, 0.22f, 0.16f));
-
-            // Compact street block — prefer modular houses over the full city mega-prefab.
-            TryInstantiate(MidHousePrefab, root.transform, new Vector3(-18f, 0f, 14f), "House_A");
-            TryInstantiate(MidHousePrefab, root.transform, new Vector3(0f, 0f, 14f), "House_B");
-            TryInstantiate(OfficePrefab, root.transform, new Vector3(20f, 0f, 16f), "Office_A");
-            TryInstantiate(LampPrefab, root.transform, new Vector3(-10f, 0f, -8f), "Lamp_A");
-            TryInstantiate(LampPrefab, root.transform, new Vector3(10f, 0f, -8f), "Lamp_B");
-
-            // Optional distant city silhouette if available (kept inactive for mobile budget).
-            var city = TryInstantiate(DemoCityPrefab, root.transform, new Vector3(0f, 0f, 60f), "CityBackdrop");
-            if (city != null)
-            {
-                city.SetActive(false);
-                city.transform.localScale = Vector3.one * 0.35f;
-            }
-
-            CreateMainCamera(new Vector3(0f, 2.2f, -12f), Quaternion.Euler(12f, 0f, 0f));
-
-            CreateAnchor("PlayerSpawn", SceneAnchor.AnchorKind.PlayerSpawn,
-                NightDistrictIdsSafe("street-spawn"), "Street Spawn",
-                new Vector3(0f, 0.1f, -6f), "");
-
-            CreateAnchor("TravelApartment", SceneAnchor.AnchorKind.ExitTravel,
-                NightDistrictIdsSafe("street-to-apartment"), "Enter Apartment",
-                new Vector3(-6f, 0.1f, -4f), NaadSceneNames.Apartment);
-
-            CreateAnchor("TravelSuyaMarker", SceneAnchor.AnchorKind.Landmark,
-                NightDistrictIdsSafe("street-to-suya"), "Suya Spot (planned)",
-                new Vector3(8f, 0.1f, -4f), "");
-
-            CreateAnchor("TravelClubMarker", SceneAnchor.AnchorKind.Landmark,
-                NightDistrictIdsSafe("street-to-club"), "Nightclub (planned)",
-                new Vector3(14f, 0.1f, -4f), "");
-
-            EditorSceneManager.SaveScene(scene, NaadSceneNames.CityStreetPath);
+            // Flagship CityStreet owns authoring — delegate so the pipeline never
+            // overwrites it with the legacy Gate B blockout (see NaadCityStreetBuilder).
+            NaadCityStreetBuilder.BuildScene();
         }
         private static void EnsureBuildSettings()
         {

@@ -96,6 +96,26 @@ namespace NAAD.Gameplay.Interaction
             return true;
         }
 
+        /// <summary>
+        /// Configure the interactable from code (scene builders, runtime spawners).
+        /// Mirrors SceneAnchor.Configure so authored and generated scenes stay consistent.
+        /// </summary>
+        public void Configure(InteractionType type, string promptText, float range, string id,
+            float coneDegrees = 0f)
+        {
+            interactionType = type;
+            prompt = string.IsNullOrEmpty(promptText) ? interactionType switch
+            {
+                InteractionType.Talk => "Talk",
+                InteractionType.Buy => "Buy",
+                _ => "Use"
+            } : promptText;
+            interactionRange = range;
+            interactableId = id ?? string.Empty;
+            facingConeDegrees = coneDegrees;
+            isEnabled = true;
+        }
+
         /// <summary>Editor/testing helper to toggle availability.</summary>
         public void SetEnabled(bool value)
         {
