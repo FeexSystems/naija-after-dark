@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &1
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d7f6b8c8b8a8b8a8b8a8b8a8b8a8b8a, type: 3}
+  m_Name: NAAD_URP_Asset
+  m_EditorClassIdentifier: 
+  rendererType: 0
+  rendererDataList: []
+  defaultMaterial: {fileID: 0}
+  defaultParticleMaterial: {fileID: 0}
+  defaultLineMaterial: {fileID: 0}
+  defaultTrailMaterial: {fileID: 0}
+  defaultTerrainMaterial: {fileID: 0}
+  defaultUIMaterial: {fileID: 0}
+  defaultUIOverdrawMaterial: {fileID: 0}
+  default2DMaterial: {fileID: 0}
+  useSRPBatcher: 1
+  supportsCameraDepthTexture: 0
+  supportsCameraOpaqueTexture: 0
+  supportsHDR: 1
+  msaaSampleCount: 1
+  dynamicBatching: 1
+  gpuInstancing: 1
+  shadowCascadeCount: 1
+  shadowDistance: 100
+  shadowDepthBias: 1
+  shadowNormalBias: 1
+  softShadows: 1
+  maxPixelLights: 4
+  lightRenderingMode: 1
+  mainLightRenderingMode: 1
+  additionalLightsRenderingMode: 1
+  maxAdditionalLights: 4
+  maxAdditionalLightsPerObject: 4
+  reflectionProbeBoxProjection: 0
+  reflectionProbeBlending: 1
+  renderScale: 1
+  colorGradingMode: 1
+  postProcessingEnabled: 0
+  depthPrimingMode: 0
+  supportsBakedShadows: 1
+  supportsSoftShadows: 1
+  supportsMixedLighting: 1
+  terrainHoles: 1
+  renderPipelineShaderVariantStripping: 1
+  shaderVariantStripping: 1
+  lightmapStripping: 1
+  instancingStripping: 1
+  useRenderPipelineShaderVariantStripping: 1
+  useShaderVariantStripping: 1
+  useLightmapStripping: 1
+  useInstancingStripping: 1

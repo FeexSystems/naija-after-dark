@@ -16,6 +16,7 @@
     "com.unity.pipeline": "0.8.0-exp.1",
     "com.unity.platformtoolkit": "1.2.0",
     "com.unity.render-pipelines.core": "17.7.0",
+    "com.unity.render-pipelines.universal": "17.7.0",
     "com.unity.scriptablebuildpipeline": "4.0.1",
     "com.unity.services.authentication": "3.8.0",
     "com.unity.services.ccd.management": "3.0.4",
