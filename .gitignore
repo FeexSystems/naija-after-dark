@@ -195,3 +195,12 @@ game/unity/Assets/Assembly-CSharp-Editor.Build.props.meta
 # Auth-gated Asset Store package — requires an entitled Unity account; CI cannot
 # sign in non-interactively (401). Removed in e5e0810; do not re-add.
 game/unity/Packages/com.vehiclephysics.pro-community/
+
+# Blender asset build scratch (tools/blender-bpy/build_assets.py)
+# Rationale: these are regenerable outputs of the source `.py` specs + Blender 5.2.
+# The shipped copies live under game/unity/Assets/NAAD/Content/Models/ and stay tracked.
+_scratch_assets/
+_scratch_probe/
+_scratch_*.py
+_scratch_*.log
+PRP_Bed_ND,PRP_TV_ND/
