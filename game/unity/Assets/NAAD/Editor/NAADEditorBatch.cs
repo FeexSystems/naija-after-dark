@@ -10,16 +10,16 @@ namespace NAAD.Editor
     ///
     /// The documented commands in Assets/NAAD/UNITY_CLI_COMMANDS.md were written as a static
     /// Execute() per class. The real Unity CLI contract is:
-
-    unity -quit -batchmode -projectPath <path> -executeMethod NAAD.Editor.Editor.VerifyProject ...
-
-    Unity resolves -executeMethod as "TypeName.MethodName". Because this file declares
-    namespace NAAD.Editor AND class Editor, methods declared on this partial class use
-    the fully qualified type name NAAD.Editor.Editor. Other Editor utility classes in
-    this namespace keep their own type names, e.g. NAAD.Editor.NAADBuild.Verify and
-    NAAD.Editor.FirstNightLiveTest.Run.
-
-    Exit codes are meaningful for CI: 0 = pass, non-zero = fail. Errors are always written to
+    ///
+    ///   unity -quit -batchmode -projectPath &lt;path&gt; -executeMethod NAAD.Editor.Editor.VerifyProject ...
+    ///
+    /// Unity resolves -executeMethod as "TypeName.MethodName". Because this file declares
+    /// namespace NAAD.Editor AND class Editor, methods declared on this partial class use
+    /// the fully qualified type name NAAD.Editor.Editor. Other Editor utility classes in
+    /// this namespace keep their own type names, e.g. NAAD.Editor.NAADBuild.Verify and
+    /// NAAD.Editor.FirstNightLiveTest.Run.
+    ///
+    /// Exit codes are meaningful for CI: 0 = pass, non-zero = fail. Errors are always written to
     /// the Unity log (which -logFile captures) and summarised in the machine-readable JSON report
     /// so the pipeline can fail the job on a real verification failure rather than on a log scrape.
     /// </summary>
