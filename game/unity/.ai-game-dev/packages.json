@@ -1,0 +1,6 @@
+{
+  "version": 2,
+  "packages": {
+    "aigd.image-flux1-schnell": "^1.0.2"
+  }
+}
