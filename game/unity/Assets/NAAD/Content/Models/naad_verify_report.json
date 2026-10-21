@@ -1,0 +1,1377 @@
+{
+  "generator": "tools/blender-bpy/verify_assets.py",
+  "has_bpy": true,
+  "total": 57,
+  "passed": 57,
+  "failed": 0,
+  "assets": [
+    {
+      "name": "PRP_Bed_ND_v001",
+      "district": "ND",
+      "humanoid": false,
+      "fbx": {
+        "exists": true,
+        "size": 36220
+      },
+      "glb": {
+        "exists": true,
+        "size": 58232
+      },
+      "fbx_import": "ok",
+      "fbx_objects": 1,
+      "fbx_meshes": 1,
+      "fbx_vertices": 368,
+      "fbx_triangles": 676,
+      "glb_import": "ok",
+      "glb_objects": 1,
+      "glb_meshes": 1,
+      "glb_vertices": 1488,
+      "glb_triangles": 676,
+      "status": "ok"
+    },
+    {
+      "name": "PRP_Sofa_ND_v001",
+      "district": "ND",
+      "humanoid": false,
+      "fbx": {
+        "exists": true,
+        "size": 22332
+      },
+      "glb": {
+        "exists": true,
+        "size": 19352
+      },
+      "fbx_import": "ok",
+      "fbx_objects": 1,
+      "fbx_meshes": 1,
+      "fbx_vertices": 136,
+      "fbx_triangles": 204,
+      "glb_import": "ok",
+      "glb_objects": 1,
+      "glb_meshes": 1,
+      "glb_vertices": 408,
+      "glb_triangles": 204,
+      "status": "ok"
+    },
+    {
+      "name": "PRP_Table_ND_v001",
+      "district": "ND",
+      "humanoid": false,
+      "fbx": {
+        "exists": true,
+        "size": 29916
+      },
+      "glb": {
+        "exists": true,
+        "size": 42688
+      },
+      "fbx_import": "ok",
+      "fbx_objects": 1,
+      "fbx_meshes": 1,
+      "fbx_vertices": 276,
+      "fbx_triangles": 512,
+      "glb_import": "ok",
+      "glb_objects": 1,
+      "glb_meshes": 1,
+      "glb_vertices": 1104,
+      "glb_triangles": 512,
+      "status": "ok"
+    },
+    {
+      "name": "PRP_Chair_ND_v001",
+      "district": "ND",
+      "humanoid": false,
+      "fbx": {
+        "exists": true,
+        "size": 26444
+      },
+      "glb": {
+        "exists": true,
+        "size": 43216
+      },
+      "fbx_import": "ok",
+      "fbx_objects": 1,
+      "fbx_meshes": 1,
+      "fbx_vertices": 288,
+      "fbx_triangles": 528,
+      "glb_import": "ok",
+      "glb_objects": 1,
+      "glb_meshes": 1,
+      "glb_vertices": 1152,
+      "glb_triangles": 528,
+      "status": "ok"
+    },
+    {
+      "name": "PRP_TV_ND_v001",
+      "district": "ND",
+      "humanoid": false,
+      "fbx": {
+        "exists": true,
+        "size": 29660
+      },
+      "glb": {
+        "exists": true,
+        "size": 45080
+      },
+      "fbx_import": "ok",
+      "fbx_objects": 1,
+      "fbx_meshes": 1,
+      "fbx_vertices": 296,
+      "fbx_triangles": 548,
+      "glb_import": "ok",
+      "glb_objects": 1,
+      "glb_meshes": 1,
+      "glb_vertices": 1152,
+      "glb_triangles": 548,
+      "status": "ok"
+    },
+    {
+      "name": "PRP_Lamp_ND_v001",
+      "district": "ND",
+      "humanoid": false,
+      "fbx": {
+        "exists": true,
+        "size": 23324
+      },
+      "glb": {
+        "exists": true,
+        "size": 21696
+      },
+      "fbx_import": "ok",
+      "fbx_objects": 1,
+      "fbx_meshes": 1,
+      "fbx_vertices": 146,
+      "fbx_triangles": 272,
+      "glb_import": "ok",
+      "glb_objects": 1,
+      "glb_meshes": 1,
+      "glb_vertices": 492,
+      "glb_triangles": 272,
+      "status": "ok"
+    },
+    {
+      "name": "PRP_Wardrobe_ND_v001",
+      "district": "ND",
+      "humanoid": false,
+      "fbx": {
+        "exists": true,
+        "size": 27820
+      },
+      "glb": {
+        "exists": true,
+        "size": 34272
+      },
+      "fbx_import": "ok",
+      "fbx_objects": 1,
+      "fbx_meshes": 1,
+      "fbx_vertices": 208,
+      "fbx_triangles": 384,
+      "glb_import": "ok",
+      "glb_objects": 1,
+      "glb_meshes": 1,
+      "glb_vertices": 864,
+      "glb_triangles": 384,
+      "status": "ok"
+    },
+    {
+      "name": "PRP_Window_ND_v001",
+      "district": "ND",
+      "humanoid": false,
+      "fbx": {
+        "exists": true,
+        "size": 27068
+      },
+      "glb": {
+        "exists": true,
+        "size": 31888
+      },
+      "fbx_import": "ok",
+      "fbx_objects": 1,
+      "fbx_meshes": 1,
+      "fbx_vertices": 196,
+      "fbx_triangles": 344,
+      "glb_import": "ok",
+      "glb_objects": 1,
+      "glb_meshes": 1,
+      "glb_vertices": 784,
+      "glb_triangles": 344,
+      "status": "ok"
+    },
+    {
+      "name": "PRP_Door_ND_v001",
+      "district": "ND",
+      "humanoid": false,
+      "fbx": {
+        "exists": true,
+        "size": 23516
+      },
+      "glb": {
+        "exists": true,
+        "size": 19836
+      },
+      "fbx_import": "ok",
+      "fbx_objects": 1,
+      "fbx_meshes": 1,
+      "fbx_vertices": 126,
+      "fbx_triangles": 220,
+      "glb_import": "ok",
+      "glb_objects": 1,
+      "glb_meshes": 1,
+      "glb_vertices": 432,
+      "glb_triangles": 220,
+      "status": "ok"
+    },
+    {
+      "name": "INT_Apartment_ND_v001",
+      "district": "ND",
+      "humanoid": false,
+      "fbx": {
+        "exists": true,
+        "size": 36220
+      },
+      "glb": {
+        "exists": true,
+        "size": 52184
+      },
+      "fbx_import": "ok",
+      "fbx_objects": 1,
+      "fbx_meshes": 1,
+      "fbx_vertices": 366,
+      "fbx_triangles": 604,
+      "glb_import": "ok",
+      "glb_objects": 1,
+      "glb_meshes": 1,
+      "glb_vertices": 1152,
+      "glb_triangles": 604,
+      "status": "ok"
+    },
+    {
+      "name": "PRP_LampPost_ML_v001",
+      "district": "ML",
+      "humanoid": false,
+      "fbx": {
+        "exists": true,
+        "size": 38556
+      },
+      "glb": {
+        "exists": true,
+        "size": 73556
+      },
+      "fbx_import": "ok",
+      "fbx_objects": 1,
+      "fbx_meshes": 1,
+      "fbx_vertices": 520,
+      "fbx_triangles": 980,
+      "glb_import": "ok",
+      "glb_objects": 1,
+      "glb_meshes": 1,
+      "glb_vertices": 1944,
+      "glb_triangles": 980,
+      "status": "ok"
+    },
+    {
+      "name": "PRP_Bench_ML_v001",
+      "district": "ML",
+      "humanoid": false,
+      "fbx": {
+        "exists": true,
+        "size": 27356
+      },
+      "glb": {
+        "exists": true,
+        "size": 43256
+      },
+      "fbx_import": "ok",
+      "fbx_objects": 1,
+      "fbx_meshes": 1,
+      "fbx_vertices": 288,
+      "fbx_triangles": 528,
+      "glb_import": "ok",
+      "glb_objects": 1,
+      "glb_meshes": 1,
+      "glb_vertices": 1152,
+      "glb_triangles": 528,
+      "status": "ok"
+    },
+    {
+      "name": "PRP_Bin_ML_v001",
+      "district": "ML",
+      "humanoid": false,
+      "fbx": {
+        "exists": true,
+        "size": 23772
+      },
+      "glb": {
+        "exists": true,
+        "size": 28180
+      },
+      "fbx_import": "ok",
+      "fbx_objects": 1,
+      "fbx_meshes": 1,
+      "fbx_vertices": 224,
+      "fbx_triangles": 416,
+      "glb_import": "ok",
+      "glb_objects": 1,
+      "glb_meshes": 1,
+      "glb_vertices": 672,
+      "glb_triangles": 416,
+      "status": "ok"
+    },
+    {
+      "name": "PRP_Signage_ML_v001",
+      "district": "ML",
+      "humanoid": false,
+      "fbx": {
+        "exists": true,
+        "size": 23868
+      },
+      "glb": {
+        "exists": true,
+        "size": 18948
+      },
+      "fbx_import": "ok",
+      "fbx_objects": 1,
+      "fbx_meshes": 1,
+      "fbx_vertices": 120,
+      "fbx_triangles": 180,
+      "glb_import": "ok",
+      "glb_objects": 1,
+      "glb_meshes": 1,
+      "glb_vertices": 360,
+      "glb_triangles": 180,
+      "status": "ok"
+    },
+    {
+      "name": "PRP_VendorCart_ML_v001",
+      "district": "ML",
+      "humanoid": false,
+      "fbx": {
+        "exists": true,
+        "size": 83580
+      },
+      "glb": {
+        "exists": true,
+        "size": 231960
+      },
+      "fbx_import": "ok",
+      "fbx_objects": 1,
+      "fbx_meshes": 1,
+      "fbx_vertices": 1610,
+      "fbx_triangles": 3120,
+      "glb_import": "ok",
+      "glb_objects": 1,
+      "glb_meshes": 1,
+      "glb_vertices": 6368,
+      "glb_triangles": 3120,
+      "status": "ok"
+    },
+    {
+      "name": "PRP_TrafficLight_ML_v001",
+      "district": "ML",
+      "humanoid": false,
+      "fbx": {
+        "exists": true,
+        "size": 43612
+      },
+      "glb": {
+        "exists": true,
+        "size": 86552
+      },
+      "fbx_import": "ok",
+      "fbx_objects": 1,
+      "fbx_meshes": 1,
+      "fbx_vertices": 554,
+      "fbx_triangles": 1056,
+      "glb_import": "ok",
+      "glb_objects": 1,
+      "glb_meshes": 1,
+      "glb_vertices": 2288,
+      "glb_triangles": 1056,
+      "status": "ok"
+    },
+    {
+      "name": "PRP_Pothole_ML_v001",
+      "district": "ML",
+      "humanoid": false,
+      "fbx": {
+        "exists": true,
+        "size": 25868
+      },
+      "glb": {
+        "exists": true,
+        "size": 30016
+      },
+      "fbx_import": "ok",
+      "fbx_objects": 1,
+      "fbx_meshes": 1,
+      "fbx_vertices": 208,
+      "fbx_triangles": 372,
+      "glb_import": "ok",
+      "glb_objects": 1,
+      "glb_meshes": 1,
+      "glb_vertices": 740,
+      "glb_triangles": 372,
+      "status": "ok"
+    },
+    {
+      "name": "STR_CityStreet_ML_v001",
+      "district": "ML",
+      "humanoid": false,
+      "fbx": {
+        "exists": true,
+        "size": 49708
+      },
+      "glb": {
+        "exists": true,
+        "size": 108216
+      },
+      "fbx_import": "ok",
+      "fbx_objects": 1,
+      "fbx_meshes": 1,
+      "fbx_vertices": 836,
+      "fbx_triangles": 1380,
+      "glb_import": "ok",
+      "glb_objects": 1,
+      "glb_meshes": 1,
+      "glb_vertices": 2688,
+      "glb_triangles": 1380,
+      "status": "ok"
+    },
+    {
+      "name": "PRP_Grill_ML_v001",
+      "district": "ML",
+      "humanoid": false,
+      "fbx": {
+        "exists": true,
+        "size": 67820
+      },
+      "glb": {
+        "exists": true,
+        "size": 200828
+      },
+      "fbx_import": "ok",
+      "fbx_objects": 1,
+      "fbx_meshes": 1,
+      "fbx_vertices": 1392,
+      "fbx_triangles": 2548,
+      "glb_import": "ok",
+      "glb_objects": 1,
+      "glb_meshes": 1,
+      "glb_vertices": 5544,
+      "glb_triangles": 2548,
+      "status": "ok"
+    },
+    {
+      "name": "PRP_Table_ML_v001",
+      "district": "ML",
+      "humanoid": false,
+      "fbx": {
+        "exists": true,
+        "size": 34252
+      },
+      "glb": {
+        "exists": true,
+        "size": 61536
+      },
+      "fbx_import": "ok",
+      "fbx_objects": 1,
+      "fbx_meshes": 1,
+      "fbx_vertices": 408,
+      "fbx_triangles": 764,
+      "glb_import": "ok",
+      "glb_objects": 1,
+      "glb_meshes": 1,
+      "glb_vertices": 1648,
+      "glb_triangles": 764,
+      "status": "ok"
+    },
+    {
+      "name": "PRP_Stool_ML_v001",
+      "district": "ML",
+      "humanoid": false,
+      "fbx": {
+        "exists": true,
+        "size": 20044
+      },
+      "glb": {
+        "exists": true,
+        "size": 19992
+      },
+      "fbx_import": "ok",
+      "fbx_objects": 1,
+      "fbx_meshes": 1,
+      "fbx_vertices": 160,
+      "fbx_triangles": 296,
+      "glb_import": "ok",
+      "glb_objects": 1,
+      "glb_meshes": 1,
+      "glb_vertices": 528,
+      "glb_triangles": 296,
+      "status": "ok"
+    },
+    {
+      "name": "PRP_Fan_ML_v001",
+      "district": "ML",
+      "humanoid": false,
+      "fbx": {
+        "exists": true,
+        "size": 30220
+      },
+      "glb": {
+        "exists": true,
+        "size": 48224
+      },
+      "fbx_import": "ok",
+      "fbx_objects": 1,
+      "fbx_meshes": 1,
+      "fbx_vertices": 352,
+      "fbx_triangles": 656,
+      "glb_import": "ok",
+      "glb_objects": 1,
+      "glb_meshes": 1,
+      "glb_vertices": 1252,
+      "glb_triangles": 656,
+      "status": "ok"
+    },
+    {
+      "name": "PRP_Cooler_ML_v001",
+      "district": "ML",
+      "humanoid": false,
+      "fbx": {
+        "exists": true,
+        "size": 39932
+      },
+      "glb": {
+        "exists": true,
+        "size": 68652
+      },
+      "fbx_import": "ok",
+      "fbx_objects": 1,
+      "fbx_meshes": 1,
+      "fbx_vertices": 448,
+      "fbx_triangles": 844,
+      "glb_import": "ok",
+      "glb_objects": 1,
+      "glb_meshes": 1,
+      "glb_vertices": 1792,
+      "glb_triangles": 844,
+      "status": "ok"
+    },
+    {
+      "name": "PRP_Skewer_ML_v001",
+      "district": "ML",
+      "humanoid": false,
+      "fbx": {
+        "exists": true,
+        "size": 28572
+      },
+      "glb": {
+        "exists": true,
+        "size": 38216
+      },
+      "fbx_import": "ok",
+      "fbx_objects": 1,
+      "fbx_meshes": 1,
+      "fbx_vertices": 277,
+      "fbx_triangles": 462,
+      "glb_import": "ok",
+      "glb_objects": 1,
+      "glb_meshes": 1,
+      "glb_vertices": 918,
+      "glb_triangles": 462,
+      "status": "ok"
+    },
+    {
+      "name": "PRP_Napkin_ML_v001",
+      "district": "ML",
+      "humanoid": false,
+      "fbx": {
+        "exists": true,
+        "size": 27820
+      },
+      "glb": {
+        "exists": true,
+        "size": 39844
+      },
+      "fbx_import": "ok",
+      "fbx_objects": 1,
+      "fbx_meshes": 1,
+      "fbx_vertices": 256,
+      "fbx_triangles": 472,
+      "glb_import": "ok",
+      "glb_objects": 1,
+      "glb_meshes": 1,
+      "glb_vertices": 1024,
+      "glb_triangles": 472,
+      "status": "ok"
+    },
+    {
+      "name": "SYU_SuyaSpot_ML_v001",
+      "district": "ML",
+      "humanoid": false,
+      "fbx": {
+        "exists": true,
+        "size": 60684
+      },
+      "glb": {
+        "exists": true,
+        "size": 147884
+      },
+      "fbx_import": "ok",
+      "fbx_objects": 1,
+      "fbx_meshes": 1,
+      "fbx_vertices": 1126,
+      "fbx_triangles": 1900,
+      "glb_import": "ok",
+      "glb_objects": 1,
+      "glb_meshes": 1,
+      "glb_vertices": 3732,
+      "glb_triangles": 1900,
+      "status": "ok"
+    },
+    {
+      "name": "PRP_Bar_NCL_v001",
+      "district": "NCL",
+      "humanoid": false,
+      "fbx": {
+        "exists": true,
+        "size": 55244
+      },
+      "glb": {
+        "exists": true,
+        "size": 148624
+      },
+      "fbx_import": "ok",
+      "fbx_objects": 1,
+      "fbx_meshes": 1,
+      "fbx_vertices": 1000,
+      "fbx_triangles": 1896,
+      "glb_import": "ok",
+      "glb_objects": 1,
+      "glb_meshes": 1,
+      "glb_vertices": 4128,
+      "glb_triangles": 1896,
+      "status": "ok"
+    },
+    {
+      "name": "PRP_Booth_NCL_v001",
+      "district": "NCL",
+      "humanoid": false,
+      "fbx": {
+        "exists": true,
+        "size": 27500
+      },
+      "glb": {
+        "exists": true,
+        "size": 36372
+      },
+      "fbx_import": "ok",
+      "fbx_objects": 1,
+      "fbx_meshes": 1,
+      "fbx_vertices": 226,
+      "fbx_triangles": 420,
+      "glb_import": "ok",
+      "glb_objects": 1,
+      "glb_meshes": 1,
+      "glb_vertices": 904,
+      "glb_triangles": 420,
+      "status": "ok"
+    },
+    {
+      "name": "PRP_DJBooth_NCL_v001",
+      "district": "NCL",
+      "humanoid": false,
+      "fbx": {
+        "exists": true,
+        "size": 35740
+      },
+      "glb": {
+        "exists": true,
+        "size": 70084
+      },
+      "fbx_import": "ok",
+      "fbx_objects": 1,
+      "fbx_meshes": 1,
+      "fbx_vertices": 472,
+      "fbx_triangles": 884,
+      "glb_import": "ok",
+      "glb_objects": 1,
+      "glb_meshes": 1,
+      "glb_vertices": 1888,
+      "glb_triangles": 884,
+      "status": "ok"
+    },
+    {
+      "name": "PRP_Speaker_NCL_v001",
+      "district": "NCL",
+      "humanoid": false,
+      "fbx": {
+        "exists": true,
+        "size": 25276
+      },
+      "glb": {
+        "exists": true,
+        "size": 32712
+      },
+      "fbx_import": "ok",
+      "fbx_objects": 1,
+      "fbx_meshes": 1,
+      "fbx_vertices": 232,
+      "fbx_triangles": 440,
+      "glb_import": "ok",
+      "glb_objects": 1,
+      "glb_meshes": 1,
+      "glb_vertices": 840,
+      "glb_triangles": 440,
+      "status": "ok"
+    },
+    {
+      "name": "PRP_LightBeam_NCL_v001",
+      "district": "NCL",
+      "humanoid": false,
+      "fbx": {
+        "exists": true,
+        "size": 25980
+      },
+      "glb": {
+        "exists": true,
+        "size": 29532
+      },
+      "fbx_import": "ok",
+      "fbx_objects": 1,
+      "fbx_meshes": 1,
+      "fbx_vertices": 186,
+      "fbx_triangles": 348,
+      "glb_import": "ok",
+      "glb_objects": 1,
+      "glb_meshes": 1,
+      "glb_vertices": 722,
+      "glb_triangles": 348,
+      "status": "ok"
+    },
+    {
+      "name": "PRP_Stool_NCL_v001",
+      "district": "NCL",
+      "humanoid": false,
+      "fbx": {
+        "exists": true,
+        "size": 19372
+      },
+      "glb": {
+        "exists": true,
+        "size": 10472
+      },
+      "fbx_import": "ok",
+      "fbx_objects": 1,
+      "fbx_meshes": 1,
+      "fbx_vertices": 72,
+      "fbx_triangles": 128,
+      "glb_import": "ok",
+      "glb_objects": 1,
+      "glb_meshes": 1,
+      "glb_vertices": 216,
+      "glb_triangles": 128,
+      "status": "ok"
+    },
+    {
+      "name": "PRP_Table_NCL_v001",
+      "district": "NCL",
+      "humanoid": false,
+      "fbx": {
+        "exists": true,
+        "size": 21900
+      },
+      "glb": {
+        "exists": true,
+        "size": 16280
+      },
+      "fbx_import": "ok",
+      "fbx_objects": 1,
+      "fbx_meshes": 1,
+      "fbx_vertices": 112,
+      "fbx_triangles": 200,
+      "glb_import": "ok",
+      "glb_objects": 1,
+      "glb_meshes": 1,
+      "glb_vertices": 336,
+      "glb_triangles": 200,
+      "status": "ok"
+    },
+    {
+      "name": "PRP_Coaster_NCL_v001",
+      "district": "NCL",
+      "humanoid": false,
+      "fbx": {
+        "exists": true,
+        "size": 17804
+      },
+      "glb": {
+        "exists": true,
+        "size": 7180
+      },
+      "fbx_import": "ok",
+      "fbx_objects": 1,
+      "fbx_meshes": 1,
+      "fbx_vertices": 48,
+      "fbx_triangles": 88,
+      "glb_import": "ok",
+      "glb_objects": 1,
+      "glb_meshes": 1,
+      "glb_vertices": 144,
+      "glb_triangles": 88,
+      "status": "ok"
+    },
+    {
+      "name": "PRP_Bottle_NCL_v001",
+      "district": "NCL",
+      "humanoid": false,
+      "fbx": {
+        "exists": true,
+        "size": 19036
+      },
+      "glb": {
+        "exists": true,
+        "size": 9592
+      },
+      "fbx_import": "ok",
+      "fbx_objects": 1,
+      "fbx_meshes": 1,
+      "fbx_vertices": 60,
+      "fbx_triangles": 104,
+      "glb_import": "ok",
+      "glb_objects": 1,
+      "glb_meshes": 1,
+      "glb_vertices": 180,
+      "glb_triangles": 104,
+      "status": "ok"
+    },
+    {
+      "name": "PRP_NeonSign_NCL_v001",
+      "district": "NCL",
+      "humanoid": false,
+      "fbx": {
+        "exists": true,
+        "size": 21564
+      },
+      "glb": {
+        "exists": true,
+        "size": 15176
+      },
+      "fbx_import": "ok",
+      "fbx_objects": 1,
+      "fbx_meshes": 1,
+      "fbx_vertices": 80,
+      "fbx_triangles": 144,
+      "glb_import": "ok",
+      "glb_objects": 1,
+      "glb_meshes": 1,
+      "glb_vertices": 320,
+      "glb_triangles": 144,
+      "status": "ok"
+    },
+    {
+      "name": "NCL_Club57_NCL_v001",
+      "district": "NCL",
+      "humanoid": false,
+      "fbx": {
+        "exists": true,
+        "size": 30940
+      },
+      "glb": {
+        "exists": true,
+        "size": 58716
+      },
+      "fbx_import": "ok",
+      "fbx_objects": 1,
+      "fbx_meshes": 1,
+      "fbx_vertices": 484,
+      "fbx_triangles": 744,
+      "glb_import": "ok",
+      "glb_objects": 1,
+      "glb_meshes": 1,
+      "glb_vertices": 1464,
+      "glb_triangles": 744,
+      "status": "ok"
+    },
+    {
+      "name": "PRP_Umbrella_BCH_v001",
+      "district": "BCH",
+      "humanoid": false,
+      "fbx": {
+        "exists": true,
+        "size": 22908
+      },
+      "glb": {
+        "exists": true,
+        "size": 23372
+      },
+      "fbx_import": "ok",
+      "fbx_objects": 1,
+      "fbx_meshes": 1,
+      "fbx_vertices": 178,
+      "fbx_triangles": 308,
+      "glb_import": "ok",
+      "glb_objects": 1,
+      "glb_meshes": 1,
+      "glb_vertices": 576,
+      "glb_triangles": 308,
+      "status": "ok"
+    },
+    {
+      "name": "PRP_LoungeChair_BCH_v001",
+      "district": "BCH",
+      "humanoid": false,
+      "fbx": {
+        "exists": true,
+        "size": 22748
+      },
+      "glb": {
+        "exists": true,
+        "size": 28964
+      },
+      "fbx_import": "ok",
+      "fbx_objects": 1,
+      "fbx_meshes": 1,
+      "fbx_vertices": 192,
+      "fbx_triangles": 352,
+      "glb_import": "ok",
+      "glb_objects": 1,
+      "glb_meshes": 1,
+      "glb_vertices": 768,
+      "glb_triangles": 352,
+      "status": "ok"
+    },
+    {
+      "name": "PRP_Cooler_BCH_v001",
+      "district": "BCH",
+      "humanoid": false,
+      "fbx": {
+        "exists": true,
+        "size": 21756
+      },
+      "glb": {
+        "exists": true,
+        "size": 15600
+      },
+      "fbx_import": "ok",
+      "fbx_objects": 1,
+      "fbx_meshes": 1,
+      "fbx_vertices": 88,
+      "fbx_triangles": 160,
+      "glb_import": "ok",
+      "glb_objects": 1,
+      "glb_meshes": 1,
+      "glb_vertices": 352,
+      "glb_triangles": 160,
+      "status": "ok"
+    },
+    {
+      "name": "PRP_PalmTree_BCH_v001",
+      "district": "BCH",
+      "humanoid": false,
+      "fbx": {
+        "exists": true,
+        "size": 23452
+      },
+      "glb": {
+        "exists": true,
+        "size": 27352
+      },
+      "fbx_import": "ok",
+      "fbx_objects": 1,
+      "fbx_meshes": 1,
+      "fbx_vertices": 190,
+      "fbx_triangles": 332,
+      "glb_import": "ok",
+      "glb_objects": 1,
+      "glb_meshes": 1,
+      "glb_vertices": 696,
+      "glb_triangles": 332,
+      "status": "ok"
+    },
+    {
+      "name": "PRP_SandCastle_BCH_v001",
+      "district": "BCH",
+      "humanoid": false,
+      "fbx": {
+        "exists": true,
+        "size": 27580
+      },
+      "glb": {
+        "exists": true,
+        "size": 38804
+      },
+      "fbx_import": "ok",
+      "fbx_objects": 1,
+      "fbx_meshes": 1,
+      "fbx_vertices": 256,
+      "fbx_triangles": 480,
+      "glb_import": "ok",
+      "glb_objects": 1,
+      "glb_meshes": 1,
+      "glb_vertices": 1024,
+      "glb_triangles": 480,
+      "status": "ok"
+    },
+    {
+      "name": "PRP_Surfboard_BCH_v001",
+      "district": "BCH",
+      "humanoid": false,
+      "fbx": {
+        "exists": true,
+        "size": 21596
+      },
+      "glb": {
+        "exists": true,
+        "size": 18916
+      },
+      "fbx_import": "ok",
+      "fbx_objects": 1,
+      "fbx_meshes": 1,
+      "fbx_vertices": 112,
+      "fbx_triangles": 204,
+      "glb_import": "ok",
+      "glb_objects": 1,
+      "glb_meshes": 1,
+      "glb_vertices": 448,
+      "glb_triangles": 204,
+      "status": "ok"
+    },
+    {
+      "name": "PRP_BeachBall_BCH_v001",
+      "district": "BCH",
+      "humanoid": false,
+      "fbx": {
+        "exists": true,
+        "size": 28092
+      },
+      "glb": {
+        "exists": true,
+        "size": 45000
+      },
+      "fbx_import": "ok",
+      "fbx_objects": 1,
+      "fbx_meshes": 1,
+      "fbx_vertices": 294,
+      "fbx_triangles": 568,
+      "glb_import": "ok",
+      "glb_objects": 1,
+      "glb_meshes": 1,
+      "glb_vertices": 1240,
+      "glb_triangles": 568,
+      "status": "ok"
+    },
+    {
+      "name": "BCH_Shore_BCH_v001",
+      "district": "BCH",
+      "humanoid": false,
+      "fbx": {
+        "exists": true,
+        "size": 204620
+      },
+      "glb": {
+        "exists": true,
+        "size": 711996
+      },
+      "fbx_import": "ok",
+      "fbx_objects": 1,
+      "fbx_meshes": 1,
+      "fbx_vertices": 5130,
+      "fbx_triangles": 9540,
+      "glb_import": "ok",
+      "glb_objects": 1,
+      "glb_meshes": 1,
+      "glb_vertices": 20226,
+      "glb_triangles": 9540,
+      "status": "ok"
+    },
+    {
+      "name": "VHC_KekeNapep_STR_v001",
+      "district": "STR",
+      "humanoid": false,
+      "fbx": {
+        "exists": true,
+        "size": 41132
+      },
+      "glb": {
+        "exists": true,
+        "size": 78740
+      },
+      "fbx_import": "ok",
+      "fbx_objects": 1,
+      "fbx_meshes": 1,
+      "fbx_vertices": 528,
+      "fbx_triangles": 1000,
+      "glb_import": "ok",
+      "glb_objects": 1,
+      "glb_meshes": 1,
+      "glb_vertices": 2056,
+      "glb_triangles": 1000,
+      "status": "ok"
+    },
+    {
+      "name": "VHC_Danfo_STR_v001",
+      "district": "STR",
+      "humanoid": false,
+      "fbx": {
+        "exists": true,
+        "size": 49980
+      },
+      "glb": {
+        "exists": true,
+        "size": 127320
+      },
+      "fbx_import": "ok",
+      "fbx_objects": 1,
+      "fbx_meshes": 1,
+      "fbx_vertices": 896,
+      "fbx_triangles": 1692,
+      "glb_import": "ok",
+      "glb_objects": 1,
+      "glb_meshes": 1,
+      "glb_vertices": 3456,
+      "glb_triangles": 1692,
+      "status": "ok"
+    },
+    {
+      "name": "VHC_Sedan_STR_v001",
+      "district": "STR",
+      "humanoid": false,
+      "fbx": {
+        "exists": true,
+        "size": 48716
+      },
+      "glb": {
+        "exists": true,
+        "size": 125372
+      },
+      "fbx_import": "ok",
+      "fbx_objects": 1,
+      "fbx_meshes": 1,
+      "fbx_vertices": 888,
+      "fbx_triangles": 1676,
+      "glb_import": "ok",
+      "glb_objects": 1,
+      "glb_meshes": 1,
+      "glb_vertices": 3424,
+      "glb_triangles": 1676,
+      "status": "ok"
+    },
+    {
+      "name": "CHR_Player_STD_v001",
+      "district": "STD",
+      "humanoid": true,
+      "fbx": {
+        "exists": true,
+        "size": 575324
+      },
+      "glb": {
+        "exists": true,
+        "size": 128796
+      },
+      "fbx_import": "ok",
+      "fbx_objects": 21,
+      "fbx_meshes": 20,
+      "fbx_vertices": 484,
+      "fbx_triangles": 888,
+      "glb_import": "ok",
+      "glb_objects": 22,
+      "glb_meshes": 21,
+      "glb_vertices": 1970,
+      "glb_triangles": 968,
+      "status": "ok"
+    },
+    {
+      "name": "CHR_MamaSeyi_ML_v001",
+      "district": "ML",
+      "humanoid": true,
+      "fbx": {
+        "exists": true,
+        "size": 628988
+      },
+      "glb": {
+        "exists": true,
+        "size": 145816
+      },
+      "fbx_import": "ok",
+      "fbx_objects": 23,
+      "fbx_meshes": 22,
+      "fbx_vertices": 554,
+      "fbx_triangles": 1020,
+      "glb_import": "ok",
+      "glb_objects": 24,
+      "glb_meshes": 23,
+      "glb_vertices": 2234,
+      "glb_triangles": 1100,
+      "status": "ok"
+    },
+    {
+      "name": "CHR_Mallam_ML_v001",
+      "district": "ML",
+      "humanoid": true,
+      "fbx": {
+        "exists": true,
+        "size": 626796
+      },
+      "glb": {
+        "exists": true,
+        "size": 136768
+      },
+      "fbx_import": "ok",
+      "fbx_objects": 23,
+      "fbx_meshes": 22,
+      "fbx_vertices": 520,
+      "fbx_triangles": 952,
+      "glb_import": "ok",
+      "glb_objects": 24,
+      "glb_meshes": 23,
+      "glb_vertices": 2078,
+      "glb_triangles": 1032,
+      "status": "ok"
+    },
+    {
+      "name": "CHR_DJ_NCL_v001",
+      "district": "NCL",
+      "humanoid": true,
+      "fbx": {
+        "exists": true,
+        "size": 611612
+      },
+      "glb": {
+        "exists": true,
+        "size": 148996
+      },
+      "fbx_import": "ok",
+      "fbx_objects": 25,
+      "fbx_meshes": 24,
+      "fbx_vertices": 582,
+      "fbx_triangles": 1068,
+      "glb_import": "ok",
+      "glb_objects": 26,
+      "glb_meshes": 25,
+      "glb_vertices": 2366,
+      "glb_triangles": 1148,
+      "status": "ok"
+    },
+    {
+      "name": "CHR_Bouncer_NCL_v001",
+      "district": "NCL",
+      "humanoid": true,
+      "fbx": {
+        "exists": true,
+        "size": 572732
+      },
+      "glb": {
+        "exists": true,
+        "size": 128088
+      },
+      "fbx_import": "ok",
+      "fbx_objects": 21,
+      "fbx_meshes": 20,
+      "fbx_vertices": 484,
+      "fbx_triangles": 888,
+      "glb_import": "ok",
+      "glb_objects": 22,
+      "glb_meshes": 21,
+      "glb_vertices": 1970,
+      "glb_triangles": 968,
+      "status": "ok"
+    },
+    {
+      "name": "CHR_BeachVendor_BCH_v001",
+      "district": "BCH",
+      "humanoid": true,
+      "fbx": {
+        "exists": true,
+        "size": 651964
+      },
+      "glb": {
+        "exists": true,
+        "size": 136000
+      },
+      "fbx_import": "ok",
+      "fbx_objects": 24,
+      "fbx_meshes": 23,
+      "fbx_vertices": 508,
+      "fbx_triangles": 924,
+      "glb_import": "ok",
+      "glb_objects": 25,
+      "glb_meshes": 24,
+      "glb_vertices": 2042,
+      "glb_triangles": 1004,
+      "status": "ok"
+    },
+    {
+      "name": "CHR_Crowd01_STR_v001",
+      "district": "STR",
+      "humanoid": true,
+      "fbx": {
+        "exists": true,
+        "size": 574876
+      },
+      "glb": {
+        "exists": true,
+        "size": 128620
+      },
+      "fbx_import": "ok",
+      "fbx_objects": 21,
+      "fbx_meshes": 20,
+      "fbx_vertices": 484,
+      "fbx_triangles": 888,
+      "glb_import": "ok",
+      "glb_objects": 22,
+      "glb_meshes": 21,
+      "glb_vertices": 1970,
+      "glb_triangles": 968,
+      "status": "ok"
+    },
+    {
+      "name": "CHR_Crowd02_STR_v001",
+      "district": "STR",
+      "humanoid": true,
+      "fbx": {
+        "exists": true,
+        "size": 600972
+      },
+      "glb": {
+        "exists": true,
+        "size": 131140
+      },
+      "fbx_import": "ok",
+      "fbx_objects": 22,
+      "fbx_meshes": 21,
+      "fbx_vertices": 492,
+      "fbx_triangles": 900,
+      "glb_import": "ok",
+      "glb_objects": 23,
+      "glb_meshes": 22,
+      "glb_vertices": 1994,
+      "glb_triangles": 980,
+      "status": "ok"
+    },
+    {
+      "name": "CHR_Crowd03_STR_v001",
+      "district": "STR",
+      "humanoid": true,
+      "fbx": {
+        "exists": true,
+        "size": 626860
+      },
+      "glb": {
+        "exists": true,
+        "size": 137116
+      },
+      "fbx_import": "ok",
+      "fbx_objects": 23,
+      "fbx_meshes": 22,
+      "fbx_vertices": 520,
+      "fbx_triangles": 952,
+      "glb_import": "ok",
+      "glb_objects": 24,
+      "glb_meshes": 23,
+      "glb_vertices": 2078,
+      "glb_triangles": 1032,
+      "status": "ok"
+    }
+  ]
+}
