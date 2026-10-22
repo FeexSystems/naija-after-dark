@@ -105,18 +105,18 @@ All assets must follow: `<CAT>_<Part>_<DISTRICT>[_<size>]_v<NNN>`
 ### Suya Props
 | Asset Name | Category | District | Size | Status | Notes |
 |------------|----------|----------|------|--------|-------|
-| `PRP_Grill_ML_v001` | PRP | ML | M | Needed | Suya grill station |
-| `PRP_Table_ML_v001` | PRP | ML | M | Needed | Outdoor dining table |
-| `PRP_Stool_ML_v001` | PRP | ML | S | Needed | Tall stool for grill |
-| `PRP_Fan_ML_v001` | PRP | ML | M | Needed | Ceiling/floor fan |
-| `PRP_Cooler_ML_v001` | PRP | ML | S | Needed | Drink cooler |
-| `PRP_Skewer_ML_v001` | PRP | ML | S | Needed | Suya skewer prop |
-| `PRP_Napkin_ML_v001` | PRP | ML | S | Needed | Napkin holder |
+| `PRP_Grill_ML_v001` | PRP | ML | M | Built | Suya grill station (764 tris) |
+| `PRP_Table_ML_v001` | PRP | ML | M | Built | Outdoor dining table (236 tris) |
+| `PRP_Stool_ML_v001` | PRP | ML | S | Built | Tall stool for grill (296 tris) |
+| `PRP_Fan_ML_v001` | PRP | ML | M | Built | Ceiling/floor fan (656 tris) |
+| `PRP_Cooler_ML_v001` | PRP | ML | S | Built | Drink cooler (252 tris) |
+| `PRP_Skewer_ML_v001` | PRP | ML | S | Built | Suya skewer prop (462 tris) |
+| `PRP_Napkin_ML_v001` | PRP | ML | S | Built | Napkin holder (152 tris) |
 
 ### Suya Structure
 | Asset Name | Category | District | Size | Status | Notes |
 |------------|----------|----------|------|--------|-------|
-| `SYU_SuyaSpot_ML_v001` | SYU | ML | L | Placeholder | Stall structure, canopy |
+| `SYU_SuyaSpot_ML_v001` | SYU | ML | L | Built | Stall structure, parasol, banners (1900 tris) |
 
 ---
 

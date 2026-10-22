@@ -1,0 +1,1490 @@
+{
+  "generator": "tools/blender-bpy/build_assets.py",
+  "blender": "5.2.0 LTS",
+  "registry": 57,
+  "count": 57,
+  "assets": [
+    {
+      "name": "BCH_Shore_BCH_v001",
+      "category": "BCH",
+      "district": "BCH",
+      "glb": "BCH_Shore_BCH_v001.glb",
+      "fbx": "BCH_Shore_BCH_v001.fbx",
+      "glbBytes": 711996,
+      "fbxBytes": 204620,
+      "tris": 3056,
+      "intendedXZY": [
+        20.0,
+        30.0,
+        4.0
+      ],
+      "measuredXZY": [
+        20.959,
+        32.709,
+        4.405
+      ],
+      "boundsContainIntended": true,
+      "objects": 1,
+      "preview": "_previews/BCH_Shore_BCH_v001.png",
+      "humanoid": false,
+      "seconds": 10.94,
+      "note": "20x30m shore: sand, water, palm grove"
+    },
+    {
+      "name": "CHR_BeachVendor_BCH_v001",
+      "category": "CHR",
+      "district": "BCH",
+      "glb": "CHR_BeachVendor_BCH_v001.glb",
+      "fbx": "CHR_BeachVendor_BCH_v001.fbx",
+      "glbBytes": 136000,
+      "fbxBytes": 651964,
+      "tris": 348,
+      "intendedXZY": [
+        0.55,
+        0.32,
+        1.6
+      ],
+      "measuredXZY": [
+        0.405,
+        0.332,
+        1.586
+      ],
+      "boundsContainIntended": false,
+      "objects": 24,
+      "preview": "_previews/CHR_BeachVendor_BCH_v001.png",
+      "humanoid": true,
+      "seconds": 6.26,
+      "note": "beach vendor"
+    },
+    {
+      "name": "CHR_Bouncer_NCL_v001",
+      "category": "CHR",
+      "district": "NCL",
+      "glb": "CHR_Bouncer_NCL_v001.glb",
+      "fbx": "CHR_Bouncer_NCL_v001.fbx",
+      "glbBytes": 128088,
+      "fbxBytes": 572732,
+      "tris": 312,
+      "intendedXZY": [
+        0.6,
+        0.36,
+        1.85
+      ],
+      "measuredXZY": [
+        0.457,
+        0.346,
+        1.834
+      ],
+      "boundsContainIntended": false,
+      "objects": 21,
+      "preview": "_previews/CHR_Bouncer_NCL_v001.png",
+      "humanoid": true,
+      "seconds": 6.1,
+      "note": "club bouncer"
+    },
+    {
+      "name": "CHR_Crowd01_STR_v001",
+      "category": "CHR",
+      "district": "STR",
+      "glb": "CHR_Crowd01_STR_v001.glb",
+      "fbx": "CHR_Crowd01_STR_v001.fbx",
+      "glbBytes": 128620,
+      "fbxBytes": 574876,
+      "tris": 312,
+      "intendedXZY": [
+        0.55,
+        0.3,
+        1.68
+      ],
+      "measuredXZY": [
+        0.422,
+        0.332,
+        1.665
+      ],
+      "boundsContainIntended": false,
+      "objects": 21,
+      "preview": "_previews/CHR_Crowd01_STR_v001.png",
+      "humanoid": true,
+      "seconds": 5.76,
+      "note": "crowd member 1"
+    },
+    {
+      "name": "CHR_Crowd02_STR_v001",
+      "category": "CHR",
+      "district": "STR",
+      "glb": "CHR_Crowd02_STR_v001.glb",
+      "fbx": "CHR_Crowd02_STR_v001.fbx",
+      "glbBytes": 131140,
+      "fbxBytes": 600972,
+      "tris": 324,
+      "intendedXZY": [
+        0.55,
+        0.3,
+        1.65
+      ],
+      "measuredXZY": [
+        0.415,
+        0.344,
+        1.636
+      ],
+      "boundsContainIntended": false,
+      "objects": 22,
+      "preview": "_previews/CHR_Crowd02_STR_v001.png",
+      "humanoid": true,
+      "seconds": 6.11,
+      "note": "crowd member 2"
+    },
+    {
+      "name": "CHR_Crowd03_STR_v001",
+      "category": "CHR",
+      "district": "STR",
+      "glb": "CHR_Crowd03_STR_v001.glb",
+      "fbx": "CHR_Crowd03_STR_v001.fbx",
+      "glbBytes": 137116,
+      "fbxBytes": 626860,
+      "tris": 376,
+      "intendedXZY": [
+        0.55,
+        0.32,
+        1.72
+      ],
+      "measuredXZY": [
+        0.43,
+        0.334,
+        1.725
+      ],
+      "boundsContainIntended": false,
+      "objects": 23,
+      "preview": "_previews/CHR_Crowd03_STR_v001.png",
+      "humanoid": true,
+      "seconds": 5.87,
+      "note": "crowd member 3"
+    },
+    {
+      "name": "CHR_DJ_NCL_v001",
+      "category": "CHR",
+      "district": "NCL",
+      "glb": "CHR_DJ_NCL_v001.glb",
+      "fbx": "CHR_DJ_NCL_v001.fbx",
+      "glbBytes": 148996,
+      "fbxBytes": 611612,
+      "tris": 428,
+      "intendedXZY": [
+        0.55,
+        0.28,
+        1.7
+      ],
+      "measuredXZY": [
+        0.426,
+        0.383,
+        1.717
+      ],
+      "boundsContainIntended": false,
+      "objects": 25,
+      "preview": "_previews/CHR_DJ_NCL_v001.png",
+      "humanoid": true,
+      "seconds": 6.36,
+      "note": "nightclub DJ"
+    },
+    {
+      "name": "CHR_Mallam_ML_v001",
+      "category": "CHR",
+      "district": "ML",
+      "glb": "CHR_Mallam_ML_v001.glb",
+      "fbx": "CHR_Mallam_ML_v001.fbx",
+      "glbBytes": 136768,
+      "fbxBytes": 626796,
+      "tris": 376,
+      "intendedXZY": [
+        0.55,
+        0.3,
+        1.75
+      ],
+      "measuredXZY": [
+        0.436,
+        0.336,
+        1.755
+      ],
+      "boundsContainIntended": false,
+      "objects": 23,
+      "preview": "_previews/CHR_Mallam_ML_v001.png",
+      "humanoid": true,
+      "seconds": 6.05,
+      "note": "suya grill man"
+    },
+    {
+      "name": "CHR_MamaSeyi_ML_v001",
+      "category": "CHR",
+      "district": "ML",
+      "glb": "CHR_MamaSeyi_ML_v001.glb",
+      "fbx": "CHR_MamaSeyi_ML_v001.fbx",
+      "glbBytes": 145816,
+      "fbxBytes": 628988,
+      "tris": 444,
+      "intendedXZY": [
+        0.55,
+        0.34,
+        1.62
+      ],
+      "measuredXZY": [
+        0.409,
+        0.33,
+        1.658
+      ],
+      "boundsContainIntended": false,
+      "objects": 23,
+      "preview": "_previews/CHR_MamaSeyi_ML_v001.png",
+      "humanoid": true,
+      "seconds": 6.5,
+      "note": "suya vendor"
+    },
+    {
+      "name": "CHR_Player_STD_v001",
+      "category": "CHR",
+      "district": "STD",
+      "glb": "CHR_Player_STD_v001.glb",
+      "fbx": "CHR_Player_STD_v001.fbx",
+      "glbBytes": 128796,
+      "fbxBytes": 575324,
+      "tris": 312,
+      "intendedXZY": [
+        0.6,
+        0.3,
+        1.72
+      ],
+      "measuredXZY": [
+        0.43,
+        0.334,
+        1.705
+      ],
+      "boundsContainIntended": false,
+      "objects": 21,
+      "preview": "_previews/CHR_Player_STD_v001.png",
+      "humanoid": true,
+      "seconds": 5.91,
+      "note": "player character"
+    },
+    {
+      "name": "INT_Apartment_ND_v001",
+      "category": "INT",
+      "district": "ND",
+      "glb": "INT_Apartment_ND_v001.glb",
+      "fbx": "INT_Apartment_ND_v001.fbx",
+      "glbBytes": 52184,
+      "fbxBytes": 36220,
+      "tris": 604,
+      "intendedXZY": [
+        8.16,
+        6.16,
+        2.9
+      ],
+      "measuredXZY": [
+        8.24,
+        6.24,
+        3.0
+      ],
+      "boundsContainIntended": true,
+      "objects": 1,
+      "preview": "_previews/INT_Apartment_ND_v001.png",
+      "humanoid": false,
+      "seconds": 6.74,
+      "note": "8x6x2.8m furnished shell"
+    },
+    {
+      "name": "NCL_Club57_NCL_v001",
+      "category": "NCL",
+      "district": "NCL",
+      "glb": "NCL_Club57_NCL_v001.glb",
+      "fbx": "NCL_Club57_NCL_v001.fbx",
+      "glbBytes": 58716,
+      "fbxBytes": 30940,
+      "tris": 744,
+      "intendedXZY": [
+        12.0,
+        16.0,
+        6.0
+      ],
+      "measuredXZY": [
+        12.4,
+        16.4,
+        6.08
+      ],
+      "boundsContainIntended": true,
+      "objects": 1,
+      "preview": "_previews/NCL_Club57_NCL_v001.png",
+      "humanoid": false,
+      "seconds": 7.5,
+      "note": "12x16m club shell: floor, walls, ceiling, dance floor"
+    },
+    {
+      "name": "PRP_Bar_NCL_v001",
+      "category": "PRP",
+      "district": "NCL",
+      "glb": "PRP_Bar_NCL_v001.glb",
+      "fbx": "PRP_Bar_NCL_v001.fbx",
+      "glbBytes": 148624,
+      "fbxBytes": 55244,
+      "tris": 648,
+      "intendedXZY": [
+        2.5,
+        1.2,
+        1.32
+      ],
+      "measuredXZY": [
+        2.5,
+        1.2,
+        1.34
+      ],
+      "boundsContainIntended": true,
+      "objects": 1,
+      "preview": "_previews/PRP_Bar_NCL_v001.png",
+      "humanoid": false,
+      "seconds": 6.19,
+      "note": "L-shaped bar with bottle rail"
+    },
+    {
+      "name": "PRP_BeachBall_BCH_v001",
+      "category": "PRP",
+      "district": "BCH",
+      "glb": "PRP_BeachBall_BCH_v001.glb",
+      "fbx": "PRP_BeachBall_BCH_v001.fbx",
+      "glbBytes": 45000,
+      "fbxBytes": 28092,
+      "tris": 568,
+      "intendedXZY": [
+        0.4,
+        0.4,
+        0.4
+      ],
+      "measuredXZY": [
+        0.565,
+        0.576,
+        0.4
+      ],
+      "boundsContainIntended": true,
+      "objects": 1,
+      "preview": "_previews/PRP_BeachBall_BCH_v001.png",
+      "humanoid": false,
+      "seconds": 4.43,
+      "note": "inflatable beach ball"
+    },
+    {
+      "name": "PRP_Bed_ND_v001",
+      "category": "PRP",
+      "district": "ND",
+      "glb": "PRP_Bed_ND_v001.glb",
+      "fbx": "PRP_Bed_ND_v001.fbx",
+      "glbBytes": 58232,
+      "fbxBytes": 36220,
+      "tris": 196,
+      "intendedXZY": [
+        2.0,
+        2.22,
+        1.1
+      ],
+      "measuredXZY": [
+        2.05,
+        2.165,
+        1.065
+      ],
+      "boundsContainIntended": true,
+      "objects": 1,
+      "preview": "_previews/PRP_Bed_ND_v001.png",
+      "humanoid": false,
+      "seconds": 56.22,
+      "note": "double bed + nightstand"
+    },
+    {
+      "name": "PRP_Bench_ML_v001",
+      "category": "PRP",
+      "district": "ML",
+      "glb": "PRP_Bench_ML_v001.glb",
+      "fbx": "PRP_Bench_ML_v001.fbx",
+      "glbBytes": 43256,
+      "fbxBytes": 27356,
+      "tris": 144,
+      "intendedXZY": [
+        1.8,
+        0.56,
+        1.06
+      ],
+      "measuredXZY": [
+        1.8,
+        0.586,
+        1.021
+      ],
+      "boundsContainIntended": true,
+      "objects": 1,
+      "preview": "_previews/PRP_Bench_ML_v001.png",
+      "humanoid": false,
+      "seconds": 4.53,
+      "note": "park bench"
+    },
+    {
+      "name": "PRP_Bin_ML_v001",
+      "category": "PRP",
+      "district": "ML",
+      "glb": "PRP_Bin_ML_v001.glb",
+      "fbx": "PRP_Bin_ML_v001.fbx",
+      "glbBytes": 28180,
+      "fbxBytes": 23772,
+      "tris": 416,
+      "intendedXZY": [
+        0.6,
+        0.6,
+        0.82
+      ],
+      "measuredXZY": [
+        0.6,
+        0.6,
+        0.845
+      ],
+      "boundsContainIntended": true,
+      "objects": 1,
+      "preview": "_previews/PRP_Bin_ML_v001.png",
+      "humanoid": false,
+      "seconds": 4.31,
+      "note": "street bin"
+    },
+    {
+      "name": "PRP_Booth_NCL_v001",
+      "category": "PRP",
+      "district": "NCL",
+      "glb": "PRP_Booth_NCL_v001.glb",
+      "fbx": "PRP_Booth_NCL_v001.fbx",
+      "glbBytes": 36372,
+      "fbxBytes": 27500,
+      "tris": 128,
+      "intendedXZY": [
+        1.8,
+        1.2,
+        0.9
+      ],
+      "measuredXZY": [
+        1.88,
+        1.265,
+        0.9
+      ],
+      "boundsContainIntended": true,
+      "objects": 1,
+      "preview": "_previews/PRP_Booth_NCL_v001.png",
+      "humanoid": false,
+      "seconds": 5.87,
+      "note": "VIP booth with velvet bench"
+    },
+    {
+      "name": "PRP_Bottle_NCL_v001",
+      "category": "PRP",
+      "district": "NCL",
+      "glb": "PRP_Bottle_NCL_v001.glb",
+      "fbx": "PRP_Bottle_NCL_v001.fbx",
+      "glbBytes": 9592,
+      "fbxBytes": 19036,
+      "tris": 104,
+      "intendedXZY": [
+        0.12,
+        0.12,
+        0.36
+      ],
+      "measuredXZY": [
+        0.114,
+        0.12,
+        0.33
+      ],
+      "boundsContainIntended": true,
+      "objects": 1,
+      "preview": "_previews/PRP_Bottle_NCL_v001.png",
+      "humanoid": false,
+      "seconds": 4.43,
+      "note": "premium bottle"
+    },
+    {
+      "name": "PRP_Chair_ND_v001",
+      "category": "PRP",
+      "district": "ND",
+      "glb": "PRP_Chair_ND_v001.glb",
+      "fbx": "PRP_Chair_ND_v001.fbx",
+      "glbBytes": 43216,
+      "fbxBytes": 26444,
+      "tris": 144,
+      "intendedXZY": [
+        0.46,
+        0.46,
+        1.01
+      ],
+      "measuredXZY": [
+        0.46,
+        0.46,
+        1.01
+      ],
+      "boundsContainIntended": true,
+      "objects": 1,
+      "preview": "_previews/PRP_Chair_ND_v001.png",
+      "humanoid": false,
+      "seconds": 4.47,
+      "note": "dining chair"
+    },
+    {
+      "name": "PRP_Coaster_NCL_v001",
+      "category": "PRP",
+      "district": "NCL",
+      "glb": "PRP_Coaster_NCL_v001.glb",
+      "fbx": "PRP_Coaster_NCL_v001.fbx",
+      "glbBytes": 7180,
+      "fbxBytes": 17804,
+      "tris": 88,
+      "intendedXZY": [
+        0.1,
+        0.1,
+        0.04
+      ],
+      "measuredXZY": [
+        0.12,
+        0.12,
+        0.027
+      ],
+      "boundsContainIntended": false,
+      "objects": 1,
+      "preview": "_previews/PRP_Coaster_NCL_v001.png",
+      "humanoid": false,
+      "seconds": 4.69,
+      "note": "neon coaster"
+    },
+    {
+      "name": "PRP_Cooler_BCH_v001",
+      "category": "PRP",
+      "district": "BCH",
+      "glb": "PRP_Cooler_BCH_v001.glb",
+      "fbx": "PRP_Cooler_BCH_v001.fbx",
+      "glbBytes": 15600,
+      "fbxBytes": 21756,
+      "tris": 48,
+      "intendedXZY": [
+        0.4,
+        0.4,
+        0.47
+      ],
+      "measuredXZY": [
+        0.42,
+        0.465,
+        0.445
+      ],
+      "boundsContainIntended": true,
+      "objects": 1,
+      "preview": "_previews/PRP_Cooler_BCH_v001.png",
+      "humanoid": false,
+      "seconds": 4.44,
+      "note": "beach cooler"
+    },
+    {
+      "name": "PRP_Cooler_ML_v001",
+      "category": "PRP",
+      "district": "ML",
+      "glb": "PRP_Cooler_ML_v001.glb",
+      "fbx": "PRP_Cooler_ML_v001.fbx",
+      "glbBytes": 68652,
+      "fbxBytes": 39932,
+      "tris": 252,
+      "intendedXZY": [
+        0.57,
+        0.4,
+        0.66
+      ],
+      "measuredXZY": [
+        0.57,
+        0.425,
+        0.65
+      ],
+      "boundsContainIntended": true,
+      "objects": 1,
+      "preview": "_previews/PRP_Cooler_ML_v001.png",
+      "humanoid": false,
+      "seconds": 5.69,
+      "note": "drinks cooler, lid open, 3 bottles"
+    },
+    {
+      "name": "PRP_DJBooth_NCL_v001",
+      "category": "PRP",
+      "district": "NCL",
+      "glb": "PRP_DJBooth_NCL_v001.glb",
+      "fbx": "PRP_DJBooth_NCL_v001.fbx",
+      "glbBytes": 70084,
+      "fbxBytes": 35740,
+      "tris": 340,
+      "intendedXZY": [
+        1.4,
+        0.9,
+        1.2
+      ],
+      "measuredXZY": [
+        1.4,
+        0.9,
+        1.275
+      ],
+      "boundsContainIntended": true,
+      "objects": 1,
+      "preview": "_previews/PRP_DJBooth_NCL_v001.png",
+      "humanoid": false,
+      "seconds": 4.84,
+      "note": "raised DJ platform with decks"
+    },
+    {
+      "name": "PRP_Door_ND_v001",
+      "category": "PRP",
+      "district": "ND",
+      "glb": "PRP_Door_ND_v001.glb",
+      "fbx": "PRP_Door_ND_v001.fbx",
+      "glbBytes": 19836,
+      "fbxBytes": 23516,
+      "tris": 220,
+      "intendedXZY": [
+        1.08,
+        0.24,
+        2.1
+      ],
+      "measuredXZY": [
+        1.08,
+        0.24,
+        2.1
+      ],
+      "boundsContainIntended": true,
+      "objects": 1,
+      "preview": "_previews/PRP_Door_ND_v001.png",
+      "humanoid": false,
+      "seconds": 4.43,
+      "note": "apartment door"
+    },
+    {
+      "name": "PRP_Fan_ML_v001",
+      "category": "PRP",
+      "district": "ML",
+      "glb": "PRP_Fan_ML_v001.glb",
+      "fbx": "PRP_Fan_ML_v001.fbx",
+      "glbBytes": 48224,
+      "fbxBytes": 30220,
+      "tris": 656,
+      "intendedXZY": [
+        0.46,
+        0.55,
+        1.08
+      ],
+      "measuredXZY": [
+        0.444,
+        0.536,
+        1.071
+      ],
+      "boundsContainIntended": true,
+      "objects": 1,
+      "preview": "_previews/PRP_Fan_ML_v001.png",
+      "humanoid": false,
+      "seconds": 4.77,
+      "note": "floor fan, wire cage"
+    },
+    {
+      "name": "PRP_Grill_ML_v001",
+      "category": "PRP",
+      "district": "ML",
+      "glb": "PRP_Grill_ML_v001.glb",
+      "fbx": "PRP_Grill_ML_v001.fbx",
+      "glbBytes": 200828,
+      "fbxBytes": 67820,
+      "tris": 764,
+      "intendedXZY": [
+        1.4,
+        0.55,
+        1.26
+      ],
+      "measuredXZY": [
+        1.4,
+        0.55,
+        1.26
+      ],
+      "boundsContainIntended": true,
+      "objects": 1,
+      "preview": "_previews/PRP_Grill_ML_v001.png",
+      "humanoid": false,
+      "seconds": 5.4,
+      "note": "suya trough grill, live coals + 6 skewers"
+    },
+    {
+      "name": "PRP_LampPost_ML_v001",
+      "category": "PRP",
+      "district": "ML",
+      "glb": "PRP_LampPost_ML_v001.glb",
+      "fbx": "PRP_LampPost_ML_v001.fbx",
+      "glbBytes": 73556,
+      "fbxBytes": 38556,
+      "tris": 396,
+      "intendedXZY": [
+        0.42,
+        1.86,
+        9.16
+      ],
+      "measuredXZY": [
+        0.65,
+        2.07,
+        9.16
+      ],
+      "boundsContainIntended": true,
+      "objects": 1,
+      "preview": "_previews/PRP_LampPost_ML_v001.png",
+      "humanoid": false,
+      "seconds": 4.2,
+      "note": "9m street lamp"
+    },
+    {
+      "name": "PRP_Lamp_ND_v001",
+      "category": "PRP",
+      "district": "ND",
+      "glb": "PRP_Lamp_ND_v001.glb",
+      "fbx": "PRP_Lamp_ND_v001.fbx",
+      "glbBytes": 21696,
+      "fbxBytes": 23324,
+      "tris": 272,
+      "intendedXZY": [
+        0.4,
+        0.4,
+        1.7
+      ],
+      "measuredXZY": [
+        0.4,
+        0.4,
+        1.7
+      ],
+      "boundsContainIntended": true,
+      "objects": 1,
+      "preview": "_previews/PRP_Lamp_ND_v001.png",
+      "humanoid": false,
+      "seconds": 4.21,
+      "note": "floor lamp"
+    },
+    {
+      "name": "PRP_LightBeam_NCL_v001",
+      "category": "PRP",
+      "district": "NCL",
+      "glb": "PRP_LightBeam_NCL_v001.glb",
+      "fbx": "PRP_LightBeam_NCL_v001.fbx",
+      "glbBytes": 29532,
+      "fbxBytes": 25980,
+      "tris": 120,
+      "intendedXZY": [
+        0.3,
+        1.7,
+        1.65
+      ],
+      "measuredXZY": [
+        0.22,
+        1.225,
+        0.55
+      ],
+      "boundsContainIntended": false,
+      "objects": 1,
+      "preview": "_previews/PRP_LightBeam_NCL_v001.png",
+      "humanoid": false,
+      "seconds": 5.34,
+      "note": "moving head spotlight"
+    },
+    {
+      "name": "PRP_LoungeChair_BCH_v001",
+      "category": "PRP",
+      "district": "BCH",
+      "glb": "PRP_LoungeChair_BCH_v001.glb",
+      "fbx": "PRP_LoungeChair_BCH_v001.fbx",
+      "glbBytes": 28964,
+      "fbxBytes": 22748,
+      "tris": 96,
+      "intendedXZY": [
+        0.6,
+        1.2,
+        0.8
+      ],
+      "measuredXZY": [
+        0.68,
+        1.2,
+        1.045
+      ],
+      "boundsContainIntended": true,
+      "objects": 1,
+      "preview": "_previews/PRP_LoungeChair_BCH_v001.png",
+      "humanoid": false,
+      "seconds": 4.64,
+      "note": "reclining beach chair"
+    },
+    {
+      "name": "PRP_Napkin_ML_v001",
+      "category": "PRP",
+      "district": "ML",
+      "glb": "PRP_Napkin_ML_v001.glb",
+      "fbx": "PRP_Napkin_ML_v001.fbx",
+      "glbBytes": 39844,
+      "fbxBytes": 27820,
+      "tris": 152,
+      "intendedXZY": [
+        0.28,
+        0.22,
+        0.17
+      ],
+      "measuredXZY": [
+        0.26,
+        0.205,
+        0.16
+      ],
+      "boundsContainIntended": true,
+      "objects": 1,
+      "preview": "_previews/PRP_Napkin_ML_v001.png",
+      "humanoid": false,
+      "seconds": 5.76,
+      "note": "steel napkin holder + shakers"
+    },
+    {
+      "name": "PRP_NeonSign_NCL_v001",
+      "category": "PRP",
+      "district": "NCL",
+      "glb": "PRP_NeonSign_NCL_v001.glb",
+      "fbx": "PRP_NeonSign_NCL_v001.fbx",
+      "glbBytes": 15176,
+      "fbxBytes": 21564,
+      "tris": 48,
+      "intendedXZY": [
+        1.2,
+        0.08,
+        0.42
+      ],
+      "measuredXZY": [
+        1.22,
+        0.08,
+        0.42
+      ],
+      "boundsContainIntended": true,
+      "objects": 1,
+      "preview": "_previews/PRP_NeonSign_NCL_v001.png",
+      "humanoid": false,
+      "seconds": 4.88,
+      "note": "club neon sign"
+    },
+    {
+      "name": "PRP_PalmTree_BCH_v001",
+      "category": "PRP",
+      "district": "BCH",
+      "glb": "PRP_PalmTree_BCH_v001.glb",
+      "fbx": "PRP_PalmTree_BCH_v001.fbx",
+      "glbBytes": 27352,
+      "fbxBytes": 23452,
+      "tris": 332,
+      "intendedXZY": [
+        1.0,
+        1.0,
+        4.0
+      ],
+      "measuredXZY": [
+        2.918,
+        2.918,
+        4.305
+      ],
+      "boundsContainIntended": true,
+      "objects": 1,
+      "preview": "_previews/PRP_PalmTree_BCH_v001.png",
+      "humanoid": false,
+      "seconds": 4.54,
+      "note": "coconut palm"
+    },
+    {
+      "name": "PRP_Pothole_ML_v001",
+      "category": "PRP",
+      "district": "ML",
+      "glb": "PRP_Pothole_ML_v001.glb",
+      "fbx": "PRP_Pothole_ML_v001.fbx",
+      "glbBytes": 30016,
+      "fbxBytes": 25868,
+      "tris": 372,
+      "intendedXZY": [
+        1.5,
+        1.2,
+        0.04
+      ],
+      "measuredXZY": [
+        1.64,
+        1.624,
+        0.126
+      ],
+      "boundsContainIntended": true,
+      "objects": 1,
+      "preview": "_previews/PRP_Pothole_ML_v001.png",
+      "humanoid": false,
+      "seconds": 4.71,
+      "note": "road defect"
+    },
+    {
+      "name": "PRP_SandCastle_BCH_v001",
+      "category": "PRP",
+      "district": "BCH",
+      "glb": "PRP_SandCastle_BCH_v001.glb",
+      "fbx": "PRP_SandCastle_BCH_v001.fbx",
+      "glbBytes": 38804,
+      "fbxBytes": 27580,
+      "tris": 144,
+      "intendedXZY": [
+        0.5,
+        0.5,
+        0.6
+      ],
+      "measuredXZY": [
+        0.6,
+        0.64,
+        0.525
+      ],
+      "boundsContainIntended": false,
+      "objects": 1,
+      "preview": "_previews/PRP_SandCastle_BCH_v001.png",
+      "humanoid": false,
+      "seconds": 4.48,
+      "note": "small sand castle"
+    },
+    {
+      "name": "PRP_Signage_ML_v001",
+      "category": "PRP",
+      "district": "ML",
+      "glb": "PRP_Signage_ML_v001.glb",
+      "fbx": "PRP_Signage_ML_v001.fbx",
+      "glbBytes": 18948,
+      "fbxBytes": 23868,
+      "tris": 180,
+      "intendedXZY": [
+        0.4,
+        1.96,
+        3.32
+      ],
+      "measuredXZY": [
+        0.36,
+        2.52,
+        3.345
+      ],
+      "boundsContainIntended": true,
+      "objects": 1,
+      "preview": "_previews/PRP_Signage_ML_v001.png",
+      "humanoid": false,
+      "seconds": 4.53,
+      "note": "lit shop sign"
+    },
+    {
+      "name": "PRP_Skewer_ML_v001",
+      "category": "PRP",
+      "district": "ML",
+      "glb": "PRP_Skewer_ML_v001.glb",
+      "fbx": "PRP_Skewer_ML_v001.fbx",
+      "glbBytes": 38216,
+      "fbxBytes": 28572,
+      "tris": 462,
+      "intendedXZY": [
+        0.36,
+        0.36,
+        0.12
+      ],
+      "measuredXZY": [
+        0.355,
+        0.36,
+        0.108
+      ],
+      "boundsContainIntended": true,
+      "objects": 1,
+      "preview": "_previews/PRP_Skewer_ML_v001.png",
+      "humanoid": false,
+      "seconds": 4.81,
+      "note": "plated suya: 4 skewers, onions, pepper"
+    },
+    {
+      "name": "PRP_Sofa_ND_v001",
+      "category": "PRP",
+      "district": "ND",
+      "glb": "PRP_Sofa_ND_v001.glb",
+      "fbx": "PRP_Sofa_ND_v001.fbx",
+      "glbBytes": 19352,
+      "fbxBytes": 22332,
+      "tris": 204,
+      "intendedXZY": [
+        2.14,
+        0.92,
+        0.96
+      ],
+      "measuredXZY": [
+        2.22,
+        0.92,
+        1.018
+      ],
+      "boundsContainIntended": true,
+      "objects": 1,
+      "preview": "_previews/PRP_Sofa_ND_v001.png",
+      "humanoid": false,
+      "seconds": 4.91,
+      "note": "3-seat sofa"
+    },
+    {
+      "name": "PRP_Speaker_NCL_v001",
+      "category": "PRP",
+      "district": "NCL",
+      "glb": "PRP_Speaker_NCL_v001.glb",
+      "fbx": "PRP_Speaker_NCL_v001.fbx",
+      "glbBytes": 32712,
+      "fbxBytes": 25276,
+      "tris": 200,
+      "intendedXZY": [
+        0.6,
+        0.4,
+        1.2
+      ],
+      "measuredXZY": [
+        0.6,
+        0.44,
+        1.2
+      ],
+      "boundsContainIntended": true,
+      "objects": 1,
+      "preview": "_previews/PRP_Speaker_NCL_v001.png",
+      "humanoid": false,
+      "seconds": 4.42,
+      "note": "PA stack with dual drivers"
+    },
+    {
+      "name": "PRP_Stool_ML_v001",
+      "category": "PRP",
+      "district": "ML",
+      "glb": "PRP_Stool_ML_v001.glb",
+      "fbx": "PRP_Stool_ML_v001.fbx",
+      "glbBytes": 19992,
+      "fbxBytes": 20044,
+      "tris": 296,
+      "intendedXZY": [
+        0.38,
+        0.38,
+        0.35
+      ],
+      "measuredXZY": [
+        0.38,
+        0.38,
+        0.346
+      ],
+      "boundsContainIntended": true,
+      "objects": 1,
+      "preview": "_previews/PRP_Stool_ML_v001.png",
+      "humanoid": false,
+      "seconds": 4.52,
+      "note": "stackable stool"
+    },
+    {
+      "name": "PRP_Stool_NCL_v001",
+      "category": "PRP",
+      "district": "NCL",
+      "glb": "PRP_Stool_NCL_v001.glb",
+      "fbx": "PRP_Stool_NCL_v001.fbx",
+      "glbBytes": 10472,
+      "fbxBytes": 19372,
+      "tris": 128,
+      "intendedXZY": [
+        0.35,
+        0.35,
+        0.8
+      ],
+      "measuredXZY": [
+        0.44,
+        0.44,
+        0.765
+      ],
+      "boundsContainIntended": true,
+      "objects": 1,
+      "preview": "_previews/PRP_Stool_NCL_v001.png",
+      "humanoid": false,
+      "seconds": 4.4,
+      "note": "bar stool with chrome base"
+    },
+    {
+      "name": "PRP_Surfboard_BCH_v001",
+      "category": "PRP",
+      "district": "BCH",
+      "glb": "PRP_Surfboard_BCH_v001.glb",
+      "fbx": "PRP_Surfboard_BCH_v001.fbx",
+      "glbBytes": 18916,
+      "fbxBytes": 21596,
+      "tris": 60,
+      "intendedXZY": [
+        0.5,
+        2.0,
+        0.14
+      ],
+      "measuredXZY": [
+        0.5,
+        2.035,
+        0.15
+      ],
+      "boundsContainIntended": true,
+      "objects": 1,
+      "preview": "_previews/PRP_Surfboard_BCH_v001.png",
+      "humanoid": false,
+      "seconds": 4.8,
+      "note": "surfboard"
+    },
+    {
+      "name": "PRP_TV_ND_v001",
+      "category": "PRP",
+      "district": "ND",
+      "glb": "PRP_TV_ND_v001.glb",
+      "fbx": "PRP_TV_ND_v001.fbx",
+      "glbBytes": 45080,
+      "fbxBytes": 29660,
+      "tris": 180,
+      "intendedXZY": [
+        1.6,
+        0.4,
+        1.41
+      ],
+      "measuredXZY": [
+        1.6,
+        0.425,
+        1.41
+      ],
+      "boundsContainIntended": true,
+      "objects": 1,
+      "preview": "_previews/PRP_TV_ND_v001.png",
+      "humanoid": false,
+      "seconds": 5.01,
+      "note": "55in TV + console"
+    },
+    {
+      "name": "PRP_Table_ML_v001",
+      "category": "PRP",
+      "district": "ML",
+      "glb": "PRP_Table_ML_v001.glb",
+      "fbx": "PRP_Table_ML_v001.fbx",
+      "glbBytes": 61536,
+      "fbxBytes": 34252,
+      "tris": 236,
+      "intendedXZY": [
+        0.8,
+        0.8,
+        0.98
+      ],
+      "measuredXZY": [
+        0.8,
+        0.8,
+        0.945
+      ],
+      "boundsContainIntended": true,
+      "objects": 1,
+      "preview": "_previews/PRP_Table_ML_v001.png",
+      "humanoid": false,
+      "seconds": 4.48,
+      "note": "folding outdoor table with malt + plate"
+    },
+    {
+      "name": "PRP_Table_NCL_v001",
+      "category": "PRP",
+      "district": "NCL",
+      "glb": "PRP_Table_NCL_v001.glb",
+      "fbx": "PRP_Table_NCL_v001.fbx",
+      "glbBytes": 16280,
+      "fbxBytes": 21900,
+      "tris": 200,
+      "intendedXZY": [
+        0.5,
+        0.5,
+        0.95
+      ],
+      "measuredXZY": [
+        0.78,
+        0.8,
+        1.0
+      ],
+      "boundsContainIntended": true,
+      "objects": 1,
+      "preview": "_previews/PRP_Table_NCL_v001.png",
+      "humanoid": false,
+      "seconds": 6.19,
+      "note": "high cocktail table"
+    },
+    {
+      "name": "PRP_Table_ND_v001",
+      "category": "PRP",
+      "district": "ND",
+      "glb": "PRP_Table_ND_v001.glb",
+      "fbx": "PRP_Table_ND_v001.fbx",
+      "glbBytes": 42688,
+      "fbxBytes": 29916,
+      "tris": 144,
+      "intendedXZY": [
+        1.2,
+        0.62,
+        0.47
+      ],
+      "measuredXZY": [
+        1.2,
+        0.62,
+        0.52
+      ],
+      "boundsContainIntended": true,
+      "objects": 1,
+      "preview": "_previews/PRP_Table_ND_v001.png",
+      "humanoid": false,
+      "seconds": 4.44,
+      "note": "coffee table"
+    },
+    {
+      "name": "PRP_TrafficLight_ML_v001",
+      "category": "PRP",
+      "district": "ML",
+      "glb": "PRP_TrafficLight_ML_v001.glb",
+      "fbx": "PRP_TrafficLight_ML_v001.fbx",
+      "glbBytes": 86552,
+      "fbxBytes": 43612,
+      "tris": 392,
+      "intendedXZY": [
+        2.7,
+        0.5,
+        4.4
+      ],
+      "measuredXZY": [
+        3.33,
+        0.545,
+        4.35
+      ],
+      "boundsContainIntended": true,
+      "objects": 1,
+      "preview": "_previews/PRP_TrafficLight_ML_v001.png",
+      "humanoid": false,
+      "seconds": 4.43,
+      "note": "signal"
+    },
+    {
+      "name": "PRP_Umbrella_BCH_v001",
+      "category": "PRP",
+      "district": "BCH",
+      "glb": "PRP_Umbrella_BCH_v001.glb",
+      "fbx": "PRP_Umbrella_BCH_v001.fbx",
+      "glbBytes": 23372,
+      "fbxBytes": 22908,
+      "tris": 488,
+      "intendedXZY": [
+        2.5,
+        2.5,
+        2.95
+      ],
+      "measuredXZY": [
+        2.5,
+        2.525,
+        3.0
+      ],
+      "boundsContainIntended": true,
+      "objects": 1,
+      "preview": "_previews/PRP_Umbrella_BCH_v001.png",
+      "humanoid": false,
+      "seconds": 4.88,
+      "note": "beach umbrella, striped"
+    },
+    {
+      "name": "PRP_VendorCart_ML_v001",
+      "category": "PRP",
+      "district": "ML",
+      "glb": "PRP_VendorCart_ML_v001.glb",
+      "fbx": "PRP_VendorCart_ML_v001.fbx",
+      "glbBytes": 231960,
+      "fbxBytes": 83580,
+      "tris": 1232,
+      "intendedXZY": [
+        2.1,
+        1.1,
+        2.05
+      ],
+      "measuredXZY": [
+        2.12,
+        1.16,
+        2.058
+      ],
+      "boundsContainIntended": true,
+      "objects": 1,
+      "preview": "_previews/PRP_VendorCart_ML_v001.png",
+      "humanoid": false,
+      "seconds": 6.46,
+      "note": "food cart"
+    },
+    {
+      "name": "PRP_Wardrobe_ND_v001",
+      "category": "PRP",
+      "district": "ND",
+      "glb": "PRP_Wardrobe_ND_v001.glb",
+      "fbx": "PRP_Wardrobe_ND_v001.fbx",
+      "glbBytes": 34272,
+      "fbxBytes": 27820,
+      "tris": 128,
+      "intendedXZY": [
+        1.84,
+        0.64,
+        2.16
+      ],
+      "measuredXZY": [
+        2.04,
+        0.667,
+        2.16
+      ],
+      "boundsContainIntended": true,
+      "objects": 1,
+      "preview": "_previews/PRP_Wardrobe_ND_v001.png",
+      "humanoid": false,
+      "seconds": 4.72,
+      "note": "double wardrobe"
+    },
+    {
+      "name": "PRP_Window_ND_v001",
+      "category": "PRP",
+      "district": "ND",
+      "glb": "PRP_Window_ND_v001.glb",
+      "fbx": "PRP_Window_ND_v001.fbx",
+      "glbBytes": 31888,
+      "fbxBytes": 27068,
+      "tris": 144,
+      "intendedXZY": [
+        1.34,
+        0.24,
+        1.78
+      ],
+      "measuredXZY": [
+        1.44,
+        0.39,
+        1.385
+      ],
+      "boundsContainIntended": false,
+      "objects": 1,
+      "preview": "_previews/PRP_Window_ND_v001.png",
+      "humanoid": false,
+      "seconds": 12.92,
+      "note": "1.2x1.35 window"
+    },
+    {
+      "name": "STR_CityStreet_ML_v001",
+      "category": "STR",
+      "district": "ML",
+      "glb": "STR_CityStreet_ML_v001.glb",
+      "fbx": "STR_CityStreet_ML_v001.fbx",
+      "glbBytes": 108216,
+      "fbxBytes": 49708,
+      "tris": 1380,
+      "intendedXZY": [
+        24.4,
+        10.4,
+        6.05
+      ],
+      "measuredXZY": [
+        24.7,
+        12.797,
+        6.09
+      ],
+      "boundsContainIntended": true,
+      "objects": 1,
+      "preview": "_previews/STR_CityStreet_ML_v001.png",
+      "humanoid": false,
+      "seconds": 7.35,
+      "note": "24x10m modular tile"
+    },
+    {
+      "name": "SYU_SuyaSpot_ML_v001",
+      "category": "SYU",
+      "district": "ML",
+      "glb": "SYU_SuyaSpot_ML_v001.glb",
+      "fbx": "SYU_SuyaSpot_ML_v001.fbx",
+      "glbBytes": 147884,
+      "fbxBytes": 60684,
+      "tris": 1900,
+      "intendedXZY": [
+        4.4,
+        3.06,
+        3.15
+      ],
+      "measuredXZY": [
+        4.4,
+        3.04,
+        3.145
+      ],
+      "boundsContainIntended": true,
+      "objects": 1,
+      "preview": "_previews/SYU_SuyaSpot_ML_v001.png",
+      "humanoid": false,
+      "seconds": 6.26,
+      "note": "4.4x3m stall: counter, grill, parasol, banners, seating"
+    },
+    {
+      "name": "VHC_Danfo_STR_v001",
+      "category": "VHC",
+      "district": "STR",
+      "glb": "VHC_Danfo_STR_v001.glb",
+      "fbx": "VHC_Danfo_STR_v001.fbx",
+      "glbBytes": 127320,
+      "fbxBytes": 49980,
+      "tris": 588,
+      "intendedXZY": [
+        4.5,
+        1.8,
+        2.15
+      ],
+      "measuredXZY": [
+        4.31,
+        1.92,
+        2.05
+      ],
+      "boundsContainIntended": true,
+      "objects": 1,
+      "preview": "_previews/VHC_Danfo_STR_v001.png",
+      "humanoid": false,
+      "seconds": 6.1,
+      "note": "minibus, yellow/black"
+    },
+    {
+      "name": "VHC_KekeNapep_STR_v001",
+      "category": "VHC",
+      "district": "STR",
+      "glb": "VHC_KekeNapep_STR_v001.glb",
+      "fbx": "VHC_KekeNapep_STR_v001.fbx",
+      "glbBytes": 78740,
+      "fbxBytes": 41132,
+      "tris": 344,
+      "intendedXZY": [
+        2.2,
+        1.2,
+        1.35
+      ],
+      "measuredXZY": [
+        1.4,
+        1.465,
+        1.27
+      ],
+      "boundsContainIntended": false,
+      "objects": 1,
+      "preview": "_previews/VHC_KekeNapep_STR_v001.png",
+      "humanoid": false,
+      "seconds": 5.96,
+      "note": "tricycle taxi, yellow"
+    },
+    {
+      "name": "VHC_Sedan_STR_v001",
+      "category": "VHC",
+      "district": "STR",
+      "glb": "VHC_Sedan_STR_v001.glb",
+      "fbx": "VHC_Sedan_STR_v001.fbx",
+      "glbBytes": 125372,
+      "fbxBytes": 48716,
+      "tris": 588,
+      "intendedXZY": [
+        4.0,
+        1.6,
+        1.45
+      ],
+      "measuredXZY": [
+        3.8,
+        1.74,
+        1.51
+      ],
+      "boundsContainIntended": true,
+      "objects": 1,
+      "preview": "_previews/VHC_Sedan_STR_v001.png",
+      "humanoid": false,
+      "seconds": 6.2,
+      "note": "private sedan, silver"
+    }
+  ]
+}
