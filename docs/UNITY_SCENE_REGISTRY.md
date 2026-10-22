@@ -1,4 +1,4 @@
-# NAAD Unity Scene Registry
+,# NAAD Unity Scene Registry
 
 Last updated: 2026-10-14 (audit `feat/audit-gate-recovery-2026-10-14`)
 Source of truth for build inclusion: `ProjectSettings/EditorBuildSettings.asset`
