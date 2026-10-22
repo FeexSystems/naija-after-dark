@@ -34,6 +34,16 @@
       },
       "hash": "dcabd63c2192ada3fd0d9340eddfa506af721873"
     },
+    "com.ivanmurzak.unity.mcp.probuilder": {
+      "version": "https://github.com/IvanMurzak/Unity-MCP.git?path=extensions/ProBuilder/Packages/com.ivanmurzak.unity.mcp.probuilder",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.ivanmurzak.unity.mcp": "1.0.0",
+        "com.unity.probuilder": "5.2.4"
+      },
+      "hash": "748c4d9b19464223706f913ab00632a3e65ddcd2"
+    },
     "com.ivanmurzak.unity.mcp.splines": {
       "version": "https://github.com/IvanMurzak/Unity-MCP.git?path=extensions/Splines/Packages/com.ivanmurzak.unity.mcp.splines",
       "depth": 0,
@@ -395,7 +405,7 @@
     },
     "com.unity.nuget.newtonsoft-json": {
       "version": "3.2.2",
-      "depth": 0,
+      "depth": 1,
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
