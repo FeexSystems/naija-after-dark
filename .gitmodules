@@ -1,0 +1,3 @@
+[submodule "tools/unity-cloud-asset-manager-for-blender"]
+	path = tools/unity-cloud-asset-manager-for-blender
+	url = https://github.com/Unity-Technologies/unity-cloud-asset-manager-for-blender.git

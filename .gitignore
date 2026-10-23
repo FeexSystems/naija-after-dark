@@ -204,6 +204,7 @@ _scratch_assets/
 _scratch_probe/
 _scratch_*.py
 _scratch_*.log
+PRP_Bed_ND,PRP_TV_ND/
 _scratch_*.zip
 PRP_Bed_ND,PRP_TV_ND/
 deno.exe
