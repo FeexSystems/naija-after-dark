@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "blender": {
+      "command": "npx",
+      "args": ["-y", "blender-mcp-runner"]
+    }
+  }
+}

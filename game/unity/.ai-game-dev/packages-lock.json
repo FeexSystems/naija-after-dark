@@ -1,0 +1,30 @@
+{
+  "lockfileVersion": 2,
+  "packages": {
+    "aigd.image-flux1-schnell": {
+      "version": "1.0.2",
+      "source": "^1.0.2",
+      "resolved": "https://downloads.ai-game.dev/packages/aigd.image-flux1-schnell/aigd.image-flux1-schnell-1.0.2.tgz",
+      "integrity": "sha512-LpVNkqfxeHtj5MIrK4lyxOltRmFY+ab7auKaoEGK11X9KpvW4J5qPx1NlW5v43oGbLt9inuoC0vqwN9IWBuwVQ==",
+      "treeHash": "sha256-ra7lsUpMeHX/TkuumAVBNd9VdspuczCuslwRdVsGROE=",
+      "engines": {
+        "aigd": ">=0.20.0"
+      },
+      "dependencies": {
+        "aigd.sdcpp": "^1.0.0"
+      }
+    },
+    "aigd.sdcpp": {
+      "version": "1.1.2",
+      "resolved": "https://downloads.ai-game.dev/packages/aigd.sdcpp/aigd.sdcpp-1.1.2.tgz",
+      "integrity": "sha512-+Kx26q97/LF4pisJt/nPHrTScp2MIu6OWncxWspJ5G6f7d2HJJuImx2abjm6o9kc9jWdbFKKXjpcgT1kpBLc1g==",
+      "treeHash": "sha256-irmtRLEo5fwPTCW1Pe3O9aXU2rNcShFTHRuvqzLzmmA=",
+      "engines": {
+        "aigd": ">=0.20.0"
+      },
+      "requiredBy": [
+        "aigd.image-flux1-schnell"
+      ]
+    }
+  }
+}
