@@ -89,9 +89,15 @@ namespace NAAD.Editor
             BuildNorthDistrict(environment.transform);
             BuildSouthDistrict(environment.transform);
             BuildStreetFurniture(environment.transform);
+            BuildMolueBus(environment.transform);
+            BuildSuyaStand(environment.transform);
+            BuildBarbershop(environment.transform);
+            BuildClubExterior(environment.transform);
 
             var npcs = Group(root.transform, "NPCs");
             BuildNpcs(npcs.transform);
+            BuildClubSecurity(npcs.transform);
+            BuildCrewSpawnPoints(npcs.transform);
 
             var anchors = Group(root.transform, "Anchors");
             BuildAnchors(anchors.transform);
@@ -386,6 +392,14 @@ namespace NAAD.Editor
             Npc(parent, "MarketTrader", new Vector3(-24f, 0f, 14.4f), new Color(0.35f, 0.55f, 0.75f),
                 InteractionType.Buy, "Browse the stall", "npc.street.market-trader");
 
+            // Club Velvet security — posted at the entrance (south-east district).
+            Npc(parent, "ClubBouncer1", new Vector3(13.5f, 0.11f, -11.0f), new Color(0.10f, 0.10f, 0.14f),
+                InteractionType.Talk, "Talk to the bouncer", "npc.club.bouncer-1");
+            Npc(parent, "ClubBouncer2", new Vector3(15.2f, 0.11f, -11.0f), new Color(0.10f, 0.10f, 0.14f),
+                InteractionType.Talk, "Talk to the bouncer", "npc.club.bouncer-2");
+            Npc(parent, "ClubSecurity", new Vector3(16.8f, 0.11f, -11.0f), new Color(0.08f, 0.08f, 0.12f),
+                InteractionType.Talk, "Talk to club security", "npc.club.security");
+
             // Interactable props (no NPC body — the object itself is the target).
             Prop(parent, "ATM", new Vector3(-14f, 0f, 14.2f), new Vector3(1.4f, 2.3f, 1f),
                 new Color(0.24f, 0.26f, 0.32f), InteractionType.Use, "Use the ATM", "str.atm.ojuelegba", 2.4f,
@@ -424,6 +438,28 @@ namespace NAAD.Editor
                 new Vector3(-18f, 0f, 15f));
             CreateMarker(parent, "Lm_Billboard", "naad.scene.landmark.billboard", "Lagos Never Sleeps",
                 new Vector3(34f, 0f, 14f));
+
+            // NPC crew spawn points — empty anchors where crew NPCs spawn at runtime.
+            CreateAnchor(parent, "Spawn_Tunde", SceneAnchor.AnchorKind.Interaction,
+                "naad.scene.crew.tunde", "Crew Spawn: Tunde", new Vector3(-17f, 0.11f, -13.6f), "");
+            CreateAnchor(parent, "Spawn_Amaka", SceneAnchor.AnchorKind.Interaction,
+                "naad.scene.crew.amaka", "Crew Spawn: Amaka", new Vector3(0f, 0.11f, 14.6f), "");
+            CreateAnchor(parent, "Spawn_Dami", SceneAnchor.AnchorKind.Interaction,
+                "naad.scene.crew.dami", "Crew Spawn: Dami", new Vector3(2f, 0.11f, -13.5f), "");
+            CreateAnchor(parent, "Spawn_SuyaSeller", SceneAnchor.AnchorKind.Interaction,
+                "naad.scene.crew.suya-seller", "Crew Spawn: Suya Seller", new Vector3(8f, 0.11f, -8.4f), "");
+            CreateAnchor(parent, "Spawn_ClubBouncer1", SceneAnchor.AnchorKind.Interaction,
+                "naad.scene.crew.club-bouncer-1", "Crew Spawn: Club Bouncer 1", new Vector3(13.5f, 0.11f, -11.0f), "");
+            CreateAnchor(parent, "Spawn_ClubBouncer2", SceneAnchor.AnchorKind.Interaction,
+                "naad.scene.crew.club-bouncer-2", "Crew Spawn: Club Bouncer 2", new Vector3(15.2f, 0.11f, -11.0f), "");
+            CreateAnchor(parent, "Spawn_ClubSecurity", SceneAnchor.AnchorKind.Interaction,
+                "naad.scene.crew.club-security", "Crew Spawn: Club Security", new Vector3(16.8f, 0.11f, -11.0f), "");
+            CreateAnchor(parent, "Spawn_MarketTrader", SceneAnchor.AnchorKind.Interaction,
+                "naad.scene.crew.market-trader", "Crew Spawn: Market Trader", new Vector3(-24f, 0.11f, 14.4f), "");
+            CreateAnchor(parent, "Spawn_DanfoConductor", SceneAnchor.AnchorKind.Interaction,
+                "naad.scene.crew.danfo-conductor", "Crew Spawn: Danfo Conductor", new Vector3(3.6f, 0.11f, 7.6f), "");
+            CreateAnchor(parent, "Spawn_OkadaRider", SceneAnchor.AnchorKind.Interaction,
+                "naad.scene.crew.okada-rider", "Crew Spawn: Okada Rider", new Vector3(26.2f, 0.11f, -7.6f), "");
         }
 
         private static void BuildLightingAndCamera(Transform parent)
@@ -807,6 +843,80 @@ namespace NAAD.Editor
             anchor.ContentId = contentId;
             anchor.DisplayName = displayName;
             anchor.TargetScene = targetScene;
+        }
+
+        private static void BuildMolueBus(Transform parent)
+        {
+            var molue = Group(parent, "MolueBus");
+            molue.transform.localPosition = new Vector3(-34f, 0f, 2f);
+            molue.transform.localRotation = Quaternion.Euler(0f, 20f, 0f);
+            Box(molue.transform, "Chassis", new Vector3(0f, 1.0f, 0f), new Vector3(3.2f, 1.6f, 8.5f), new Color(0.95f, 0.75f, 0.1f));
+            Box(molue.transform, "Roof", new Vector3(0f, 1.95f, 0f), new Vector3(3.0f, 0.5f, 8.2f), new Color(0.85f, 0.65f, 0.05f));
+            Box(molue.transform, "Stripe", new Vector3(0f, 1.1f, 0f), new Vector3(3.02f, 0.3f, 8.3f), new Color(0.15f, 0.15f, 0.18f));
+            Cyl(molue.transform, "Wheel_FL", new Vector3(-1.4f, 0.25f, 2.6f), 0.45f, 0.2f, new Color(0.05f, 0.05f, 0.07f));
+            Cyl(molue.transform, "Wheel_FR", new Vector3(1.4f, 0.25f, 2.6f), 0.45f, 0.2f, new Color(0.05f, 0.05f, 0.07f));
+            Cyl(molue.transform, "Wheel_RL", new Vector3(-1.4f, 0.25f, -2.6f), 0.45f, 0.2f, new Color(0.05f, 0.05f, 0.07f));
+            Cyl(molue.transform, "Wheel_RR", new Vector3(1.4f, 0.25f, -2.6f), 0.45f, 0.2f, new Color(0.05f, 0.05f, 0.07f));
+            Box(molue.transform, "Window", new Vector3(0f, 1.5f, 0f), new Vector3(2.6f, 0.9f, 6.5f), GlassNight);
+        }
+
+        private static void BuildSuyaStand(Transform parent)
+        {
+            var stand = Group(parent, "SuyaStand");
+            stand.transform.localPosition = new Vector3(7.5f, 0f, -8.0f);
+            Box(stand.transform, "Counter", new Vector3(0f, 0.5f, 0f), new Vector3(2.2f, 0.9f, 1.2f), Trunk);
+            Box(stand.transform, "Canopy", new Vector3(0f, 1.4f, 0f), new Vector3(2.6f, 0.12f, 1.6f), new Color(0.12f, 0.12f, 0.14f));
+            Cyl(stand.transform, "Post_L", new Vector3(-1.1f, 0.7f, 0.7f), 0.08f, 1.4f, Metal);
+            Cyl(stand.transform, "Post_R", new Vector3(1.1f, 0.7f, 0.7f), 0.08f, 1.4f, Metal);
+            Cyl(stand.transform, "Grill", new Vector3(0f, 0.85f, 0f), 0.15f, 0.5f, new Color(0.2f, 0.1f, 0.05f));
+            Box(stand.transform, "Embers", new Vector3(0f, 0.9f, 0f), new Vector3(1.4f, 0.06f, 0.8f),
+                new Color(0.2f, 0.1f, 0.05f), emissive: true, emission: new Color(1f, 0.3f, 0.05f));
+        }
+
+        private static void BuildBarbershop(Transform parent)
+        {
+            var shop = Group(parent, "Barbershop");
+            shop.transform.localPosition = new Vector3(-26f, 0f, -6f);
+            Box(shop.transform, "Facade", new Vector3(0f, 1.6f, 0f), new Vector3(5f, 2.2f, 0.3f), new Color(0.25f, 0.22f, 0.2f));
+            Box(shop.transform, "Door", new Vector3(-1.2f, 0.8f, 0.16f), new Vector3(0.9f, 1.6f, 0.1f), new Color(0.15f, 0.12f, 0.1f));
+            Box(shop.transform, "Window_L", new Vector3(-3.2f, 1.4f, 0.16f), new Vector3(1.4f, 1.2f, 0.1f), GlassNight);
+            Box(shop.transform, "Window_R", new Vector3(1.2f, 1.4f, 0.16f), new Vector3(1.4f, 1.2f, 0.1f), GlassNight);
+            Box(shop.transform, "Sign", new Vector3(0f, 2.9f, 0.16f), new Vector3(3f, 0.4f, 0.1f), new Color(0.9f, 0.1f, 0.1f),
+                emissive: true, emission: new Color(1f, 0.2f, 0.2f));
+            Cyl(shop.transform, "Pole", new Vector3(-4.2f, 1.4f, 0.3f), 0.12f, 1.8f, new Color(0.95f, 0.95f, 0.9f));
+            Cyl(shop.transform, "PoleRed", new Vector3(-4.2f, 2.1f, 0.3f), 0.12f, 0.4f, new Color(0.9f, 0.1f, 0.1f));
+        }
+
+        private static void BuildClubExterior(Transform parent)
+        {
+            var club = Group(parent, "ClubVelvetExterior");
+            club.transform.localPosition = new Vector3(14f, 0f, -12f);
+            Box(club.transform, "Entrance", new Vector3(0f, 1.6f, 0f), new Vector3(5f, 2.6f, 0.3f), new Color(0.12f, 0.1f, 0.14f));
+            Box(club.transform, "Canopy", new Vector3(0f, 3.1f, 0f), new Vector3(5.6f, 0.2f, 1.4f), new Color(0.08f, 0.08f, 0.1f));
+            Box(club.transform, "Door_L", new Vector3(-1.4f, 1.0f, 0.16f), new Vector3(1f, 1.9f, 0.1f), new Color(0.06f, 0.05f, 0.08f));
+            Box(club.transform, "Door_R", new Vector3(1.4f, 1.0f, 0.16f), new Vector3(1f, 1.9f, 0.1f), new Color(0.06f, 0.05f, 0.08f));
+            Box(club.transform, "Sign", new Vector3(0f, 4.2f, 0.16f), new Vector3(3.4f, 0.5f, 0.1f), NeonPink,
+                emissive: true, emission: NeonPink);
+            Cyl(club.transform, "RopePost_L", new Vector3(-2.6f, 0.6f, 1.2f), 0.08f, 1.1f, Metal);
+            Cyl(club.transform, "RopePost_R", new Vector3(2.6f, 0.6f, 1.2f), 0.08f, 1.1f, Metal);
+        }
+
+        private static void BuildClubSecurity(Transform parent)
+        {
+            var desk = Group(parent, "ClubSecurityDesk");
+            desk.transform.localPosition = new Vector3(16.8f, 0f, -9.5f);
+            Box(desk.transform, "Desk", new Vector3(0f, 0.55f, 0f), new Vector3(2.4f, 1.1f, 1.2f), new Color(0.15f, 0.12f, 0.1f));
+            Box(desk.transform, "Top", new Vector3(0f, 1.15f, 0f), new Vector3(2.6f, 0.15f, 1.4f), new Color(0.08f, 0.06f, 0.08f));
+            Box(desk.transform, "Ledger", new Vector3(0.7f, 1.3f, 0.2f), new Vector3(0.6f, 0.05f, 0.4f), new Color(0.9f, 0.85f, 0.7f));
+            Prop(desk.transform, "ClubGuestList", new Vector3(0f, 1.35f, 0f), new Vector3(0.02f, 0.02f, 0.02f),
+                new Color(0.1f, 0.1f, 0.1f), InteractionType.Use, "Check the guest list", "str.club.guest-list", 1.8f);
+        }
+
+        private static void BuildCrewSpawnPoints(Transform parent)
+        {
+            var markers = Group(parent, "CrewSpawnMarkers");
+            // Intentionally minimal: spawn anchors carry their own gizmos via SceneAnchor
+            // (created in BuildAnchors with AnchorKind.Interaction).
         }
     }
 }
