@@ -19,7 +19,7 @@ A successful Unity Editor verification or headless build is necessary but does n
 | Vendor asset reproducibility | Blocked | Six vendor packs are gitignored; committed Apartment and CityStreet scenes contain vendor GUID references | Clean-clone mode passes with tracked fallback assets; full-art mode explicitly checks vendor packs and GUID resolution |
 | Environment art coverage | In progress | Intake mapping: 21 confirmed, 13 partial, 92 unmatched of 126 manifest IDs; these counts include authored placeholders as recorded by the mapping | Required MVP locations have art-approved, correctly scaled, collidable assets; placeholder state is disclosed |
 | Player rig and animation | Blocked | `VERIFICATION_REPORT.md` reports no actual rig, clips, controller or player prefab (0/37 MVP assets in that report) | Player prefab, valid Humanoid avatar, idle/walk/run, Animator Controller and interaction animation pass Editor verification |
-| Scene navigation / gameplay loop | In progress / unverified | Five environment scenes are registered, but scene registration does not prove runtime transitions | Bootstrap → apartment/street → suya or nightclub → server-backed interaction → Night Summary works in Play Mode |
+| Scene navigation / gameplay loop | In progress / unverified | Six canonical environment scenes are registered, but scene registration does not prove runtime transitions | Bootstrap → apartment/street → suya or nightclub → server-backed interaction → Night Summary works in Play Mode |
 | Backend security and correctness | Must be revalidated | Server-authoritative command design is documented; production readiness requires policy and transaction evidence | RLS, authorization, idempotency, validation, concurrency, economy invariants and secret boundaries are tested |
 | Android build | Not validated in this audit | No device build/install/performance evidence is attached to this change | Reproducible APK/AAB, install on supported physical Android device, smoke test and artifact metadata |
 | Release operations | Blocked | No complete signed release candidate, crash/telemetry check, privacy/data-retention review or asset-license dossier confirmed | Versioned candidate, license/provenance records, privacy review, recovery plan and release checklist complete |
@@ -38,7 +38,7 @@ Use these commands for those methods:
 
 Do not change methods on other types: for example `NAAD.Editor.NAADBuild.Verify`, `NAAD.Editor.NaadScenePipeline.ValidateScenes`, and `NAAD.Editor.FirstNightLiveTest.Run` have their own class names.
 
-**Acceptance:** run each changed entry point in Unity 6000.6.5f1 batch mode; capture command, process exit code, log, report existence and report contents. A source edit alone does not pass this gate.
+**Acceptance:** run each changed entry point in the editor version declared by `game/unity/ProjectSettings/ProjectVersion.txt`; capture command, process exit code, log, report existence and report contents. A source edit alone does not pass this gate.
 
 ## Gate 2 — Make live integration testing safe
 

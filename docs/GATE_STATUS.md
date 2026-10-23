@@ -2,8 +2,8 @@
 
 Last audit: 2026-10-14
 Branch: `feat/audit-gate-recovery-2026-10-14`
-Unity editor (actual): `6000.6.5f1` (`game/unity/ProjectSettings/ProjectVersion.txt`)
-Note: older bible drafts mentioning `6000.0.32f1` are outdated; Gate 22 docs already pin `6000.6.5f1`.
+Unity editor (actual): `6000.7.0b4` (`game/unity/ProjectSettings/ProjectVersion.txt`)
+Note: older gate drafts mentioning `6000.0.32f1` or `6000.6.5f1` are historical; the project currently declares `6000.7.0b4`.
 
 Status key: Planned · In progress · Implemented · Verified · Blocked
 
@@ -15,14 +15,14 @@ Full roadmap: [PROJECT_PLAN.md](PROJECT_PLAN.md) · Next-gate plan: [GATE_C_PLAY
 |---|---|---|
 | Repo / branch inspection | Verified | On feature branch `feat/audit-gate-recovery-2026-10-14`; `main` at `25498e3` (ahead of reviewed commit by 2 commits) |
 | Core service graph | Implemented | `NAADApplicationRoot`, stubs + Supabase live services, command/auth/player/world/phone/dialogue |
-| Bootstrap scene in Build Settings | Verified | Only `Assets/Scenes/Bootstrap.unity` at build index 0 |
+| Bootstrap scene in Build Settings | Verified | `Assets/Scenes/Bootstrap.unity` is at build index 0; five additional canonical NAAD scenes follow it |
 | Bootstrap First Night wiring | Implemented | `NAADBootstrap`, `FirstNightController`, `FirstNightHud`, `MainCamera` present |
 | SupabaseConfig assigned on root | Verified | Wired to `Assets/NAAD/Networking/Config/Resources/SupabaseConfig.asset` |
 | Bootstrap MainCamera component | Verified | Tagged `MainCamera` object was missing `Camera` component; added and saved |
 | `NAADBuild.Verify` (Gate 22) | Verified | Local Editor: `VERIFY_PASS` via `NAAD.Editor.NAADBuild.Verify` |
-| Production scene registry (Apartment/Street/Suya/Club/Beach) | Verified | Apartment/CityStreet/SuyaSpot/Nightclub/Beach all registered in `EditorBuildSettings.asset`; built + validated headless via `NaadScenePipeline.ValidateScenes` (exit 0) |
+| Production scene registry (Apartment/Street/Suya/Club/Beach) | Verified | Apartment/CityStreet/SuyaSpot/Nightclub/Beach are registered after Bootstrap in `EditorBuildSettings.asset`; prior headless validation used `NaadScenePipeline.ValidateScenes` (exit 0) |
 | Scene transition after Bootstrap | Planned | Serialized `nextSceneName` is empty (First Night currently lives in Bootstrap) |
-| Unity CLI Pipeline drive | Verified | `unity status` → Editor `ready` on port 7801 (`6000.6.5f1`) |
+| Unity CLI Pipeline drive | Blocked pending editor startup | Current local editor `6000.7.0b4` stalls during AssetDatabase refresh; prior `6000.6.5f1` evidence is historical |
 | Compile-clean Editor | Verified | Console cleared after Input System 1.20.1 + package cleanup |
 
 ## Gate B — Environment / scenes

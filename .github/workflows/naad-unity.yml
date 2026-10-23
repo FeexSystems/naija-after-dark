@@ -49,7 +49,7 @@ jobs:
         with:
           projectPath: game/unity
           # Keep this aligned with ProjectSettings/ProjectVersion.txt.
-          unityVersion: 6000.6.5f1
+          unityVersion: 6000.7.0b4
           targetPlatform: StandaloneLinux64
           buildMethod: NAAD.Editor.NAADBuild.Verify
           customParameters: -nographics
@@ -83,7 +83,7 @@ jobs:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
         with:
           projectPath: game/unity
-          unityVersion: 6000.6.5f1
+          unityVersion: 6000.7.0b4
           targetPlatform: StandaloneLinux64
           buildMethod: NAAD.Editor.Editor.VerifyProject
           customParameters: -nographics
@@ -116,7 +116,7 @@ jobs:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
         with:
           projectPath: game/unity
-          unityVersion: 6000.6.5f1
+          unityVersion: 6000.7.0b4
           targetPlatform: StandaloneLinux64
           buildMethod: NAAD.Editor.VerifyAnimationAssets.RunVerification
           customParameters: -nographics
@@ -150,7 +150,7 @@ jobs:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
         with:
           projectPath: game/unity
-          unityVersion: 6000.6.5f1
+          unityVersion: 6000.7.0b4
           targetPlatform: StandaloneLinux64
           buildMethod: NAAD.Editor.Editor.ListPackages
           customParameters: -nographics
@@ -211,7 +211,7 @@ jobs:
         with:
           projectPath: game/unity
           # Keep this aligned with ProjectSettings/ProjectVersion.txt.
-          unityVersion: 6000.6.5f1
+          unityVersion: 6000.7.0b4
           targetPlatform: StandaloneLinux64
           buildMethod: NAAD.Editor.FirstNightLiveTest.Run
           customParameters: -nographics

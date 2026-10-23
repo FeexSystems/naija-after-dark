@@ -26,7 +26,7 @@
     "com.unity.inputsystem": "6.7.0",
     "com.unity.ml-agents": "4.1.0",
     "com.unity.testtools": "2.0.0",
-    "com.unity.nuget.newtonsoft-json": "3.2.1",
+    "com.unity.nuget.newtonsoft-json": "3.2.2",
     "com.unity.pipeline": "0.8.0-exp.1",
     "com.unity.platformtoolkit": "1.2.0",
     "com.unity.render-pipelines.core": "17.7.0",

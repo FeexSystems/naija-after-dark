@@ -88,6 +88,38 @@ naija-after-dark/
 └── .gitignore
 ```
 
+## Development guide
+
+The repository-wide contributor and agent rules are in [`AGENTS.md`](AGENTS.md). The most important operating rules are:
+
+- The server-backed world model is authoritative.
+- Unity requests and renders state; it does not bypass backend validation.
+- AI produces dialogue and bounded proposals. State changes go through validated server commands.
+- Secrets and service-role credentials remain server-side.
+- Changes should include focused validation and documentation when contracts or workflows change.
+
+The primary Unity project is `game/unity/`. Supabase migrations and Edge Functions live under `supabase/`; TypeScript contracts and AI orchestration are under `backend/`; schemas and architecture references are under `world-model/` and `docs/`.
+
+Local provider environment setup is documented in [`docs/LOCAL_PROVIDER_CONFIGURATION.md`](docs/LOCAL_PROVIDER_CONFIGURATION.md). Credentials remain process environment values and are never stored in Unity assets or source control.
+
+The active handoff checklist is [`docs/NEXT_PHASE_TASKS.md`](docs/NEXT_PHASE_TASKS.md); it separates Unity, staging Supabase, CI, and provider gates and records which actions require external installation or approval.
+
+## AI provider status
+
+The active NPC dialogue implementation uses Gemini through the Supabase Edge Function at [`supabase/functions/npc-dialogue/index.ts`](supabase/functions/npc-dialogue/index.ts). The backend orchestrator also targets Gemini. The OpenAI provider in [`game/unity/Assets/NAAD/AI/UnifiedAIClient.cs`](game/unity/Assets/NAAD/AI/UnifiedAIClient.cs) is currently a placeholder and must not be treated as a live integration.
+
+If OpenAI is implemented later, choose a supported model before configuring prompt caching. Keep reusable instructions, schemas, and tool definitions stable and before dynamic conversation/world context. Record the API usage fields `input_tokens`, `input_tokens_details.cached_tokens`, and `input_tokens_details.cache_write_tokens`; latency-only measurements cannot establish cache savings. See the [official prompt-caching guide](https://developers.openai.com/api/docs/guides/prompt-caching) for model-specific minimum prefix lengths, cache keys, breakpoints, modes, and retention.
+
+Current repository measurements include provider success/latency instrumentation and rough token estimates for the Gemini path. There are no measured OpenAI cache reads, writes, or input costs because no live OpenAI request is implemented.
+
+## Local development outline
+
+1. Review [`AGENTS.md`](AGENTS.md) and the relevant package or project documentation.
+2. Use `game/unity/` for the main Unity client and keep generated Unity folders out of source control.
+3. Use Supabase migrations and Edge Functions for server-side state and dialogue behavior.
+4. Run focused tests or validation for the area changed; avoid production or paid-provider calls during local checks.
+5. Check `git status` before handing off work and describe any unverified integration steps.
+
 ## Why it matters
 
 NAIJA AFTER DARK is more than a game prototype — it is a disciplined attempt to build a dynamic nightlife life sim with a strong technical foundation. The project combines game design, world modeling, backend validation, and AI-assisted interaction into one cohesive vision.

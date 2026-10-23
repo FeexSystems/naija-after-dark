@@ -14,6 +14,16 @@
       "dependencies": {},
       "hash": "a77a1b4a89824fb6df293099de3060daf2a432c1"
     },
+    "com.ivanmurzak.unity.mcp.animation": {
+      "version": "https://github.com/IvanMurzak/Unity-MCP.git?path=extensions/Animation/Packages/com.ivanmurzak.unity.mcp.animation",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.ivanmurzak.unity.mcp": "1.0.0",
+        "com.unity.modules.animation": "1.0.0"
+      },
+      "hash": "fc059d587f2eab41565a07e046b4e834af362eae"
+    },
     "com.ivanmurzak.unity.mcp.cinemachine": {
       "version": "https://github.com/IvanMurzak/Unity-MCP.git?path=extensions/Cinemachine/Packages/com.ivanmurzak.unity.mcp.cinemachine",
       "depth": 0,
@@ -34,6 +44,26 @@
       },
       "hash": "dcabd63c2192ada3fd0d9340eddfa506af721873"
     },
+    "com.ivanmurzak.unity.mcp.navigation": {
+      "version": "https://github.com/IvanMurzak/Unity-MCP.git?path=extensions/Navigation/Packages/com.ivanmurzak.unity.mcp.navigation",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.ivanmurzak.unity.mcp": "1.0.0",
+        "com.unity.ai.navigation": "1.1.7"
+      },
+      "hash": "fc059d587f2eab41565a07e046b4e834af362eae"
+    },
+    "com.ivanmurzak.unity.mcp.particlesystem": {
+      "version": "https://github.com/IvanMurzak/Unity-MCP.git?path=extensions/ParticleSystem/Packages/com.ivanmurzak.unity.mcp.particlesystem",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.ivanmurzak.unity.mcp": "1.0.0",
+        "com.unity.modules.particlesystem": "1.0.0"
+      },
+      "hash": "fc059d587f2eab41565a07e046b4e834af362eae"
+    },
     "com.ivanmurzak.unity.mcp.probuilder": {
       "version": "https://github.com/IvanMurzak/Unity-MCP.git?path=extensions/ProBuilder/Packages/com.ivanmurzak.unity.mcp.probuilder",
       "depth": 0,
@@ -53,6 +83,17 @@
         "com.unity.splines": "2.8.4"
       },
       "hash": "0e60c3f736514109560336dffeca8db587467192"
+    },
+    "com.ivanmurzak.unity.mcp.terrain": {
+      "version": "https://github.com/IvanMurzak/Unity-MCP.git?path=extensions/Terrain/Packages/com.ivanmurzak.unity.mcp.terrain",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.ivanmurzak.unity.mcp": "1.0.0",
+        "com.unity.modules.terrain": "1.0.0",
+        "com.unity.modules.terrainphysics": "1.0.0"
+      },
+      "hash": "fc059d587f2eab41565a07e046b4e834af362eae"
     },
     "com.unity.2d.animation": {
       "version": "17.0.1",
@@ -119,6 +160,15 @@
         "com.unity.collections": "2.4.3",
         "com.unity.nuget.newtonsoft-json": "3.2.1",
         "com.unity.modules.imageconversion": "1.0.0"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.ai.navigation": {
+      "version": "2.0.15",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.modules.ai": "1.0.0"
       },
       "url": "https://packages.unity.com"
     },
@@ -405,7 +455,7 @@
     },
     "com.unity.nuget.newtonsoft-json": {
       "version": "3.2.2",
-      "depth": 1,
+      "depth": 0,
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"

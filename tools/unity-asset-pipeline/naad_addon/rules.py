@@ -124,8 +124,8 @@ def next_part(prefix: str) -> Optional[str]:
 
 
 def district_for_venue(venue: str) -> str:
-    """District a venue belongs to; unknown venues fall back to the default venue's."""
-    return VENUES.get(venue, VENUES[DEFAULT_VENUE])[2]
+    """District a venue belongs to; unknown venues use the default district."""
+    return VENUES[venue][2] if venue in VENUES else DEFAULT_DISTRICT
 
 
 def venue_tag(venue: str) -> str:
