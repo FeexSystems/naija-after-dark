@@ -16,7 +16,7 @@ This walkthrough provides a practical guide to the newly implemented features fr
 
 ## Dialogue System Overview
 
-### What Was Implemented
+### Implementation Overview
 
 The dialogue system has been upgraded from a minimal ambient-line coordinator to a full branching dialogue system with:
 
@@ -161,7 +161,7 @@ Player selects response → DialogueManager.SelectResponse()
 
 ## Unity CLI Automation
 
-### What Was Implemented
+### Implementation Details
 
 Six Editor methods and three batch scripts for automated Unity operations:
 
