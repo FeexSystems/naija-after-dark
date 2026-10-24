@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "TaskState", menu = "NAAD/Behavior/Task")]
+[CreateAssetMenu(fileName = "TaskState", menuName = "NAAD/Behavior/Task")]
 public class TaskState : BehaviorState
 {
     [Header("Task State Settings")]

@@ -1,5 +1,4 @@
 using UnityEngine;
-using NAAD.NPCs;
 
 public class TundeNPC : MonoBehaviour
 {
