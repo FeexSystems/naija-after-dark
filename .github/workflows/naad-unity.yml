@@ -49,7 +49,7 @@ jobs:
         with:
           projectPath: game/unity
           # Keep this aligned with ProjectSettings/ProjectVersion.txt.
-          unityVersion: 6000.7.0b4
+          unityVersion: 6000.6.5f1
           targetPlatform: StandaloneLinux64
           buildMethod: NAAD.Editor.NAADBuild.Verify
           customParameters: -nographics
@@ -83,7 +83,7 @@ jobs:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
         with:
           projectPath: game/unity
-          unityVersion: 6000.7.0b4
+          unityVersion: 6000.6.5f1
           targetPlatform: StandaloneLinux64
           buildMethod: NAAD.Editor.Editor.VerifyProject
           customParameters: -nographics
@@ -94,6 +94,39 @@ jobs:
         with:
           name: naad-project-verification-report
           path: game/unity/Logs/verification-report.json
+          if-no-files-found: warn
+
+  # World clock contract — the offline stub and the client types must agree with
+  # the authoritative SQL (supabase/migrations/0004_world_time.sql). This is a pure
+  # C#/source check: no Supabase connection, no credentials, fast to run.
+  verify-world-clock:
+    name: World clock contract (stub vs SQL)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: verify-unity
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify stub nightlife table and client types
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+        with:
+          projectPath: game/unity
+          unityVersion: 6000.6.5f1
+          targetPlatform: StandaloneLinux64
+          buildMethod: NAAD.Editor.WorldClockContractVerifier.RunVerification
+          customParameters: -nographics
+
+      - name: Upload world clock contract report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: naad-world-clock-contract-report
+          path: game/unity/Logs/world-clock-contract-report.json
           if-no-files-found: warn
 
   # Gate C — fail the PR when the committed player rig / Animator contract is incomplete.
@@ -116,7 +149,7 @@ jobs:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
         with:
           projectPath: game/unity
-          unityVersion: 6000.7.0b4
+          unityVersion: 6000.6.5f1
           targetPlatform: StandaloneLinux64
           buildMethod: NAAD.Editor.VerifyAnimationAssets.RunVerification
           customParameters: -nographics
@@ -150,7 +183,7 @@ jobs:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
         with:
           projectPath: game/unity
-          unityVersion: 6000.7.0b4
+          unityVersion: 6000.6.5f1
           targetPlatform: StandaloneLinux64
           buildMethod: NAAD.Editor.Editor.ListPackages
           customParameters: -nographics
@@ -211,7 +244,7 @@ jobs:
         with:
           projectPath: game/unity
           # Keep this aligned with ProjectSettings/ProjectVersion.txt.
-          unityVersion: 6000.7.0b4
+          unityVersion: 6000.6.5f1
           targetPlatform: StandaloneLinux64
           buildMethod: NAAD.Editor.FirstNightLiveTest.Run
           customParameters: -nographics
@@ -219,7 +252,7 @@ jobs:
 
       - name: Upload First Night report
         uses: actions/upload-artifact@v4
-        if: always()
+        if: always() && env.UNITY_STAGING == '1'
         with:
           name: naad-first-night-report
           path: game/unity/Library/first-night-report.json
