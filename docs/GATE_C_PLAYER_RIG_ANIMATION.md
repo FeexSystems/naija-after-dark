@@ -16,6 +16,13 @@ against **real assets** in a clean headless run, not from source inspection.
 
 Animation **code + docs are complete**; **assets are missing (0/37)**.
 
+> **Scope clarification (the two numbers are not in conflict):** Gate C's *MVP*
+> needs **8 clips** (Idle/Walk/Run + Phone Retrieve/Hold/Browse/PutAway +
+> Greeting) plus the rig, controller and mask. The **37** is the full
+> `AnimationCommandType` manifest — Phases 2 and 3 are out of scope here (see
+> “Scope (out / deferred)”). Do not wait for 37 clips to call Gate C green.
+> `VerifyAnimationAssets.cs` is the source of truth for the required list.
+
 Already built (compile-clean, in `Assets/NAAD/Animation/`):
 - `AnimationCommand.cs` — authoritative command struct + `AnimationCommandType` enum (37 types: Locomotion/Social/Phone/Food/Nightlife/Seating/Vehicle/NPCWork).
 - `CharacterAnimationController.cs` — `[RequireComponent(Animator)]` bridge: command queue → Animator params (`LocomotionState`, `SocialState`, `PhoneState`, `SeatingState`, `Trigger`). `OnAnimationStart/Complete` are **presentation-only**.

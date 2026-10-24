@@ -1,9 +1,14 @@
 # NAAD Gate Status
 
-Last audit: 2026-10-14
-Branch: `feat/audit-gate-recovery-2026-10-14`
-Unity editor (actual): `6000.7.0b4` (`game/unity/ProjectSettings/ProjectVersion.txt`)
-Note: older gate drafts mentioning `6000.0.32f1` or `6000.6.5f1` are historical; the project currently declares `6000.7.0b4`.
+Last audit: 2026-10-14 (version/branch header corrected 2026-10-24)
+Branch: not pinned here — run `git rev-parse --abbrev-ref HEAD`. The 2026-10-14 audit ran on
+`feat/audit-gate-recovery-2026-10-14`; gate work later continued on other branches.
+Unity editor (actual): `6000.6.5f1` (`game/unity/ProjectSettings/ProjectVersion.txt`) — also
+pinned by all jobs in `.github/workflows/naad-unity.yml`.
+Note: `6000.7.0b4` is installed on some workstations as a second editor, but it is **not** a gate
+editor: headless batch mode on it hangs at `Application.AssetDatabase Initial Refresh Start`
+(see the Unity CLI Pipeline row under Gate A). Older gate drafts mentioning `6000.0.32f1` are
+historical.
 
 Status key: Planned · In progress · Implemented · Verified · Blocked
 
@@ -13,7 +18,7 @@ Full roadmap: [PROJECT_PLAN.md](PROJECT_PLAN.md) · Next-gate plan: [GATE_C_PLAY
 
 | Item | Status | Evidence |
 |---|---|---|
-| Repo / branch inspection | Verified | On feature branch `feat/audit-gate-recovery-2026-10-14`; `main` at `25498e3` (ahead of reviewed commit by 2 commits) |
+| Repo / branch inspection | Verified | On feature branch `chore/unity-mcp-scaffolding-and-gitignore`; 1 commit ahead of `origin/chore/unity-mcp-scaffolding-and-gitignore` |
 | Core service graph | Implemented | `NAADApplicationRoot`, stubs + Supabase live services, command/auth/player/world/phone/dialogue |
 | Bootstrap scene in Build Settings | Verified | `Assets/Scenes/Bootstrap.unity` is at build index 0; five additional canonical NAAD scenes follow it |
 | Bootstrap First Night wiring | Implemented | `NAADBootstrap`, `FirstNightController`, `FirstNightHud`, `MainCamera` present |
@@ -22,7 +27,7 @@ Full roadmap: [PROJECT_PLAN.md](PROJECT_PLAN.md) · Next-gate plan: [GATE_C_PLAY
 | `NAADBuild.Verify` (Gate 22) | Verified | Local Editor: `VERIFY_PASS` via `NAAD.Editor.NAADBuild.Verify` |
 | Production scene registry (Apartment/Street/Suya/Club/Beach) | Verified | Apartment/CityStreet/SuyaSpot/Nightclub/Beach are registered after Bootstrap in `EditorBuildSettings.asset`; prior headless validation used `NaadScenePipeline.ValidateScenes` (exit 0) |
 | Scene transition after Bootstrap | Planned | Serialized `nextSceneName` is empty (First Night currently lives in Bootstrap) |
-| Unity CLI Pipeline drive | Blocked pending editor startup | Current local editor `6000.7.0b4` stalls during AssetDatabase refresh; prior `6000.6.5f1` evidence is historical |
+| Unity CLI Pipeline drive | Blocked pending editor startup | Unity `6000.7.0b4` headless batch mode hangs at `Application.AssetDatabase Initial Refresh Start` and never reaches `-executeMethod`. Fix pending: see `gatec-fresh.log`/`gatec-gui.log` in `game/unity/Logs/`. |
 | Compile-clean Editor | Verified | Console cleared after Input System 1.20.1 + package cleanup |
 
 ## Gate B — Environment / scenes
@@ -81,11 +86,11 @@ The First Night vertical slice is driven end-to-end by
 
 Gate: **First Night runtime verification in CI** (extends Gate B). Measurable exits:
 
-1. Green CI run on `feat/audit-gate-recovery-2026-10-14` — record run URL + commit SHA here
+1. Green CI run on `chore/unity-mcp-scaffolding-and-gitignore` — record run URL + commit SHA here
    once green (unblocks Gate 22 for real). Repository Actions secrets `UNITY_EMAIL` +
    `UNITY_PASSWORD` and `NAAD_TEST_EMAIL` + `NAAD_TEST_PASSWORD` are required.
-   - Run URL: `https://github.com/FeexSystems/naija-after-dark/compare/main...feat/audit-gate-recovery-2026-10-14?expand=1`
-   - Commit SHA: `aeaf248` (branch head at time of push)
+   - Run URL: pending first green Actions run on this branch
+   - Commit SHA: pending first green Actions run on this branch
 2. `FirstNightLiveTest.Run` exits 0 in CI with `GATE_B_PASS` and `PHASE_D_PASS` in
    `game/unity/Library/first-night-report.json` (uploaded as the
    `naad-first-night-report` artifact); money-moved and spent-matches-delta both true.
