@@ -20,6 +20,7 @@ This document provides a detailed implementation plan for the dialogue system fu
 ### Current State
 
 The dialogue system has:
+
 - **Data structures:** DialogueData.cs with nodes, responses, conditions
 - **ScriptableObject authoring:** DialogueGraph.cs for basic Unity Editor creation
 - **Runtime system:** DialogueManager, DialogueBubbleManager, DialogueMemory
@@ -55,12 +56,14 @@ Create a visual node graph editor for DialogueGraph using Unity's Graph Editor f
 Unity 6 provides a built-in Graph Editor framework for creating node-based editors.
 
 **Pros:**
+
 - Native Unity integration
 - Built-in node, edge, and graph management
 - Consistent with Unity's visual scripting tools
 - Good performance for large graphs
 
 **Cons:**
+
 - Learning curve for Graph Editor API
 - Requires Unity 6 (already using 6000.6.5f1)
 - Limited documentation in some areas
@@ -70,11 +73,13 @@ Unity 6 provides a built-in Graph Editor framework for creating node-based edito
 Use a third-party node framework (e.g., NodeGraphProcessor, xNode) or build custom.
 
 **Pros:**
+
 - More control over UI/UX
 - Can use existing frameworks
 - Not tied to Unity's Graph Editor API
 
 **Cons:**
+
 - Additional dependencies
 - More maintenance burden
 - May not integrate as well with Unity workflows
@@ -86,6 +91,7 @@ Use a third-party node framework (e.g., NodeGraphProcessor, xNode) or build cust
 #### Phase 1: Setup Graph Editor Infrastructure
 
 **Files to create:**
+
 - `game/unity/Assets/NAAD/Dialogue/Editor/DialogueGraphAsset.cs` - Graph asset
 - `game/unity/Assets/NAAD/Dialogue/Editor/DialogueGraphView.cs` - Graph view
 - `game/unity/Assets/NAAD/Dialogue/Editor/DialogueGraphWindow.cs` - Graph window
@@ -93,10 +99,12 @@ Use a third-party node framework (e.g., NodeGraphProcessor, xNode) or build cust
 - `game/unity/Assets/NAAD/Dialogue/Editor/DialogueEdgeView.cs` - Edge view
 
 **Dependencies:**
+
 - Unity Graph Editor API (Unity 6)
 - `UnityEngine.GraphTools Foundation` package
 
 **Tasks:**
+
 1. Create DialogueGraphAsset extending GraphAsset
 2. Create DialogueGraphWindow extending GraphWindow
 3. Register graph in Unity's Graph system
