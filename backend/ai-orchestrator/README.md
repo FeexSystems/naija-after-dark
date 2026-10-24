@@ -29,8 +29,26 @@ Set on the Edge Function / host:
 - `GEMINI_API_KEY`
 - `SUPABASE_URL` / `SUPABASE_ANON_KEY` (auto in Supabase functions)
 
+## Type Check
+
+```bash
+npm run typecheck
+```
+
+**Note**: This package is designed to run in Deno (Supabase Edge Functions). The `typecheck` script validates TypeScript types, but the actual runtime is Deno, not Node.js. The `orchestrator.ts` file uses Deno APIs (Deno.env.get) which are not available in Node.js.
+
 ## Test
 
 ```bash
-npx --yes tsx backend/ai-orchestrator/src/validate.test.ts
+npm run test
+```
+
+## Development
+
+This package uses npm workspaces. From the backend root:
+
+```bash
+npm install
+npm run typecheck
+npm run test
 ```

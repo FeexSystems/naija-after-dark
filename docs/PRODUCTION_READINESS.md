@@ -1,8 +1,23 @@
 # NAAD Production Readiness Plan
 
-**Last reviewed:** 2026-10-16  
-**Scope:** Unity client, imported content, backend integration, CI, mobile release path.  
+**Last reviewed:** 2026-10-23
+**Scope:** Unity client, imported content, backend integration, CI, mobile release path.
 **Current status:** **Blocked — not production-ready.** This document is a release gate, not a claim that all items are complete.
+
+## Infrastructure Improvements (2026-10-23)
+
+The following infrastructure improvements have been completed to address high-priority audit items:
+
+|| Item | Status | Evidence |
+|---|---|---|
+| Project LICENSE file | ✅ Implemented | Apache-2.0 license added (LICENSE file) |
+| Third-party license documentation | ✅ Implemented | LICENSE_DOCS.md created documenting all third-party assets and AGPL-3.0 risks |
+| Backend build configuration | ✅ Implemented | package.json and tsconfig.json added for backend workspaces with npm scripts |
+| Backend README updates | ✅ Implemented | Build and test commands documented in backend/ai-orchestrator/README.md and backend/game-api/README.md |
+| Root AGENTS.md expansion | ✅ Implemented | Comprehensive agent development guide added with architecture principles and workflow guidance |
+| Git submodule initialization | ✅ Implemented | unity-cloud-asset-manager-for-blender submodule initialized and documented in README.md |
+| GitHub Actions secrets documentation | ✅ Implemented | GATE_22.md updated with detailed secrets setup instructions for Unity licensing and First Night test credentials |
+| CI secrets configuration | ⏳ Pending | User must configure UNITY_EMAIL, UNITY_PASSWORD, NAAD_TEST_EMAIL, NAAD_TEST_PASSWORD in GitHub Actions repository settings |
 
 ## Release principle
 

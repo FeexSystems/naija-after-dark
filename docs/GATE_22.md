@@ -20,12 +20,39 @@ Make the Unity verification workflow reproducible and ensure its editor version 
 
 ## Required GitHub Actions secrets
 
+### Unity Licensing (Required for all jobs)
+
 Configure one supported licensing route:
 
 - `UNITY_LICENSE`: a valid Unity license file/activation string accepted by GameCI; or
 - both `UNITY_EMAIL` and `UNITY_PASSWORD`: credentials for the Unity account used by the workflow.
 
 Do not commit license files, credentials, activation serials, access tokens, or other secrets to the repository. A preflight check only confirms that inputs are present; Unity must still validate the license.
+
+### First Night Test Credentials (Optional, for first-night-live-test job)
+
+For the optional First Night live end-to-end test (Gate B / Phase D), configure:
+
+- `NAAD_TEST_EMAIL`: Valid email for a test account on the live Supabase project
+- `NAAD_TEST_PASSWORD`: Valid password for the test account
+
+**Important**: The First Night test mutates wallet/game state on the live Supabase project. It is opt-in via `workflow_dispatch` only and should not be an automatic PR gate. Before making it a required gate, move it to an isolated staging project with a disposable test account.
+
+### Setup Instructions
+
+1. Go to your GitHub repository settings
+2. Navigate to **Secrets and variables** → **Actions**
+3. Click **New repository secret**
+4. Add each required secret:
+   - Name: `UNITY_EMAIL` (or `UNITY_LICENSE`)
+   - Value: Your Unity account email (or license file)
+   - Name: `UNITY_PASSWORD` (if using email/password)
+   - Value: Your Unity account password
+5. Optionally add test credentials for First Night test:
+   - Name: `NAAD_TEST_EMAIL`
+   - Value: Test account email
+   - Name: `NAAD_TEST_PASSWORD`
+   - Value: Test account password
 
 ## Verification procedure
 

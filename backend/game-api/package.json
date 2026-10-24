@@ -1,0 +1,14 @@
+{
+  "name": "@naad/game-api",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "tsx src/contracts/contracts.test.ts",
+    "build": "tsc",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@types/node": "^20.0.0"
+  }
+}

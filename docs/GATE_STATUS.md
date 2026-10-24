@@ -1,11 +1,24 @@
 # NAAD Gate Status
 
-Last audit: 2026-10-14
-Branch: `feat/audit-gate-recovery-2026-10-14`
+Last audit: 2026-10-23
+Branch: `main`
 Unity editor (actual): `6000.6.5f1` (`game/unity/ProjectSettings/ProjectVersion.txt`)
 Note: older bible drafts mentioning `6000.0.32f1` are outdated; Gate 22 docs already pin `6000.6.5f1`.
 
 Status key: Planned · In progress · Implemented · Verified · Blocked
+
+## Infrastructure Improvements (2026-10-23)
+
+|| Item | Status | Evidence |
+|---|---|---|
+| Project LICENSE file | Implemented | Apache-2.0 license added (LICENSE file) |
+| Third-party license documentation | Implemented | LICENSE_DOCS.md created documenting all third-party assets |
+| Backend build configuration | Implemented | package.json and tsconfig.json added for backend workspaces |
+| Backend README updates | Implemented | Build and test commands documented in backend READMEs |
+| Root AGENTS.md expansion | Implemented | Comprehensive agent development guide added |
+| Git submodule initialization | Implemented | unity-cloud-asset-manager-for-blender submodule initialized |
+| GitHub Actions secrets documentation | Implemented | GATE_22.md updated with secrets setup instructions |
+| CI secrets configuration | Pending | User must configure UNITY_EMAIL, UNITY_PASSWORD, NAAD_TEST_EMAIL, NAAD_TEST_PASSWORD in GitHub Actions |
 
 Full roadmap: [PROJECT_PLAN.md](PROJECT_PLAN.md) · Next-gate plan: [GATE_C_PLAYER_RIG_ANIMATION.md](GATE_C_PLAYER_RIG_ANIMATION.md)
 

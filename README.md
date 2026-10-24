@@ -114,4 +114,22 @@ If you are interested in indie game development, world modeling, backend systems
 
 ## License
 
-This repository does not currently declare a project license in the repo metadata. If you plan to distribute or reuse the project beyond local development, confirm the intended licensing status before publishing or sharing it.
+This project is licensed under the Apache License, Version 2.0. See the [LICENSE](LICENSE) file for details.
+
+## Third-Party Licenses
+
+This project uses third-party assets and packages. See [LICENSE_DOCS.md](LICENSE_DOCS.md) for detailed information about third-party licenses and their compatibility with this project.
+
+## Agent Development
+
+For AI agents working on this codebase, see [AGENTS.md](AGENTS.md) for development guidance, architecture principles, and important workflow considerations.
+
+## Git Submodules
+
+This project uses a git submodule for Unity Cloud Asset Manager for Blender:
+
+```bash
+git submodule update --init --recursive
+```
+
+This will checkout the submodule to `tools/unity-cloud-asset-manager-for-blender/`.
