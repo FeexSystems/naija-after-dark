@@ -29,7 +29,28 @@ class SlugTests(unittest.TestCase):
         self.assertEqual(rules.next_part("Booth_03"), "Booth_04")
         self.assertEqual(rules.next_part("Booth_09"), "Booth_10")
         self.assertEqual(rules.next_part("Booth_99"), "Booth_100")
+        self.assertEqual(rules.next_part("Booth_009"), "Booth_010")
+        self.assertEqual(rules.next_part("Booth_099"), "Booth_100")
+        self.assertEqual(rules.next_part("Booth_100"), "Booth_101")
         self.assertIsNone(rules.next_part("Booth"))
+        self.assertIsNone(rules.next_part("03_Booth"))
+        self.assertIsNone(rules.next_part(""))
+        self.assertIsNone(rules.next_part(None))
+
+    def test_version_must_be_integer(self):
+        name, problems = rules.suggest_asset_name("NCL", "Booth", "IS", "2.5")
+        self.assertIsNone(name)
+        self.assertTrue(any("version must be an integer" in p for p in problems))
+
+    def test_absent_size_is_allowed(self):
+        name, problems = rules.suggest_asset_name("CHR", "Ada", "ND", 1, "")
+        self.assertEqual(problems, [])
+        self.assertEqual(name, "CHR_Ada_ND_v001")
+
+    def test_rejects_bad_size(self):
+        name, problems = rules.suggest_asset_name("NCL", "Booth", "IS", 1, "Huge")
+        self.assertIsNone(name)
+        self.assertTrue(any("unknown size" in p for p in problems))
 
 
 class NamingTests(unittest.TestCase):

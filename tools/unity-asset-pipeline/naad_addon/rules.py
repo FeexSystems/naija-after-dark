@@ -114,8 +114,14 @@ def sanitize_part(part: str) -> str:
 
 
 def next_part(prefix: str) -> Optional[str]:
-    """`Booth_03` -> `Booth_04`. None when there is no numeric suffix."""
-    match = re.search(r"(\d+)(?!.*\d)", prefix or "")
+    """Bump the trailing number: `Booth_03` -> `Booth_04`.
+
+    Returns None when there is no numeric suffix. The bumped number is
+    zero-padded to the width of the original digit run, so the suffix only grows
+    past that width when the value overflows it (`Booth_99` -> `Booth_100`,
+    `Booth_009` -> `Booth_010`).
+    """
+    match = re.search(r"(\d+)$", (prefix or "").strip())
     if not match:
         return None
     digits = match.group(1)
@@ -123,18 +129,24 @@ def next_part(prefix: str) -> Optional[str]:
     return prefix[: match.start(1)] + bumped + prefix[match.end(1):]
 
 
+def _lookup(table: Dict[str, object], key: str, default: str):
+    """Row for `key`, falling back to the row for `default` when unknown."""
+    return table.get(key, table[default])
+
+
 def district_for_venue(venue: str) -> str:
     """District a venue belongs to; unknown venues use the default district."""
-    return VENUES[venue][2] if venue in VENUES else DEFAULT_DISTRICT
+    if venue not in VENUES:
+        return DEFAULT_DISTRICT
+    return VENUES[venue][2]
 
 
 def venue_tag(venue: str) -> str:
-    return VENUES.get(venue, VENUES[DEFAULT_VENUE])[0]
+    return _lookup(VENUES, venue, DEFAULT_VENUE)[0]
 
 
 def district_tag(district: str) -> str:
-    key = district if district in DISTRICTS else DEFAULT_DISTRICT
-    return DISTRICTS[key][0]
+    return _lookup(DISTRICTS, district, DEFAULT_DISTRICT)[0]
 
 
 def split_asset_name(name: str) -> Optional[Dict[str, Optional[str]]]:
@@ -155,7 +167,11 @@ def suggest_asset_name(
     """Build `<CAT>_<Part>_<DISTRICT>[_<size>]_v<NNN>`.
 
     Returns (name, problems). `name` is None when the result would not satisfy
-    the grammar (unknown category, empty part, bad size).
+    the grammar (unknown category, empty part, bad size, non-integer version).
+
+    `size` is optional: None, '' or whitespace-only means "no size segment", which
+    is only valid for categories without a size requirement (e.g. CHR, VHC).
+    Any other value must be one of S, M, L or XL.
     """
     problems: List[str] = []
     cat = (category or "").strip().upper()
@@ -172,12 +188,17 @@ def suggest_asset_name(
         problems.append("unknown district '%s' (expected one of %s)"
                         % (district, ", ".join(sorted(DISTRICTS))))
 
+    # None / '' / whitespace == no size requested; anything else must be valid.
     size_tag = (size or "").strip().upper() or None
     if size_tag is not None and size_tag not in SIZE_TAGS:
         problems.append("unknown size '%s' (expected S, M, L or XL)" % size)
         size_tag = None
 
-    version_no = int(version_tag) if version_tag else 1
+    try:
+        version_no = int(version_tag) if version_tag else 1
+    except (ValueError, TypeError):
+        problems.append("version must be an integer, got '%s'" % (version_tag,))
+        version_no = 1
     if not 1 <= version_no <= 999:
         problems.append("version must be between 001 and 999")
         version_no = 1

@@ -324,6 +324,8 @@ class NAAD_OT_upload(bpy.types.Operator):
         row = box.row(align=True)
         row.prop(settings, "asset_name")
         row.operator("naad_asset.generate_name", text="", icon="FILE_REFRESH")
+        row = box.row(align=True)
+        row.operator("naad_asset.validate_name", text="Validate name + tags", icon="CHECKMARK")
 
         box = layout.box()
         box.label(text="Metadata")
@@ -368,8 +370,16 @@ class NAAD_OT_upload(bpy.types.Operator):
             self.report({"ERROR"}, "Not signed in — run NAAD > Sign in to Unity Cloud first")
             return {"CANCELLED"}
 
+        # An asset name is a single file stem + optional extension, so a slash in
+        # it would either break the FBX export or escape the temp dir.
+        if any(ch in name for ch in "/\\:"):
+            self.report({"ERROR"}, "Asset name '%s' must not contain /, \\ or :" % name)
+            return {"CANCELLED"}
+
         collection = rules.collection_for(settings.district, settings.venue)
         temp_dir = None
+        preview_path = None
+        copy_failed = None
         try:
             temp_dir, fbx_path, preview_path = scene.export_bundle(
                 name, settings.embed_textures, settings.with_preview)
@@ -391,7 +401,10 @@ class NAAD_OT_upload(bpy.types.Operator):
             settings.asset_version = asset.version
 
             if prefs.copy_to_asset_store and prefs.intake_dir:
-                _copy_into_unity(prefs.intake_dir, fbx_path, name)
+                try:
+                    _copy_into_unity(prefs.intake_dir, fbx_path, name)
+                except OSError as err:
+                    copy_failed = "copy into Unity intake failed: %s" % err
         except Exception as err:
             self.report({"ERROR"}, "Upload failed: %s" % err)
             return {"CANCELLED"}
@@ -399,8 +412,13 @@ class NAAD_OT_upload(bpy.types.Operator):
             if temp_dir:
                 shutil.rmtree(temp_dir, ignore_errors=True)
 
-        if not preview_path:
+        if copy_failed:
+            self.report({"WARNING"}, "%s published to Asset Manager, but %s" % (name, copy_failed))
+        elif not preview_path:
             self.report({"WARNING"}, "%s uploaded, but no camera in scene: preview skipped" % name)
+        elif prefs.copy_to_asset_store and prefs.intake_dir:
+            self.report({"INFO"}, "%s published (%d tags, %s) + copied to Unity intake"
+                        % (name, len(tags), collection))
         else:
             self.report({"INFO"}, "%s published (%d tags, %s)" % (name, len(tags), collection))
         return {"FINISHED"}
