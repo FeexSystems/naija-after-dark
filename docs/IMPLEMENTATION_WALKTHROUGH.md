@@ -147,11 +147,12 @@ RelationshipCondition condition = new RelationshipCondition("faction_a", 75);
 
 Example command flow:
 
-```
+```csharp
 Player selects response → DialogueManager.SelectResponse()
 → Apply local preview (reputation += 10)
 → Send command to SupabaseDialogueService
 → Edge Function validates and applies
+```
 → If rejected: revert local changes
 ```
 
@@ -258,7 +259,7 @@ GitHub Actions workflow (`.github/workflows/naad-unity.yml`) has been updated:
 
 ## MCP Integration
 
-### What Was Implemented
+### MCP Configuration
 
 MCP (Model Context Protocol) integration documentation and command registry.
 
@@ -452,6 +453,7 @@ verify.bat
 ```
 
 Check `Logs/` directory for verification reports:
+
 - `ProjectVerification.log`
 - `SceneVerification.log`
 - `EnvironmentVerification.log`
@@ -506,17 +508,20 @@ node C:\Users\ENGR\BILLI\.claude\skills\game-development\game.mjs shot
 ### Dialogue System Issues
 
 **Dialogue not appearing:**
+
 - Check DialogueManager component exists in scene
 - Check IDialogueService is configured
 - Check console for errors
 - Verify TundeNPC has starting dialogue ID set
 
 **Conditions not working:**
+
 - Verify condition evaluation context is implemented
 - Check reputation/relationship values
 - Use DialogueTestRunner to test conditions in isolation
 
 **Memory not persisting:**
+
 - Check PlayerPrefs are accessible
 - Check DialogueMemory singleton is not destroyed
 - Verify save key is correct
@@ -524,16 +529,19 @@ node C:\Users\ENGR\BILLI\.claude\skills\game-development\game.mjs shot
 ### Unity CLI Issues
 
 **Command not found:**
+
 - Verify Unity CLI is in PATH
 - Use full path: `/c/Users/ENGR BILLI/AppData/Local/Unity/bin/unity`
 - Check Unity version matches project (6000.6.5f1)
 
 **Editor method not found:**
+
 - Verify namespace matches file name
 - Check file is in Editor folder
 - Verify Execute() method is static
 
 **Build fails:**
+
 - Check Android SDK is installed
 - Verify build settings are correct
 - Check logs for specific error
@@ -541,11 +549,13 @@ node C:\Users\ENGR\BILLI\.claude\skills\game-development\game.mjs shot
 ### MCP Issues
 
 **Unity MCP not reachable:**
+
 - Start Unity Editor
 - Check port 17890 is listening: `netstat -an | grep 17890`
 - Verify MCP plugin is installed in Packages/manifest.json
 
 **GitHub MCP authentication error:**
+
 - Configure GitHub token in environment variables
 - Check token has required permissions (repo, issues, pull_requests)
 
@@ -553,7 +563,7 @@ node C:\Users\ENGR\BILLI\.claude\skills\game-development\game.mjs shot
 
 ## Next Steps
 
-### Immediate Actions
+### Recommended Actions
 
 1. **Configure GitHub Actions secrets** (if not already done)
 2. **Test dialogue system in Unity Editor**
