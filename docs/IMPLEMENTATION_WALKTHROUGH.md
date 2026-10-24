@@ -9,6 +9,8 @@ This walkthrough provides a practical guide to the newly implemented features fr
 3. [MCP Integration](#mcp-integration)
 4. [Testing and Verification](#testing-and-verification)
 5. [Common Workflows](#common-workflows)
+6. [Troubleshooting](#troubleshooting)
+7. [Next Steps](#next-steps)
 
 ---
 
@@ -152,7 +154,6 @@ Player selects response → DialogueManager.SelectResponse()
 → Apply local preview (reputation += 10)
 → Send command to SupabaseDialogueService
 → Edge Function validates and applies
-```
 → If rejected: revert local changes
 ```
 
