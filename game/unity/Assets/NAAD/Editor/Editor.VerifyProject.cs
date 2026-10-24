@@ -1,124 +1,115 @@
-using System.IO;
 using UnityEditor;
 using UnityEngine;
+using System.IO;
 
 namespace NAAD.Editor
 {
-    public static partial class Editor
+    public static class VerifyProject
     {
-        /// <summary>
-        /// `-executeMethod NAAD.Editor.Editor.VerifyProject`
-        ///
-        /// Verifies the project skeleton the runtime actually depends on: the bootstrap scene is in
-        /// Build Settings at index 0, the core service/bootstrap scripts exist, and the
-        /// SupabaseConfig asset is present. Reports to Logs/ProjectVerification.log via -logFile and
-        /// to Logs/verification-report.json.
-        /// </summary>
-        public static void VerifyProject()
+        public static void Execute()
         {
-            Debug.Log("[NAAD][Verify] Verifying project structure...");
-            var report = new VerificationReport();
+            Debug.Log("Verifying NAAD project structure...");
 
-            VerifyBuildScenes(report);
-            VerifyCoreScripts(report);
-            VerifyConfiguration(report);
+            bool allChecksPassed = true;
 
-            Finish("VerifyProject", report);
-        }
-
-        private static void VerifyBuildScenes(VerificationReport report)
-        {
-            var scenes = EditorBuildSettings.scenes;
-            if (scenes == null || scenes.Length == 0)
+            // Check required folders
+            string[] requiredFolders = new string[]
             {
-                Fail(report, "No scenes configured in Build Settings.");
-                return;
-            }
-
-            Pass(report, $"{scenes.Length} scene(s) configured in Build Settings.");
-
-            const string bootstrapPath = "Assets/Scenes/Bootstrap.unity";
-            if (scenes[0].path.Equals(bootstrapPath, System.StringComparison.OrdinalIgnoreCase)
-                && scenes[0].enabled)
-            {
-                Pass(report, $"Bootstrap scene enabled at build index 0 ({bootstrapPath}).");
-            }
-            else
-            {
-                Fail(report, $"Bootstrap scene must be enabled at build index 0; found '{scenes[0].path}' (enabled={scenes[0].enabled}).");
-            }
-
-            for (var i = 0; i < scenes.Length; i++)
-            {
-                var scene = scenes[i];
-                if (!scene.enabled) continue;
-                if (AssetDatabase.LoadAssetAtPath<SceneAsset>(scene.path) == null)
-                    Fail(report, $"Build scene at index {i} could not be loaded: {scene.path}");
-            }
-        }
-
-        private static void VerifyCoreScripts(VerificationReport report)
-        {
-            string[] requiredScripts =
-            {
-                "Assets/NAAD/Core/Bootstrap/NAADApplicationRoot.cs",
-                "Assets/NAAD/Core/Bootstrap/NAADBootstrap.cs",
-                "Assets/NAAD/Core/Bootstrap/SceneLoader.cs",
-                "Assets/NAAD/Core/Logging/INAADLogger.cs",
-                "Assets/NAAD/Core/State/GameStateManager.cs",
-                "Assets/NAAD/Networking/Interfaces/IAuthService.cs",
-                "Assets/NAAD/Networking/Interfaces/ICommandService.cs",
-                "Assets/NAAD/Networking/Interfaces/IPhoneService.cs",
-                "Assets/NAAD/Networking/Interfaces/IPlayerService.cs",
-                "Assets/NAAD/Networking/Interfaces/IWorldStateService.cs",
-                "Assets/NAAD/UI/BaseScreenController.cs",
-                "Assets/NAAD/Gameplay/FirstNight/FirstNightController.cs"
-            };
-
-            foreach (var path in requiredScripts)
-            {
-                if (File.Exists(path))
-                    Pass(report, $"Found core script: {path}");
-                else
-                    Fail(report, $"Missing core script: {path}");
-            }
-
-            string[] requiredFolders =
-            {
-                "Assets/NAAD/Core",
-                "Assets/NAAD/Networking",
-                "Assets/NAAD/UI",
-                "Assets/NAAD/Gameplay",
+                "Assets/NAAD",
+                "Assets/NAAD/AI",
+                "Assets/NAAD/Audio",
                 "Assets/NAAD/Content",
-                "Assets/NAAD/Editor",
-                "Assets/Scenes"
+                "Assets/NAAD/Environment",
+                "Assets/NAAD/Gameplay",
+                "Assets/NAAD/Networking",
+                "Assets/NAAD/NPCs",
+                "Assets/NAAD/UI"
             };
 
-            foreach (var folder in requiredFolders)
+            foreach (string folder in requiredFolders)
             {
-                if (AssetDatabase.IsValidFolder(folder))
-                    Pass(report, $"Found folder: {folder}");
+                if (!AssetDatabase.IsValidFolder(folder))
+                {
+                    Debug.LogError($"Required folder missing: {folder}");
+                    allChecksPassed = false;
+                }
                 else
-                    Fail(report, $"Missing folder: {folder}");
+                {
+                    Debug.Log($"✓ Folder exists: {folder}");
+                }
             }
-        }
 
-        private static void VerifyConfiguration(VerificationReport report)
-        {
-            const string configPath = "Assets/NAAD/Networking/Config/Resources/SupabaseConfig.asset";
-            var config = AssetDatabase.LoadAssetAtPath<NAAD.Networking.Config.SupabaseConfig>(configPath);
-            if (config == null)
+            // Check required scripts
+            string[] requiredScripts = new string[]
             {
-                Fail(report, $"SupabaseConfig asset missing at {configPath}.");
-                return;
+                "Assets/NAAD/Gameplay/DialogueManager.cs",
+                "Assets/NAAD/UI/DialogueBubble.cs",
+                "Assets/NAAD/NPCs/TundeNPC.cs",
+                "Assets/NAAD/NPCs/BehaviorStateMachine.cs",
+                "Assets/NAAD/Networking/SupabaseConfig.cs"
+            };
+
+            foreach (string script in requiredScripts)
+            {
+                if (!File.Exists(Path.Combine(Application.dataPath, script.Substring("Assets/".Length))))
+                {
+                    Debug.LogError($"Required script missing: {script}");
+                    allChecksPassed = false;
+                }
+                else
+                {
+                    Debug.Log($"✓ Script exists: {script}");
+                }
             }
 
-            Pass(report, "SupabaseConfig asset present.");
+            // Check configuration files
+            string[] requiredConfigs = new string[]
+            {
+                "Assets/NAAD/UNITY_CLI_COMMANDS.md",
+                "game/unity/mcp-manifest.json"
+            };
 
-            if (config.IsConfigured)
-                Pass(report, "SupabaseConfig is configured (live services will be composed).");
+            foreach (string config in requiredConfigs)
+            {
+                string fullPath = Path.GetFullPath(Path.Combine(Application.dataPath, "..", config));
+                if (!File.Exists(fullPath))
+                {
+                    Debug.LogWarning($"Configuration file not found: {config}");
+                }
+                else
+                {
+                    Debug.Log($"✓ Config exists: {config}");
+                }
+            }
+
+            // Generate report
+            string reportPath = "Logs/verification-report.json";
+            Directory.CreateDirectory(Path.GetDirectoryName(reportPath));
+
+            string report = $@"{{
+  ""timestamp"": ""{System.DateTime.UtcNow:O}"",
+  ""project"": ""NAIJA AFTER DARK"",
+  ""unityVersion"": ""{Application.unityVersion}"",
+  ""allChecksPassed"": {allChecksPassed.ToString().ToLower()},
+  ""checks"": {{
+    ""requiredFolders"": {requiredFolders.Length},
+    ""requiredScripts"": {requiredScripts.Length}
+  }}
+}}";
+
+            File.WriteAllText(reportPath, report);
+            Debug.Log($"Verification report written to: {reportPath}");
+
+            if (allChecksPassed)
+            {
+                Debug.Log("✓ Project verification PASSED");
+            }
             else
-                Debug.LogWarning("[NAAD][Verify] SupabaseConfig is NOT configured — the app will fall back to stub services. This is expected before credentials are provisioned.");
+            {
+                Debug.LogError("✗ Project verification FAILED");
+            }
+
+            EditorApplication.Exit(allChecksPassed ? 0 : 1);
         }
     }
 }

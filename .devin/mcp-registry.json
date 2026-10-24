@@ -1,0 +1,53 @@
+{
+  "github-mcp-server": {
+    "purpose": "GitHub issue/PR automation",
+    "tools": [
+      "create_pull_request",
+      "add_comment_to_pending_review",
+      "add_issue_comment",
+      "list_issues",
+      "search_issues",
+      "get_pull_request",
+      "list_pull_requests"
+    ],
+    "enabled": true,
+    "configuration": {
+      "owner": "feexsystems",
+      "repo": "naija-after-dark"
+    }
+  },
+  "supabase-mcp-server": {
+    "purpose": "Supabase project management",
+    "tools": [
+      "list_projects",
+      "get_project",
+      "search_projects"
+    ],
+    "enabled": true,
+    "configuration": {
+      "projectId": "unzfqrfyejkyisalzkhc"
+    }
+  },
+  "mcp-playwright": {
+    "purpose": "Browser automation testing",
+    "tools": [
+      "navigate",
+      "screenshot",
+      "click",
+      "fill",
+      "evaluate"
+    ],
+    "enabled": true
+  },
+  "unity-mcp": {
+    "purpose": "Unity Editor automation",
+    "tools": [
+      "json_rpc"
+    ],
+    "enabled": true,
+    "configuration": {
+      "endpoint": "http://localhost:17890/mcp/rpc",
+      "manifest": "game/unity/mcp-manifest.json"
+    }
+  }
+}

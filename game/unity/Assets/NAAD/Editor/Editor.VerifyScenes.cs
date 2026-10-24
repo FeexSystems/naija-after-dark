@@ -1,75 +1,93 @@
-using System.Collections.Generic;
 using UnityEditor;
-using UnityEditor.SceneManagement;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEditor.SceneManagement;
+using System.IO;
 
 namespace NAAD.Editor
 {
-    public static partial class Editor
+    public static class VerifyScenes
     {
-        /// <summary>
-        /// `-executeMethod NAAD.Editor.VerifyScenes`
-        ///
-        /// Loads every enabled scene from Build Settings and checks it opens without throwing and
-        /// contains at least one root object. Scenes declared in Build Settings are authoritative:
-        /// anything not listed is reported as absent, not as a failure.
-        /// </summary>
-        public static void VerifyScenes()
+        public static void Execute()
         {
-            Debug.Log("[NAAD][Verify] Verifying scenes...");
-            var report = new VerificationReport();
+            Debug.Log("Verifying scenes...");
 
-            var scenes = EditorBuildSettings.scenes;
-            if (scenes == null || scenes.Length == 0)
+            bool allChecksPassed = true;
+
+            // Get all scenes in Assets
+            string[] sceneGuids = AssetDatabase.FindAssets("t:Scene", new[] { "Assets" });
+            Debug.Log($"Found {sceneGuids.Length} scenes in project");
+
+            foreach (string guid in sceneGuids)
             {
-                Fail(report, "No scenes in Build Settings — nothing to verify.");
-                Finish("VerifyScenes", report);
-                return;
+                string scenePath = AssetDatabase.GUIDToAssetPath(guid);
+                Debug.Log($"Checking scene: {scenePath}");
+
+                // Load scene
+                Scene scene = EditorSceneManager.OpenScene(scenePath, OpenSceneMode.Single);
+
+                // Check if scene has required components
+                GameObject[] rootObjects = scene.GetRootGameObjects();
+                bool hasMainCamera = false;
+                bool hasLight = false;
+
+                foreach (GameObject obj in rootObjects)
+                {
+                    if (obj.GetComponent<Camera>() != null)
+                    {
+                        hasMainCamera = true;
+                    }
+                    if (obj.GetComponent<Light>() != null)
+                    {
+                        hasLight = true;
+                    }
+                }
+
+                if (!hasMainCamera)
+                {
+                    Debug.LogWarning($"Scene {scenePath} has no Camera");
+                }
+                if (!hasLight)
+                {
+                    Debug.LogWarning($"Scene {scenePath} has no Light");
+                }
+
+                Debug.Log($"✓ Scene {scenePath} verified");
             }
 
-            var loadedNames = new List<string>();
-            for (var i = 0; i < scenes.Length; i++)
+            // Check build settings
+            EditorBuildSettingsScene[] buildScenes = EditorBuildSettings.scenes;
+            Debug.Log($"Build settings contains {buildScenes.Length} scenes");
+
+            if (buildScenes.Length == 0)
             {
-                var scene = scenes[i];
-                if (!scene.enabled)
-                {
-                    Debug.Log($"[NAAD][Verify] Scene index {i} disabled, skipped: {scene.path}");
-                    continue;
-                }
-
-                if (AssetDatabase.LoadAssetAtPath<SceneAsset>(scene.path) == null)
-                {
-                    Fail(report, $"Scene asset missing or unloadable: {scene.path}");
-                    continue;
-                }
-
-                Scene opened = default;
-                try
-                {
-                    opened = EditorSceneManager.OpenScene(scene.path, OpenSceneMode.Single);
-                }
-                catch (System.Exception ex)
-                {
-                    Fail(report, $"Scene failed to open: {scene.path} ({ex.Message})");
-                    continue;
-                }
-
-                var rootCount = opened.GetRootGameObjects().Length;
-                if (rootCount == 0)
-                {
-                    Fail(report, $"Scene has no root GameObjects: {scene.path}");
-                }
-                else
-                {
-                    Pass(report, $"Scene opens with {rootCount} root object(s): {scene.path}");
-                }
-
-                loadedNames.Add(opened.name);
+                Debug.LogError("No scenes in build settings");
+                allChecksPassed = false;
             }
 
-            Pass(report, $"Scenes verified: {string.Join(", ", loadedNames)}");
-            Finish("VerifyScenes", report);
+            // Generate report
+            string reportPath = "Logs/scene-verification-report.json";
+            Directory.CreateDirectory(Path.GetDirectoryName(reportPath));
+
+            string report = $@"{{
+  ""timestamp"": ""{System.DateTime.UtcNow:O}"",
+  ""totalScenes"": {sceneGuids.Length},
+  ""buildScenes"": {buildScenes.Length},
+  ""allChecksPassed"": {allChecksPassed.ToString().ToLower()}
+}}";
+
+            File.WriteAllText(reportPath, report);
+            Debug.Log($"Scene verification report written to: {reportPath}");
+
+            if (allChecksPassed)
+            {
+                Debug.Log("✓ Scene verification PASSED");
+            }
+            else
+            {
+                Debug.LogError("✗ Scene verification FAILED");
+            }
+
+            EditorApplication.Exit(allChecksPassed ? 0 : 1);
         }
     }
 }

@@ -166,3 +166,61 @@ Think of it like running lint after a coding session—not after every keystroke
 - **Simple request** ("create a blue sphere at 1,2,3") → Verify immediately after
 - **Multi-step task** → Verify after each logical phase completes
 - **Batch operations** (created 5 objects) → One screenshot at the end, not five
+
+---
+
+## Using game-development Skill
+
+The game-development skill provides automated game testing and verification capabilities for Unity projects.
+
+### Setup
+
+The skill requires a `.codegpt-game.json` manifest in the Unity project root:
+
+```json
+{
+  "launch": "F:\\naija-after-dark\\game\\unity\\NAAD.exe",
+  "log": "F:\\naija-after-dark\\game\\unity\\Logs\\Player.log",
+  "sourceRoots": [
+    "F:\\naija-after-dark\\game\\unity\\Assets\\NAAD"
+  ]
+}
+```
+
+### Available Commands
+
+- `node <skill-dir>/game.mjs detect` - Detect game engine and presets
+- `node <skill-dir>/game.mjs init` - Initialize game configuration
+- `node <skill-dir>/game.mjs run` - Run the game
+- `node <skill-dir>/game.mjs logs --errors` - Check for errors in logs
+- `node <skill-dir>/game.mjs shot` - Take a screenshot
+
+### Unity MCP Integration
+
+The Unity MCP plugin (`com.ivanmurzak.unity.mcp`) provides JSON-RPC endpoint at `http://localhost:17890/mcp/rpc`. This enables automated Unity Editor operations via MCP tools.
+
+**Requirements:**
+- Unity Editor must be running with MCP plugin loaded
+- MCP endpoint must be reachable (check with `curl http://localhost:17890/mcp/rpc`)
+- See `game/unity/mcp-manifest.json` for configuration
+
+### Unity CLI Commands
+
+NAAD project has comprehensive Unity CLI automation documented in `Assets/NAAD/UNITY_CLI_COMMANDS.md`. Use batch scripts in `game/unity/scripts/` for common operations:
+
+- `scripts/verify.bat` - Run all verification checks
+- `scripts/build-android.bat` - Build Android APK (use `dev`, `aab`, or `profile` variants)
+- `scripts/test.bat` - Run tests (use `edit` for EditMode, `firstnight` for First Night test)
+
+### When to Use game-development Skill
+
+Use the game-development skill when:
+- You need to run the game and verify it visually
+- You need to check console logs for errors
+- You need to take screenshots of the game state
+- You need to automate build/run/verify loops
+
+Do NOT use for:
+- Simple file operations (use standard file tools)
+- Editor-only operations (use Unity RunCommand tool)
+- Script compilation checks (use Unity CLI)

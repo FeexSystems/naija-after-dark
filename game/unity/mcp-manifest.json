@@ -1,11 +1,16 @@
 {
   "name": "unity-mcp",
-  "version": "1.0.0",
-  "description": "Unity Editor Control via MCP",
+  "version": "1.1.0",
+  "description": "Unity Editor Control via MCP for NAAD project",
   "tools": {
     "unity": {
       "type": "json_rpc",
-      "endpoint": "http://localhost:17890/mcp/rpc"
+      "endpoint": "http://localhost:17890/mcp/rpc",
+      "description": "Unity Editor JSON-RPC endpoint for automated build, test, and verification commands"
     }
+  },
+  "startup": {
+    "instructions": "Unity MCP server requires Unity Editor to be running with the com.ivanmurzak.unity.mcp package loaded. Start Unity Editor manually or use Unity CLI with the MCP plugin enabled.",
+    "healthCheck": "curl http://localhost:17890/mcp/rpc to verify endpoint is reachable"
   }
 }

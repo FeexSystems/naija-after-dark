@@ -22,7 +22,7 @@ Unity 6000.6.5f1 must be installed. The CLI will use the installed Editor.
 
 All commands assume the project path is:
 ```
-c:\Users\user\naija-after-dark-1\game\unity
+F:\naija-after-dark\game\unity
 ```
 
 Adjust the `-projectPath` parameter if your project is located elsewhere.
@@ -34,7 +34,7 @@ Adjust the `-projectPath` parameter if your project is located elsewhere.
 Verify project structure, references, and configuration.
 
 ```bash
-unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity" -executeMethod NAAD.Editor.Editor.VerifyProject -logFile "Logs/ProjectVerification.log"
+unity -quit -batchmode -projectPath "F:\naija-after-dark\game\unity" -executeMethod NAAD.Editor.Editor.VerifyProject -logFile "Logs/ProjectVerification.log"
 ```
 
 **Expected Output**: Success or detailed error report
@@ -48,7 +48,7 @@ unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity
 Verify all scenes are properly configured.
 
 ```bash
-unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity" -executeMethod NAAD.Editor.VerifyScenes -logFile "Logs/SceneVerification.log"
+unity -quit -batchmode -projectPath "F:\naija-after-dark\game\unity" -executeMethod NAAD.Editor.VerifyScenes -logFile "Logs/SceneVerification.log"
 ```
 
 **Expected Output**: List of scenes with configuration status
@@ -62,7 +62,7 @@ unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity
 Verify environment scenes have required components.
 
 ```bash
-unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity" -executeMethod NAAD.Editor.VerifyEnvironmentScenes -logFile "Logs/EnvironmentVerification.log"
+unity -quit -batchmode -projectPath "F:\naija-after-dark\game\unity" -executeMethod NAAD.Editor.VerifyEnvironmentScenes -logFile "Logs/EnvironmentVerification.log"
 ```
 
 **Expected Output**: Environment scene verification report
@@ -76,7 +76,7 @@ unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity
 Verify animation assets are present and configured.
 
 ```bash
-unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity" -executeMethod NAAD.Editor.VerifyAnimationAssets -logFile "Logs/AnimationVerification.log"
+unity -quit -batchmode -projectPath "F:\naija-after-dark\game\unity" -executeMethod NAAD.Editor.VerifyAnimationAssets -logFile "Logs/AnimationVerification.log"
 ```
 
 **Expected Output**: Animation asset verification report
@@ -90,7 +90,7 @@ unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity
 Verify player navigation in scenes.
 
 ```bash
-unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity" -executeMethod NAAD.Editor.VerifyPlayerNavigation -logFile "Logs/NavigationVerification.log"
+unity -quit -batchmode -projectPath "F:\naija-after-dark\game\unity" -executeMethod NAAD.Editor.VerifyPlayerNavigation -logFile "Logs/NavigationVerification.log"
 ```
 
 **Expected Output**: Navigation verification report
@@ -104,7 +104,7 @@ unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity
 Verify UI controllers and views are properly configured.
 
 ```bash
-unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity" -executeMethod NAAD.Editor.Editor.VerifyUI -logFile "Logs/UIVerification.log"
+unity -quit -batchmode -projectPath "F:\naija-after-dark\game\unity" -executeMethod NAAD.Editor.Editor.VerifyUI -logFile "Logs/UIVerification.log"
 ```
 
 **Expected Output**: UI verification report
@@ -118,7 +118,7 @@ unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity
 Verify service configuration and connectivity.
 
 ```bash
-unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity" -executeMethod NAAD.Editor.VerifyServices -logFile "Logs/ServiceVerification.log"
+unity -quit -batchmode -projectPath "F:\naija-after-dark\game\unity" -executeMethod NAAD.Editor.VerifyServices -logFile "Logs/ServiceVerification.log"
 ```
 
 **Expected Output**: Service connectivity report
@@ -132,7 +132,7 @@ unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity
 Execute all unit tests in the project.
 
 ```bash
-unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity" -runTests -testPlatform PlayMode -testResults "Logs/TestResults.xml" -logFile "Logs/UnitTests.log"
+unity -quit -batchmode -projectPath "F:\naija-after-dark\game\unity" -runTests -testPlatform PlayMode -testResults "Logs/TestResults.xml" -logFile "Logs/UnitTests.log"
 ```
 
 **Expected Output**: Test results in XML format
@@ -144,7 +144,7 @@ unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity
 Execute edit mode tests.
 
 ```bash
-unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity" -runTests -testPlatform EditMode -testResults "Logs/EditModeTestResults.xml" -logFile "Logs/EditModeTests.log"
+unity -quit -batchmode -projectPath "F:\naija-after-dark\game\unity" -runTests -testPlatform EditMode -testResults "Logs/EditModeTestResults.xml" -logFile "Logs/EditModeTests.log"
 ```
 
 **Expected Output**: Test results in XML format
@@ -156,7 +156,7 @@ unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity
 Run the First Night smoke test.
 
 ```bash
-unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity" -executeMethod NAAD.Gameplay.FirstNight.FirstNightSmokeTest.RunSmokeTest -logFile "Logs/FirstNightSmokeTest.log"
+unity -quit -batchmode -projectPath "F:\naija-after-dark\game\unity" -executeMethod NAAD.Gameplay.FirstNight.FirstNightSmokeTest.RunSmokeTest -logFile "Logs/FirstNightSmokeTest.log"
 ```
 
 **Expected Output**: Smoke test report with step-by-step results
@@ -172,7 +172,7 @@ unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity
 Build Android APK for release.
 
 ```bash
-unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity" -buildTarget Android -buildTargetPlayer Android -executeMethod NAAD.Editor.BuildAndroid -logFile "Logs/AndroidBuild.log"
+unity -quit -batchmode -projectPath "F:\naija-after-dark\game\unity" -buildTarget Android -buildTargetPlayer Android -executeMethod NAAD.Editor.BuildAndroid -logFile "Logs/AndroidBuild.log"
 ```
 
 **Expected Output**: APK file in build output directory
@@ -186,7 +186,7 @@ unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity
 Build Android APK for development (with debugging).
 
 ```bash
-unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity" -buildTarget Android -buildTargetPlayer Android -executeMethod NAAD.Editor.BuildAndroidDevelopment -logFile "Logs/AndroidDevBuild.log"
+unity -quit -batchmode -projectPath "F:\naija-after-dark\game\unity" -buildTarget Android -buildTargetPlayer Android -executeMethod NAAD.Editor.BuildAndroidDevelopment -logFile "Logs/AndroidDevBuild.log"
 ```
 
 **Expected Output**: Development APK with debugging enabled
@@ -200,7 +200,7 @@ unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity
 Build Android App Bundle for Play Store.
 
 ```bash
-unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity" -buildTarget Android -buildTargetPlayer Android -executeMethod NAAD.Editor.BuildAndroidAAB -logFile "Logs/AndroidAABBuild.log"
+unity -quit -batchmode -projectPath "F:\naija-after-dark\game\unity" -buildTarget Android -buildTargetPlayer Android -executeMethod NAAD.Editor.BuildAndroidAAB -logFile "Logs/AndroidAABBuild.log"
 ```
 
 **Expected Output**: AAB file in build output directory
@@ -216,7 +216,7 @@ unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity
 Force reimport of all assets (useful after configuration changes).
 
 ```bash
-unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity" -executeMethod UnityEditor.AssetDatabase.Refresh -logFile "Logs/AssetRefresh.log"
+unity -quit -batchmode -projectPath "F:\naija-after-dark\game\unity" -executeMethod UnityEditor.AssetDatabase.Refresh -logFile "Logs/AssetRefresh.log"
 ```
 
 **Expected Output**: All assets reimported
@@ -228,7 +228,7 @@ unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity
 Reimport all textures with new compression settings.
 
 ```bash
-unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity" -executeMethod NAAD.Editor.Editor.ReimportTextures -logFile "Logs/TextureReimport.log"
+unity -quit -batchmode -projectPath "F:\naija-after-dark\game\unity" -executeMethod NAAD.Editor.Editor.ReimportTextures -logFile "Logs/TextureReimport.log"
 ```
 
 **Expected Output**: All textures reimported with new settings
@@ -244,7 +244,7 @@ unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity
 List all installed Unity packages.
 
 ```bash
-unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity" -executeMethod NAAD.Editor.Editor.ListPackages -logFile "Logs/PackageList.log"
+unity -quit -batchmode -projectPath "F:\naija-after-dark\game\unity" -executeMethod NAAD.Editor.Editor.ListPackages -logFile "Logs/PackageList.log"
 ```
 
 **Expected Output**: List of installed packages
@@ -258,7 +258,7 @@ unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity
 Add a Unity package by name or Git URL.
 
 ```bash
-unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity" -executeMethod NAAD.Editor.Editor.AddPackage -package "com.unity.textmeshpro" -logFile "Logs/AddPackage.log"
+unity -quit -batchmode -projectPath "F:\naija-after-dark\game\unity" -executeMethod NAAD.Editor.Editor.AddPackage -package "com.unity.textmeshpro" -logFile "Logs/AddPackage.log"
 ```
 
 **Expected Output**: Package installed
@@ -274,7 +274,7 @@ unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity
 Build with profiling enabled.
 
 ```bash
-unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity" -buildTarget Android -buildTargetPlayer Android -executeMethod NAAD.Editor.BuildAndroidWithProfiling -logFile "Logs/AndroidProfilingBuild.log"
+unity -quit -batchmode -projectPath "F:\naija-after-dark\game\unity" -buildTarget Android -buildTargetPlayer Android -executeMethod NAAD.Editor.BuildAndroidWithProfiling -logFile "Logs/AndroidProfilingBuild.log"
 ```
 
 **Expected Output**: APK with profiling enabled
@@ -645,28 +645,28 @@ echo NAAD Verification Script
 echo ========================
 
 echo 1. Project Verification
-unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity" -executeMethod NAAD.Editor.Editor.VerifyProject -logFile "Logs\ProjectVerification.log"
+unity -quit -batchmode -projectPath "F:\naija-after-dark\game\unity" -executeMethod NAAD.Editor.Editor.VerifyProject -logFile "Logs\ProjectVerification.log"
 
 echo 2. Scene Verification
-unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity" -executeMethod NAAD.Editor.VerifyScenes -logFile "Logs\SceneVerification.log"
+unity -quit -batchmode -projectPath "F:\naija-after-dark\game\unity" -executeMethod NAAD.Editor.VerifyScenes -logFile "Logs\SceneVerification.log"
 
 echo 3. Environment Verification
-unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity" -executeMethod NAAD.Editor.VerifyEnvironmentScenes -logFile "Logs\EnvironmentVerification.log"
+unity -quit -batchmode -projectPath "F:\naija-after-dark\game\unity" -executeMethod NAAD.Editor.VerifyEnvironmentScenes -logFile "Logs\EnvironmentVerification.log"
 
 echo 4. Animation Verification
-unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity" -executeMethod NAAD.Editor.VerifyAnimationAssets -logFile "Logs\AnimationVerification.log"
+unity -quit -batchmode -projectPath "F:\naija-after-dark\game\unity" -executeMethod NAAD.Editor.VerifyAnimationAssets -logFile "Logs\AnimationVerification.log"
 
 echo 5. Navigation Verification
-unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity" -executeMethod NAAD.Editor.VerifyPlayerNavigation -logFile "Logs\NavigationVerification.log"
+unity -quit -batchmode -projectPath "F:\naija-after-dark\game\unity" -executeMethod NAAD.Editor.VerifyPlayerNavigation -logFile "Logs\NavigationVerification.log"
 
 echo 6. UI Verification
-unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity" -executeMethod NAAD.Editor.Editor.VerifyUI -logFile "Logs\UIVerification.log"
+unity -quit -batchmode -projectPath "F:\naija-after-dark\game\unity" -executeMethod NAAD.Editor.Editor.VerifyUI -logFile "Logs\UIVerification.log"
 
 echo 7. Service Verification
-unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity" -executeMethod NAAD.Editor.VerifyServices -logFile "Logs\ServiceVerification.log"
+unity -quit -batchmode -projectPath "F:\naija-after-dark\game\unity" -executeMethod NAAD.Editor.VerifyServices -logFile "Logs\ServiceVerification.log"
 
 echo 8. Unit Tests
-unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity" -runTests -testPlatform PlayMode -testResults "Logs\TestResults.xml" -logFile "Logs\UnitTests.log"
+unity -quit -batchmode -projectPath "F:\naija-after-dark\game\unity" -runTests -testPlatform PlayMode -testResults "Logs\TestResults.xml" -logFile "Logs\UnitTests.log"
 
 echo Verification Complete
 pause

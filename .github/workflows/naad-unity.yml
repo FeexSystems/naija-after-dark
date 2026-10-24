@@ -85,7 +85,7 @@ jobs:
           projectPath: game/unity
           unityVersion: 6000.6.5f1
           targetPlatform: StandaloneLinux64
-          buildMethod: NAAD.Editor.Editor.VerifyProject
+          buildMethod: NAAD.Editor.VerifyProject.Execute
           customParameters: -nographics
 
       - name: Upload verification report
@@ -152,8 +152,70 @@ jobs:
           projectPath: game/unity
           unityVersion: 6000.6.5f1
           targetPlatform: StandaloneLinux64
-          buildMethod: NAAD.Editor.Editor.ListPackages
+          buildMethod: NAAD.Editor.PackageMethods.ListPackages
           customParameters: -nographics
+
+  # UI verification - checks UI controllers and components
+  verify-ui:
+    name: Unity UI verification
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: verify-unity
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify UI components
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+        with:
+          projectPath: game/unity
+          unityVersion: 6000.6.5f1
+          targetPlatform: StandaloneLinux64
+          buildMethod: NAAD.Editor.VerifyUI.Execute
+          customParameters: -nographics
+
+      - name: Upload UI verification report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: naad-ui-verification-report
+          path: game/unity/Logs/ui-verification-report.json
+          if-no-files-found: warn
+
+  # Service verification - checks Supabase configuration and service wiring
+  verify-services:
+    name: Unity service verification
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: verify-unity
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify service configuration
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+        with:
+          projectPath: game/unity
+          unityVersion: 6000.6.5f1
+          targetPlatform: StandaloneLinux64
+          buildMethod: NAAD.Editor.VerifyServices.Execute
+          customParameters: -nographics
+
+      - name: Upload service verification report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: naad-service-verification-report
+          path: game/unity/Logs/service-verification-report.json
+          if-no-files-found: warn
   # Gate B / Phase D — First Night vertical slice against the LIVE Supabase project.
   # Drives the real FirstNightController through the authoritative server router
   # (sign-in → START_NIGHT → phone replies → travel → spend → COMPLETE_NIGHT → summary)
