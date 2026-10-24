@@ -10,7 +10,7 @@ import { COMMAND_REGISTRY, LOCATION_IDS, toExecuteCommandBody } from "./commands
 import type { GameCommand } from "./commands.ts";
 import { PRICES } from "./economy.ts";
 import { PERIOD_BOUNDS } from "./world-clock.ts";
-import type { WorldPeriod } from "./world-clock.ts";
+import type { Weather, WorldPeriod } from "./world-clock.ts";
 
 function assert(cond: boolean, msg: string) {
   if (!cond) throw new Error("contract: " + msg);
@@ -88,6 +88,29 @@ function assert(cond: boolean, msg: string) {
     }
   }
   assert(covered.every(Boolean), "all 1440 minutes covered");
+}
+
+// --- weather is the closed CLEAR/CLOUDY/RAIN/HEAVY_RAIN/HARMATTAN set ---
+{
+  const weathers: Weather[] = ["CLEAR", "CLOUDY", "RAIN", "HEAVY_RAIN", "HARMATTAN"];
+  assert(new Set(weathers).size === weathers.length, "weather values unique");
+  assert(weathers.length === 5, "five weather values");
+}
+
+// --- period bounds are the documented clock windows ---
+{
+  const expected: Record<WorldPeriod, [number, number]> = {
+    MORNING: [360, 539],
+    DAY: [540, 959],
+    TRANSITION: [960, 1139],
+    NIGHT: [1140, 1439],
+    LATE_NIGHT: [0, 179],
+    AFTER_HOURS: [180, 359],
+  };
+  for (const [p, [start, end]] of Object.entries(expected) as [WorldPeriod, [number, number]][]) {
+    assert(PERIOD_BOUNDS[p].start === start, p + " start");
+    assert(PERIOD_BOUNDS[p].end === end, p + " end");
+  }
 }
 
 // --- seed location IDs match the Unity NightDistrictIds ---

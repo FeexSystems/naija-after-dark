@@ -181,12 +181,22 @@ export interface Relationship {
 }
 
 export type WorldPeriod =
-  | "MORNING"
-  | "DAY"
-  | "TRANSITION"
-  | "NIGHT"
-  | "LATE_NIGHT"
-  | "AFTER_HOURS";
+  | "MORNING" // 06:00-08:59
+  | "DAY" // 09:00-15:59
+  | "TRANSITION" // 16:00-18:59 sunset
+  | "NIGHT" // 19:00-23:59
+  | "LATE_NIGHT" // 00:00-02:59
+  | "AFTER_HOURS"; // 03:00-05:59
+
+/** Period boundaries in minutes since midnight (mirrors backend/game-api/src/contracts/world-clock.ts) */
+export const PERIOD_BOUNDS: Record<WorldPeriod, { start: number; end: number }> = {
+  MORNING: { start: 360, end: 539 },
+  DAY: { start: 540, end: 959 },
+  TRANSITION: { start: 960, end: 1139 },
+  NIGHT: { start: 1140, end: 1439 },
+  LATE_NIGHT: { start: 0, end: 179 },
+  AFTER_HOURS: { start: 180, end: 359 },
+};
 
 export interface WorldState {
   id: 1;
@@ -205,7 +215,7 @@ export interface WorldClock {
   minutesSinceMidnight: number;
   period: WorldPeriod;
   timeScale: number;
-  weather: string;
+  weather: Weather;
   trafficLevel: number;
   nightlifeLevel: number;
 }

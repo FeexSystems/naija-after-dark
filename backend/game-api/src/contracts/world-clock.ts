@@ -11,13 +11,15 @@ export type WorldPeriod =
   | "LATE_NIGHT" // 00:00–02:59
   | "AFTER_HOURS"; // 03:00–05:59
 
+export type Weather = "CLEAR" | "CLOUDY" | "RAIN" | "HEAVY_RAIN" | "HARMATTAN";
+
 export interface WorldClock {
   gameDate: string; // YYYY-MM-DD (UTC game calendar)
   gameTime: string; // ISO timestamptz
   minutesSinceMidnight: number;
   period: WorldPeriod;
   timeScale: number; // game minutes per real minute
-  weather: string;
+  weather: Weather;
   trafficLevel: number;
   nightlifeLevel: number;
 }
@@ -31,7 +33,7 @@ export interface WorldClockResponse {
   minutesSinceMidnight?: number;
   period?: WorldPeriod;
   timeScale?: number;
-  weather?: string;
+  weather?: Weather;
   trafficLevel?: number;
   nightlifeLevel?: number;
 }
