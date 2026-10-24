@@ -13,7 +13,7 @@ Full roadmap: [PROJECT_PLAN.md](PROJECT_PLAN.md) · Next-gate plan: [GATE_C_PLAY
 
 | Item | Status | Evidence |
 |---|---|---|
-| Repo / branch inspection | Verified | On feature branch `feat/audit-gate-recovery-2026-10-14`; `main` at `25498e3` (ahead of reviewed commit by 2 commits) |
+| Repo / branch inspection | Verified | `main` at `272b7ec`; CI-recovery fixes on branch `cline/febyxe77` (origin `8f64c6c` pushed; workflow image edit local-only at `5fba087`, pending `workflows` permission) |
 | Core service graph | Implemented | `NAADApplicationRoot`, stubs + Supabase live services, command/auth/player/world/phone/dialogue |
 | Bootstrap scene in Build Settings | Verified | Only `Assets/Scenes/Bootstrap.unity` at build index 0 |
 | Bootstrap First Night wiring | Implemented | `NAADBootstrap`, `FirstNightController`, `FirstNightHud`, `MainCamera` present |
@@ -24,6 +24,7 @@ Full roadmap: [PROJECT_PLAN.md](PROJECT_PLAN.md) · Next-gate plan: [GATE_C_PLAY
 | Scene transition after Bootstrap | Planned | Serialized `nextSceneName` is empty (First Night currently lives in Bootstrap) |
 | Unity CLI Pipeline drive | Verified | `unity status` → Editor `ready` on port 7801 (`6000.6.5f1`) |
 | Compile-clean Editor | Verified | Console cleared after Input System 1.20.1 + package cleanup |
+| CI editor image / workflow version | Blocked | `unityVersion: 6000.7.0b4` has no published `unityci/editor` image — run 39908764911 failed at `docker pull` (manifest unknown, exit code 125). Fix ready: `6000.6.5f1` (active `linux-il2cpp` images, matches all project docs). Workflow file cannot be pushed by the CI identity without `workflows` write permission; fix is committed locally only (`5fba087`). |
 
 ## Gate B — Environment / scenes
 
@@ -75,7 +76,7 @@ The First Night vertical slice is driven end-to-end by
 | `probe_double_request_id` | Verified (local) | idempotent replay (first + replay both success) |
 | `probe_same_location` | Verified (local) | `ALREADY_THERE`, no mutation |
 | `PHASE_D_PASS` | Verified (local) | `Library/first-night-report.json` ok:true |
-| CI green run (`verify-unity`, `verify-project-structure`, `first-night-live-test`) | **Pending** | run URL + SHA to be recorded after first green Actions run |
+| CI green run (`verify-unity`, `verify-project-structure`, `first-night-live-test`) | **Pending — blocked by workflow permission** | Run 39908764911 FAILED at ~3s: `unityci/editor:ubuntu-6000.7.0b4-linux-il2cpp-3` manifest unknown, exit code 125. Fix: workflow `unityVersion` → `6000.6.5f1` (committed locally only, `5fba087`; cannot push without `workflows` write permission). Run URL + SHA to be recorded once CI is green. |
 
 ## Next gate and exit criteria
 

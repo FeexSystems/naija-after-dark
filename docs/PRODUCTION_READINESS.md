@@ -12,7 +12,7 @@ A successful Unity Editor verification or headless build is necessary but does n
 
 | Gate | Status | Evidence / blocker | Exit criteria |
 |---|---|---|---|
-| Unity foundation / Gate 22 | Verified in the previously observed CI run; rerun required after this change | `.github/workflows/naad-unity.yml`; `NAAD.Editor.NAADBuild.Verify` is a separate valid entry point | Current branch CI passes and artifacts are uploaded |
+| Unity foundation / Gate 22 | Blocked in CI | CI run 39908764911 failed at ~3s with exit code 125: `unityci/editor:ubuntu-6000.7.0b4-linux-il2cpp-3` image does not exist (manifest unknown). `.github/workflows/naad-unity.yml` declares `6000.7.0b4`; all project docs pin `6000.6.5f1`, for which active images exist. Fix ready (workflow + `ProjectVersion.txt` aligned to `6000.6.5f1`; `Bootstrap.unity` registered in `EditorBuildSettings.asset` at index 0) but the workflow file cannot be pushed without `workflows` write permission. | CI runs green with the corrected editor version; verification report artifact uploaded; run URL + SHA recorded here |
 | Project structure verification | Fix applied; pending Unity CI | The implementation is `namespace NAAD.Editor` + `class Editor`; entry point must be `NAAD.Editor.Editor.VerifyProject` | Unity invokes method, report exists, exit code 0 |
 | Package inventory | Fix applied; pending Unity CI | Same fully-qualified type-name issue for `ListPackages` | Inventory completes and is stored as an artifact |
 | First Night end-to-end | Blocked | Existing test requires `NAAD_TEST_EMAIL` and `NAAD_TEST_PASSWORD`; code comments indicate it mutates a live Supabase project and real wallet balance | Use an isolated staging Supabase project and disposable test account; test must be repeatable and resettable |
