@@ -34,13 +34,13 @@ EditorSettings:
   m_UseLegacyProbeSampleCount: 0
   m_DisableCookiesInLightmapper: 0
   m_ShadowmaskStitching: 1
-  m_AssetPipelineMode: 1
+  m_AssetPipelineMode: 0
   m_RefreshImportMode: 0
-  m_CacheServerMode: 0
+  m_CacheServerMode: 1
   m_CacheServerEndpoint: 
   m_CacheServerNamespacePrefix: default
-  m_CacheServerEnableDownload: 1
-  m_CacheServerEnableUpload: 1
+  m_CacheServerEnableDownload: 0
+  m_CacheServerEnableUpload: 0
   m_CacheServerEnableTls: 0
   m_CacheServerImportResultCachingEnabled: 0
   m_CacheServerValidationMode: 2
