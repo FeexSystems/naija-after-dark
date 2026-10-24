@@ -13,7 +13,7 @@ namespace NAAD.Core.Bootstrap
     /// </summary>
     public sealed class NAADBootstrap : MonoBehaviour
     {
-        [SerializeField] private string nextSceneName = "Main";
+        [SerializeField] private string nextSceneName = NaadSceneNames.Apartment;
         [Header("Dev sign-in (used when no restored session)")]
         [SerializeField] private string email = "";
         [SerializeField] private string password = "";
