@@ -9,6 +9,19 @@ namespace NAAD.Networking
         private string _period = "NIGHT";
         private int _minutes = 21 * 60;
 
+        /// <summary>
+        /// Nightlife bias per period. MUST match public.naad_nightlife_for_period
+        /// in supabase/migrations/0004_world_time.sql — the offline stub exists to
+        /// stand in for the server, not to invent its own numbers.
+        /// </summary>
+        internal const int NightlifeMorning = 15;
+        internal const int NightlifeDay = 25;
+        internal const int NightlifeTransition = 55;
+        internal const int NightlifeNight = 80;
+        internal const int NightlifeLateNight = 90;
+        internal const int NightlifeAfterHours = 60;
+        internal const int NightlifeUnknown = 50;
+
         public StubWorldStateService(INAADLogger log)
         {
             _log = log;
@@ -22,7 +35,7 @@ namespace NAAD.Networking
                 GameTime = System.DateTime.UtcNow.ToString("o"),
                 Weather = "CLEAR",
                 TrafficLevel = 50,
-                NightlifeLevel = 80,
+                NightlifeLevel = NightlifeForPeriod(_period),
                 TimeScale = 60
             });
         }
@@ -64,14 +77,18 @@ namespace NAAD.Networking
             TimeScale = 60,
             Weather = "CLEAR",
             TrafficLevel = 50,
-            NightlifeLevel = _period switch
-            {
-                "NIGHT" => 80,
-                "LATE_NIGHT" => 90,
-                "TRANSITION" => 55,
-                "DAY" => 25,
-                _ => 50
-            }
+            NightlifeLevel = NightlifeForPeriod(_period)
+        };
+
+        internal static int NightlifeForPeriod(string period) => period switch
+        {
+            "MORNING" => NightlifeMorning,
+            "DAY" => NightlifeDay,
+            "TRANSITION" => NightlifeTransition,
+            "NIGHT" => NightlifeNight,
+            "LATE_NIGHT" => NightlifeLateNight,
+            "AFTER_HOURS" => NightlifeAfterHours,
+            _ => NightlifeUnknown
         };
 
         private static string PeriodFromMinutes(int m)

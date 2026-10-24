@@ -41,6 +41,8 @@ namespace NAAD.Editor
             public int passed;
             public int failed;
             public string[] failures;
+            /// <summary>Assets the gate needs but that are not in the project, with the exact target path.</summary>
+            public string[] missingAssets;
             public string generatedUtc;
         }
 
@@ -48,13 +50,14 @@ namespace NAAD.Editor
         public static void RunVerification()
         {
             var failures = new List<string>();
+            var missing = new List<string>();
             var passed = 0;
 
-            Check("PlayerRig FBX exists", AssetDatabase.LoadAssetAtPath<GameObject>(RigPath) != null, failures, ref passed);
-            Check("PlayerRig prefab exists", AssetDatabase.LoadAssetAtPath<GameObject>(PrefabPath) != null, failures, ref passed);
-            Check("PlayerController exists", AssetDatabase.LoadAssetAtPath<AnimatorController>(ControllerPath) != null, failures, ref passed);
-            Check("PlayerAvatar exists", AssetDatabase.LoadAssetAtPath<Avatar>(AvatarPath) != null, failures, ref passed);
-            Check("UpperBodyMask exists", AssetDatabase.LoadAssetAtPath<AvatarMask>(MaskPath) != null, failures, ref passed);
+            CheckAsset<GameObject>(RigPath, "PlayerRig FBX", missing, failures, ref passed);
+            CheckAsset<GameObject>(PrefabPath, "PlayerRig prefab", missing, failures, ref passed);
+            CheckAsset<AnimatorController>(ControllerPath, "PlayerController", missing, failures, ref passed);
+            CheckAsset<Avatar>(AvatarPath, "PlayerAvatar", missing, failures, ref passed);
+            CheckAsset<AvatarMask>(MaskPath, "UpperBodyMask", missing, failures, ref passed);
 
             var importer = AssetImporter.GetAtPath(RigPath) as ModelImporter;
             var humanoidImport = importer != null && importer.animationType == ModelImporterAnimationType.Human;
@@ -68,6 +71,8 @@ namespace NAAD.Editor
             foreach (var clipPath in RequiredClipPaths)
             {
                 var clip = AssetDatabase.LoadAssetAtPath<AnimationClip>(clipPath);
+                if (clip == null)
+                    missing.Add(clipPath);
                 Check("AnimationClip is valid: " + clipPath, clip != null && clip.length > 0f, failures, ref passed);
             }
 
@@ -157,17 +162,38 @@ namespace NAAD.Editor
                 passed = passed,
                 failed = failures.Count,
                 failures = failures.ToArray(),
+                missingAssets = missing.ToArray(),
                 generatedUtc = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ")
             };
             WriteReport(report);
 
             if (report.success)
+            {
                 Debug.Log($"[NAAD][GateC] PASS: {passed} animation/rig contract checks.");
+            }
             else
+            {
                 Debug.LogError($"[NAAD][GateC] FAIL: {report.failed} of {passed + report.failed} checks failed. See {ReportRelativePath}.");
+                if (missing.Count > 0)
+                {
+                    Debug.LogError($"[NAAD][GateC] MISSING {missing.Count} asset(s) — acquire each to the exact path below, then re-run:");
+                    foreach (var path in missing)
+                        Debug.LogError("[NAAD][GateC]   - " + path);
+                    Debug.LogError("[NAAD][GateC] Acquisition steps: Assets/NAAD/Animation/ASSET_ACQUISITION.md (Mixamo or Unity Starter Assets). Import the rig as Humanoid (C1), clips must keep these exact file names (C2).");
+                }
+            }
 
             if (Application.isBatchMode)
                 EditorApplication.Exit(report.success ? 0 : 1);
+        }
+
+        private static void CheckAsset<T>(string assetPath, string label, List<string> missing,
+            List<string> failures, ref int passed) where T : UnityEngine.Object
+        {
+            var asset = AssetDatabase.LoadAssetAtPath<T>(assetPath);
+            if (asset == null)
+                missing.Add(assetPath);
+            Check(label + " exists", asset != null, failures, ref passed);
         }
 
         private static void Check(string name, bool condition, List<string> failures, ref int passed)

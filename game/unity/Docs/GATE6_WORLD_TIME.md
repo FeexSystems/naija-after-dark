@@ -24,6 +24,16 @@ Server owns `game_time`. Unity only presents / interpolates.
 Attach `WorldClockPresenter` to a scene object.  
 Enable `demoCycleOnStart` for DAY → TRANSITION → NIGHT → LATE_NIGHT.
 
+**Status:** the presenter exists (`Assets/NAAD/Gameplay/World/`) but is not attached
+to any scene or prefab yet, so the pass condition below cannot be demonstrated from a
+build until it is.
+
+### Offline parity
+`StubWorldStateService` (used when Supabase is not configured) must return the same
+nightlife bias per period as `naad_nightlife_for_period`. This is enforced by
+`NAAD.Editor.WorldClockContractVerifier.RunVerification` (CI job
+`verify-world-clock`), which fails when the two tables drift.
+
 ## Pass condition
 
 Demonstrate DAY → SUNSET → NIGHT → LATE NIGHT with ambient intensity / nightlife changes.
