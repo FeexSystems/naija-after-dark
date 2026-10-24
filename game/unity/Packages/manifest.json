@@ -23,9 +23,7 @@
     "com.unity.feature.gameplay-storytelling": "1.0.0",
     "com.unity.feature.mobile": "1.0.0",
     "com.unity.feature.worldbuilding": "1.0.1",
-    "com.unity.inputsystem": "6.7.0",
     "com.unity.ml-agents": "4.1.0",
-    "com.unity.testtools": "2.0.0",
     "com.unity.nuget.newtonsoft-json": "3.2.1",
     "com.unity.pipeline": "0.8.0-exp.1",
     "com.unity.platformtoolkit": "1.2.0",
@@ -37,7 +35,6 @@
     "com.unity.services.leaderboards": "2.3.4",
     "com.unity.services.vivox": "16.12.1",
     "com.unity.ugui": "2.7.0",
-    "com.unity.xr.management": "6.0.0",
     "com.unity.xr.openxr": "1.18.0",
     "com.unity.modules.accessibility": "1.0.0",
     "com.unity.modules.adaptiveperformance": "1.0.0",
@@ -52,13 +49,10 @@
     "com.unity.modules.imageconversion": "1.0.0",
     "com.unity.modules.imgui": "1.0.0",
     "com.unity.modules.jsonserialize": "1.0.0",
-    "com.unity.modules.localizationruntime": "1.0.0",
     "com.unity.modules.nvidia": "1.0.0",
     "com.unity.modules.particlesystem": "1.0.0",
     "com.unity.modules.physics": "1.0.0",
     "com.unity.modules.physicscore2d": "1.0.0",
-    "com.unity.modules.smartstrings": "1.0.0",
-    "com.unity.modules.spritemask": "1.0.0",
     "com.unity.modules.terrain": "1.0.0",
     "com.unity.modules.terrainphysics": "1.0.0",
     "com.unity.modules.tetgen": "1.0.0",
@@ -76,8 +70,7 @@
     "com.unity.modules.vectorgraphics": "1.0.0",
     "com.unity.modules.vehicles": "1.0.0",
     "com.unity.modules.video": "1.0.0",
-    "com.unity.modules.wind": "1.0.0",
-    "com.rankupgames.unity-cursor-toolkit": "1.0.0"
+    "com.unity.modules.wind": "1.0.0"
   },
   "scopedRegistries": [
     {
