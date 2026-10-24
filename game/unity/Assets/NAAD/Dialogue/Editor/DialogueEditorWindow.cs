@@ -23,9 +23,12 @@ namespace NAAD.Dialogue.Editor
         private Button createButton;
         private Button deleteButton;
         private Button refreshButton;
+        private Button bulkExportButton;
+        private Button bulkImportButton;
 
         private List<DialogueGraph> dialogues = new List<DialogueGraph>();
         private DialogueGraph selectedDialogue;
+        private List<DialogueGraph> selectedDialogues = new List<DialogueGraph>();
 
         private string searchQuery = "";
         private string selectedNpcFilter = "All";
@@ -96,6 +99,16 @@ namespace NAAD.Dialogue.Editor
                 refreshButton.clicked += OnRefresh;
             }
 
+            if (bulkExportButton != null)
+            {
+                bulkExportButton.clicked += OnBulkExport;
+            }
+
+            if (bulkImportButton != null)
+            {
+                bulkImportButton.clicked += OnBulkImport;
+            }
+
             // Setup search
             var searchField = root.Q<TextField>("searchField");
             if (searchField != null)
@@ -163,6 +176,14 @@ namespace NAAD.Dialogue.Editor
             deleteButton = new Button(OnDeleteDialogue) { text = "Delete" };
             deleteButton.SetEnabled(false);
             toolbar.Add(deleteButton);
+
+            // Bulk export button
+            bulkExportButton = new Button(OnBulkExport) { text = "Export JSON" };
+            toolbar.Add(bulkExportButton);
+
+            // Bulk import button
+            bulkImportButton = new Button(OnBulkImport) { text = "Import JSON" };
+            toolbar.Add(bulkImportButton);
 
             // Dialogue list view
             dialogueListView = new ListView();
@@ -461,6 +482,62 @@ namespace NAAD.Dialogue.Editor
         {
             LoadDialogues();
             RefreshDialogueList();
+        }
+
+        private void OnBulkExport()
+        {
+            var path = EditorUtility.SaveFolderPanel("Export Dialogues", "", "");
+            if (string.IsNullOrEmpty(path)) return;
+
+            var exported = 0;
+            foreach (var dialogue in dialogues)
+            {
+                var json = JsonUtility.ToJson(dialogue, true);
+                var filename = $"{dialogue.graphId ?? dialogue.graphName ?? "dialogue"}.json";
+                var filepath = System.IO.Path.Combine(path, filename);
+                System.IO.File.WriteAllText(filepath, json);
+                exported++;
+            }
+
+            EditorUtility.DisplayDialog("Export Complete", $"Exported {exported} dialogues to {path}", "OK");
+        }
+
+        private void OnBulkImport()
+        {
+            var path = EditorUtility.OpenFolderPanel("Import Dialogues", "", "");
+            if (string.IsNullOrEmpty(path)) return;
+
+            var files = System.IO.Directory.GetFiles(path, "*.json");
+            if (files.Length == 0)
+            {
+                EditorUtility.DisplayDialog("Import Failed", "No JSON files found in selected folder", "OK");
+                return;
+            }
+
+            var imported = 0;
+            foreach (var file in files)
+            {
+                try
+                {
+                    var json = System.IO.File.ReadAllText(file);
+                    var dialogue = ScriptableObject.CreateInstance<DialogueGraph>();
+                    JsonUtility.FromJsonOverwrite(json, dialogue);
+
+                    var savePath = $"Assets/NAAD/Dialogue/{System.IO.Path.GetFileNameWithoutExtension(file)}.asset";
+                    AssetDatabase.CreateAsset(dialogue, savePath);
+                    imported++;
+                }
+                catch (System.Exception e)
+                {
+                    Debug.LogError($"Failed to import {file}: {e.Message}");
+                }
+            }
+
+            AssetDatabase.SaveAssets();
+            LoadDialogues();
+            RefreshDialogueList();
+
+            EditorUtility.DisplayDialog("Import Complete", $"Imported {imported} dialogues from {path}", "OK");
         }
 
         private List<string> GetUniqueNpcIds()
