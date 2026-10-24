@@ -212,7 +212,7 @@ namespace NAAD.AI
     /// <summary>
     /// ScriptableObject database for NPC memories
     /// </summary>
-    [CreateAssetMenu(menu = "NAAD/AI/NPC Memory Database")]
+    [CreateAssetMenu(fileName = "NpcMemoryDatabase", menuName = "NAAD/AI/NPC Memory Database")]
     public class NpcMemoryDatabase : ScriptableObject
     {
         [System.Serializable]

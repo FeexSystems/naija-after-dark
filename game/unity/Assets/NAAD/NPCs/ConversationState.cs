@@ -1,14 +1,11 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "ConversationState", menu = "NAAD/Behavior/Conversation")]
+[CreateAssetMenu(fileName = "ConversationState", menuName = "NAAD/Behavior/Conversation")]
 public class ConversationState : BehaviorState
 {
     [Header("Conversation State Settings")]
     [Tooltip("Dialogue bubble prefab to use")]
     [SerializeField] protected DialogueBubble dialogueBubblePrefab;
-
-    [Tooltip("Override dialogue for this state")]
-    [SerializeField] protected DialogueConfig overrideDialogue;
 
     public override void Enter(BehaviorStateMachine stateMachine)
     {

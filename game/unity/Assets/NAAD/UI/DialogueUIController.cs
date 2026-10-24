@@ -1,3 +1,4 @@
+using NAAD.Networking;
 using NAAD.Networking.Supabase;
 using UnityEngine;
 using TMPro;

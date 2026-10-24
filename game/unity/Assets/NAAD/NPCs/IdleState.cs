@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "IdleState", menu = "NAAD/Behavior/Idle")]
+[CreateAssetMenu(fileName = "IdleState", menuName = "NAAD/Behavior/Idle")]
 public class IdleState : BehaviorState
 {
     [Header("Idle State Settings")]
