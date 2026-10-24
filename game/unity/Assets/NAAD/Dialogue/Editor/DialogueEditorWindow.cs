@@ -393,6 +393,14 @@ namespace NAAD.Dialogue.Editor
                 text = "Open in Inspector"
             };
             propertiesBox.Add(inspectButton);
+
+            // Add DialogueDetailPanel for node editing
+            var nodePanel = new VisualElement();
+            nodePanel.name = "nodePanel";
+            nodePanel.style.flexGrow = 1;
+            detailPanel.Add(nodePanel);
+
+            new DialogueDetailPanel(nodePanel, selectedDialogue);
         }
 
         private void OnCreateDialogue()
