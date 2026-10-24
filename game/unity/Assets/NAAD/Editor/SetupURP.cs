@@ -30,7 +30,12 @@ namespace NAAD.Editor
 
             UpgradeMaterialsToURP();
             UpgradeShadersToURP();
-private static void UpgradeMaterialsToURP()
+
+            AssetDatabase.SaveAssets();
+            Debug.Log("[NAAD][URP] URP configured successfully with asset: " + urpAssetPath);
+        }
+
+        private static void UpgradeMaterialsToURP()
         {
             var guids = AssetDatabase.FindAssets("t:Material");
             int upgraded = 0;
@@ -127,12 +132,6 @@ private static void UpgradeMaterialsToURP()
             UpgradeShadersToURP();
             AssetDatabase.SaveAssets();
             Debug.Log("[NAAD][URP] Material upgrade complete");
-        }
-    }
-}
-
-            AssetDatabase.SaveAssets();
-            Debug.Log("[NAAD][URP] URP configured successfully with asset: " + urpAssetPath);
         }
     }
 }

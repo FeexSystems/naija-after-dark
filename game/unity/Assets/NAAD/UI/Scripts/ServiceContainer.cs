@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
+using NAAD.Core.Logging;
 using NAAD.Networking;
 using NAAD.Networking.Supabase;
-using NAAD.Mock;
 
 namespace NAAD.UI.Scripts
 {
@@ -51,11 +51,16 @@ namespace NAAD.UI.Scripts
         /// </summary>
         public static void RegisterMockServices()
         {
-            var auth = new MockAuthenticationService();
-            var players = MockPlayerService.GetOrCreate();
-            var world = new MockWorldStateService();
-            var commands = new MockCommandService(auth, players, world, null);
-            var phone = new MockPhoneService();
+            // Uses the current NAAD.Networking stub services (the same implementations
+            // NAADApplicationRoot composes when no SupabaseConfig is assigned). The
+            // previous NAAD.Mock.* copies targeted a removed command DTO API and never
+            // compiled; they have been deleted.
+            var logger = new UnityNAADLogger();
+            IAuthService auth = new StubAuthService(logger);
+            IPlayerService players = new StubPlayerService(auth, logger);
+            IWorldStateService world = new StubWorldStateService(logger);
+            ICommandService commands = new StubCommandService(logger);
+            IPhoneService phone = new StubPhoneService(logger);
 
             Register(auth);
             Register(players);
