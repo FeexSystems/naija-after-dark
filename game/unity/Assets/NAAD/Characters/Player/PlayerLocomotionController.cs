@@ -282,3 +282,4 @@ namespace NAAD.Characters.Player
     /// </summary>
     [AttributeUsage(AttributeTargets.Field)]
     public sealed class ReadOnlyAttribute : PropertyAttribute { }
+}

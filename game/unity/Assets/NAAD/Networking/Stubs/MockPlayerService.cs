@@ -28,7 +28,14 @@ namespace NAAD.Mock
             return instance;
         }
 
-        private MockPlayerService() { }
+        private MockPlayerService()
+        {
+            _relationships.Add(new Relationship { NpcId = NightDistrictIds.Tunde, Trust = 50, Respect = 40, Affection = 30, Loyalty = 20, Conflict = 0 });
+            _relationships.Add(new Relationship { NpcId = NightDistrictIds.MamaSeyi, Trust = 70, Respect = 60, Affection = 80, Loyalty = 90, Conflict = 0 });
+            _relationships.Add(new Relationship { NpcId = NightDistrictIds.Amaka, Trust = 30, Respect = 40, Affection = 20, Loyalty = 10, Conflict = 5 });
+            _relationships.Add(new Relationship { NpcId = NightDistrictIds.Emeka, Trust = 80, Respect = 70, Affection = 60, Loyalty = 80, Conflict = 0 });
+            _relationships.Add(new Relationship { NpcId = NightDistrictIds.Dami, Trust = 40, Respect = 50, Affection = 30, Loyalty = 30, Conflict = 0 });
+        }
 
         // State
         public int CurrentBalance { get => _currentBalance; }
@@ -44,15 +51,6 @@ namespace NAAD.Mock
         private readonly List<Relationship> _relationships = new();
         private bool _isConsentGiven = false;
         private readonly Dictionary<string, int> _npcMessageCounts = new();
-
-        public MockPlayerService()
-        {
-            _relationships.Add(new Relationship { NpcId = NightDistrictIds.Tunde, Trust = 50, Respect = 40, Affection = 30, Loyalty = 20, Conflict = 0 });
-            _relationships.Add(new Relationship { NpcId = NightDistrictIds.MamaSeyi, Trust = 70, Respect = 60, Affection = 80, Loyalty = 90, Conflict = 0 });
-            _relationships.Add(new Relationship { NpcId = NightDistrictIds.Amaka, Trust = 30, Respect = 40, Affection = 20, Loyalty = 10, Conflict = 5 });
-            _relationships.Add(new Relationship { NpcId = NightDistrictIds.Emeka, Trust = 80, Respect = 70, Affection = 60, Loyalty = 80, Conflict = 0 });
-            _relationships.Add(new Relationship { NpcId = NightDistrictIds.Dami, Trust = 40, Respect = 50, Affection = 30, Loyalty = 30, Conflict = 0 });
-        }
 
         public Task<PlayerDto?> FetchCurrentPlayerAsync()
         {
@@ -133,3 +131,5 @@ namespace NAAD.Mock
             _relationships.Add(new Relationship { NpcId = NightDistrictIds.Emeka, Trust = 80, Respect = 70, Affection = 60, Loyalty = 80, Conflict = 0 });
             _relationships.Add(new Relationship { NpcId = NightDistrictIds.Dami, Trust = 40, Respect = 50, Affection = 30, Loyalty = 30, Conflict = 0 });
         }
+    }
+}

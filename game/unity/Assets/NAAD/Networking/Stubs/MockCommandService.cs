@@ -255,8 +255,75 @@ namespace NAAD.Mock
         }
 
         public int CommandCount => _history.Count;
-    }
-}
+
+        private CommandResult ValidateAndExecuteTravel(CommandRequest request, TravelCommand command)
+        {
+            var result = new CommandResult { RequestId = request.RequestId };
+            var currentLocation = _players.CurrentLocation.Value;
+
+            if (!command.ToLocationId.HasValue)
+            {
+                result.Success = false;
+                result.ErrorCode = "INVALID_PAYLOAD";
+                result.ErrorMessage = "toLocationId is required for TRAVEL.";
+                return result;
+            }
+
+            if (currentLocation == command.ToLocationId)
+            {
+                result.Success = false;
+                result.ErrorCode = "NOT_MOVING";
+                result.ErrorMessage = "Already at destination.";
+                return result;
+            }
+
+            if (!NightDistrictIds.IsValidLocation(command.ToLocationId.Value))
+            {
+                result.Success = false;
+                result.ErrorCode = "INVALID_LOCATION";
+                result.ErrorMessage = "Location does not exist.";
+                return result;
+            }
+
+            var pendingTravel = new PendingTravelCommand
+            {
+                RequestId = request.RequestId,
+                ToLocationId = command.ToLocationId.Value,
+                Coordinates = new Vector3(0f, 0f, 0f),
+            };
+
+            _world.AddPendingTravel(pendingTravel);
+            result.Payload = new { pendingTravel };
+            return result;
+        }
+
+        private CommandResult ValidateAndExecuteSpend(CommandRequest request, SpendCommand command)
+        {
+            var result = new CommandResult { RequestId = request.RequestId };
+
+            if (command.Sku == null)
+            {
+                result.Success = false;
+                result.ErrorCode = "INVALID_PAYLOAD";
+                result.ErrorMessage = "sku is required for SPEND.";
+                return result;
+            }
+
+            var currentBalance = _players.CurrentBalance.Value;
+            var price = GetSkuPrice(command.Sku);
+
+            if (currentBalance < price)
+            {
+                result.Success = false;
+                result.ErrorCode = "INSUFFICIENT_FUNDS";
+                result.ErrorMessage = $"Insufficient funds. Need ₦{price}, have ₦{currentBalance}.";
+                return result;
+            }
+
+            _players.SetBalance(currentBalance - price);
+            result.Payload = new { sku = command.Sku, amount = price, balanceAfter = currentBalance - price };
+            return result;
+        }
 
         private CommandResult ValidateAndExecuteBuy(CommandRequest request, BuyCommand command)
         {
@@ -383,71 +450,11 @@ namespace NAAD.Mock
             return result;
         }
 
-        private CommandResult ValidateAndExecuteTravel(CommandRequest request, TravelCommand command)
+        private CommandResult ValidateAndExecuteAttendEvent(CommandRequest request, AttendEventCommand command)
         {
             var result = new CommandResult { RequestId = request.RequestId };
-            var currentLocation = _players.CurrentLocation.Value;
-
-            if (!command.ToLocationId.HasValue)
-            {
-                result.Success = false;
-                result.ErrorCode = "INVALID_PAYLOAD";
-                result.ErrorMessage = "toLocationId is required for TRAVEL.";
-                return result;
-            }
-
-            if (currentLocation == command.ToLocationId)
-            {
-                result.Success = false;
-                result.ErrorCode = "NOT_MOVING";
-                result.ErrorMessage = "Already at destination.";
-                return result;
-            }
-
-            if (!NightDistrictIds.IsValidLocation(command.ToLocationId.Value))
-            {
-                result.Success = false;
-                result.ErrorCode = "INVALID_LOCATION";
-                result.ErrorMessage = "Location does not exist.";
-                return result;
-            }
-
-            var pendingTravel = new PendingTravelCommand
-            {
-                RequestId = request.RequestId,
-                ToLocationId = command.ToLocationId.Value,
-                Coordinates = new Vector3(0f, 0f, 0f),
-            };
-
-            _world.AddPendingTravel(pendingTravel);
-            result.Payload = new { pendingTravel };
+            result.Payload = new { attended = true };
             return result;
         }
-
-        private CommandResult ValidateAndExecuteSpend(CommandRequest request, SpendCommand command)
-        {
-            var result = new CommandResult { RequestId = request.RequestId };
-
-            if (command.Sku == null)
-            {
-                result.Success = false;
-                result.ErrorCode = "INVALID_PAYLOAD";
-                result.ErrorMessage = "sku is required for SPEND.";
-                return result;
-            }
-
-            var currentBalance = _players.CurrentBalance.Value;
-            var price = GetSkuPrice(command.Sku);
-
-            if (currentBalance < price)
-            {
-                result.Success = false;
-                result.ErrorCode = "INSUFFICIENT_FUNDS";
-                result.ErrorMessage = $"Insufficient funds. Need ₦{price}, have ₦{currentBalance}.";
-                return result;
-            }
-
-            _players.SetBalance(currentBalance - price);
-            result.Payload = new { sku = command.Sku, amount = price, balanceAfter = currentBalance - price };
-            return result;
-        }
+    }
+}
