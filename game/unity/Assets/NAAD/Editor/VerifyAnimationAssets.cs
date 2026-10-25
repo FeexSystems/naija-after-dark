@@ -24,14 +24,14 @@ namespace NAAD.Editor
 
         private static readonly string[] RequiredClipPaths =
         {
-            Root + "Animations/Locomotion/Idle.anim",
-            Root + "Animations/Locomotion/Walk.anim",
-            Root + "Animations/Locomotion/Run.anim",
-            Root + "Animations/Phone/Retrieve.anim",
-            Root + "Animations/Phone/Hold.anim",
-            Root + "Animations/Phone/Browse.anim",
-            Root + "Animations/Phone/PutAway.anim",
-            Root + "Animations/Social/Greeting.anim"
+            Root + "Animations/Locomotion/Standing Idle.fbx",
+            Root + "Animations/Locomotion/Standard Walk.fbx",
+            Root + "Animations/Locomotion/Standard Running.fbx",
+            Root + "Animations/Phone/Female Answers A Phone While Walking.fbx",
+            Root + "Animations/Phone/Female Standing Talking On Phone.fbx",
+            Root + "Animations/Phone/Texting On A Smart Phone While Standing.fbx",
+            Root + "Animations/Phone/Male Walking While Texting On A Smartphone.fbx",
+            Root + "Animations/Social/Aj Waving Gesture.fbx"
         };
 
         [Serializable]
@@ -70,7 +70,18 @@ namespace NAAD.Editor
 
             foreach (var clipPath in RequiredClipPaths)
             {
-                var clip = AssetDatabase.LoadAssetAtPath<AnimationClip>(clipPath);
+                AnimationClip clip = null;
+
+                // Try loading as direct clip
+                clip = AssetDatabase.LoadAssetAtPath<AnimationClip>(clipPath);
+
+                // If null, try loading from FBX
+                if (clip == null)
+                {
+                    var allObjects = AssetDatabase.LoadAllAssetsAtPath(clipPath);
+                    clip = allObjects.OfType<AnimationClip>().FirstOrDefault();
+                }
+
                 if (clip == null)
                     missing.Add(clipPath);
                 Check("AnimationClip is valid: " + clipPath, clip != null && clip.length > 0f, failures, ref passed);
