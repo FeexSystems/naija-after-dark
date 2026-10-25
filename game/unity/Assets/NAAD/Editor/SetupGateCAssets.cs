@@ -58,11 +58,25 @@ namespace NAAD.Editor
 
                 Debug.Log("[NAAD][GateC] Asset setup complete!");
                 AssetDatabase.Refresh();
+
+                if (Application.isBatchMode)
+                    EditorApplication.Exit(0);
             }
             catch (Exception e)
             {
                 Debug.LogError($"[NAAD][GateC] Setup failed: {e.Message}\n{e.StackTrace}");
+                if (Application.isBatchMode)
+                    EditorApplication.Exit(1);
             }
+        }
+
+        /// <summary>
+        /// Command-line entry point for Unity CLI execution.
+        /// Usage: Unity.exe -batchMode -executeMethod NAAD.Editor.SetupGateCAssets.RunFromCLI -quit
+        /// </summary>
+        public static void RunFromCLI()
+        {
+            SetupAll();
         }
 
         private static void EnsureDirectoriesExist()
