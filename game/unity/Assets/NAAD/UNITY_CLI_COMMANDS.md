@@ -22,7 +22,7 @@ Unity 6000.6.5f1 must be installed. The CLI will use the installed Editor.
 
 All commands assume the project path is:
 ```
-c:\Users\user\naija-after-dark-1\game\unity
+c:\NAAD\naija-after-dark\game\unity
 ```
 
 Adjust the `-projectPath` parameter if your project is located elsewhere.
@@ -76,12 +76,26 @@ unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity
 Verify animation assets are present and configured.
 
 ```bash
-unity -quit -batchmode -projectPath "c:\Users\user\naija-after-dark-1\game\unity" -executeMethod NAAD.Editor.VerifyAnimationAssets -logFile "Logs/AnimationVerification.log"
+unity -quit -batchmode -projectPath "c:\NAAD\naija-after-dark\game\unity" -executeMethod NAAD.Editor.VerifyAnimationAssets.RunVerification -logFile "Logs/AnimationVerification.log"
 ```
 
 **Expected Output**: Animation asset verification report
 
 **Implementation Required**: Already exists (`VerifyAnimationAssets.cs`)
+
+---
+
+### 4b. Gate C Animation Setup
+
+Set up Gate C animation assets (rig, controller, mask, prefab).
+
+```bash
+unity -quit -batchmode -projectPath "c:\NAAD\naija-after-dark\game\unity" -executeMethod NAAD.Editor.SetupGateCAssets.RunFromCLI -logFile "Logs/GateCSetup.log"
+```
+
+**Expected Output**: Gate C assets created successfully
+
+**Implementation Required**: Already exists (`SetupGateCAssets.cs`)
 
 ---
 
