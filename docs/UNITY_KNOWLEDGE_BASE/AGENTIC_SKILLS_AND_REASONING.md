@@ -5,16 +5,10 @@ to remember across sessions.
 
 ## Memories (persist these)
 - M1. Active project = `c:/Users/user/naija-after-dark-1/game/unity`.
-  Working branch = `feat/audit-gate-recovery-2026-10-14` (was `main@ce3ac67`,
-  Gate B WIP). HEAD `a668cf1` "feat(scenes): rebuild CityStreet as flagship
-  Lagos night district" — pushed, in sync with origin.
-- M1a. Duplicate/stale Unity project = `naad-fntest/` at repo ROOT (NOT under
-  `game/`). 38 `.cs` vs 74 in `game/unity`, older/minimal `Packages/manifest.json`
-  (no UniTask/URP/InputSystem), last touched 2026-10-09. Still TRACKED in git
-  (109 files) and referenced by NO doc/CI — superseded by `game/unity`. Safe to
-  remove: `git rm -r --cached naad-fntest` + delete dir.
-- M1b. `.naad-authtest/` (repo root) is another throwaway probe project — only
-  `Packages/manifest.json` tracked. Also safe to remove.
+  Working branch = `main`. HEAD at `e407d55` "docs: fix markdown lint errors in enhancement plan".
+  Stale projects (naad-fntest, naad-authtest) removed from git tracking.
+- M2. Unity 6000.6.5f1 at `C:/Program Files/Unity/Hub/Editor/6000.6.5f1/Editor/Unity.exe`;
+  second install 6000.7.0b4 exists — NEVER use beta for gates.
 - M2. Unity 6000.6.5f1 at `C:/Program Files/Unity/Hub/Editor/6000.6.5f1/Editor/Unity.exe`;
   second install 6000.7.0b4 exists — NEVER use beta for gates.
 - M3. Shell capture is unreliable here: prefer `read_files` for content;
