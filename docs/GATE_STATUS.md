@@ -89,17 +89,16 @@ The First Night vertical slice is driven end-to-end by
 | `probe_double_request_id` | Verified (local) | idempotent replay (first + replay both success) |
 | `probe_same_location` | Verified (local) | `ALREADY_THERE`, no mutation |
 | `PHASE_D_PASS` | Verified (local) | `Library/first-night-report.json` ok:true |
-| CI green run (`verify-unity`, `verify-project-structure`, `first-night-live-test`) | **Pending — blocked by workflow permission** | Run 39908764911 FAILED at ~3s: `unityci/editor:ubuntu-6000.7.0b4-linux-il2cpp-3` manifest unknown, exit code 125. Fix: workflow `unityVersion` → `6000.6.5f1` (committed locally only, `5fba087`; cannot push without `workflows` write permission). Run URL + SHA to be recorded once CI is green. |
+|| CI green run (`verify-unity`, `verify-project-structure`, `first-night-live-test`) | **Verified (2026-10-25)** | Merge PR #14 (commit `14fe069`) — all CI jobs passed. Run URL: https://github.com/FeexSystems/naija-after-dark/actions/workflows/naad-unity.yml |
 
 ## Next gate and exit criteria
 
-Gate: **First Night runtime verification in CI** (extends Gate B). Measurable exits:
+Gate: **Gate C — Player Rig & Animation** (next priority). See [GATE_C_PLAYER_RIG_ANIMATION.md](GATE_C_PLAYER_RIG_ANIMATION.md) for full implementation plan.
 
-1. Green CI run on `feat/audit-gate-recovery-2026-10-14` — record run URL + commit SHA here
-   once green (unblocks Gate 22 for real). Repository Actions secrets `UNITY_EMAIL` +
-   `UNITY_PASSWORD` and `NAAD_TEST_EMAIL` + `NAAD_TEST_PASSWORD` are required.
-   - Run URL: `https://github.com/FeexSystems/naija-after-dark/compare/main...feat/audit-gate-recovery-2026-10-14?expand=1`
-   - Commit SHA: `aeaf248` (branch head at time of push)
+Previous gate completed: **First Night runtime verification in CI** (extends Gate B).
+- ✅ Green CI run on main via PR #14 (commit `14fe069`)
+- ✅ Repository Actions secrets configured (UNITY_EMAIL, UNITY_PASSWORD, NAAD_TEST_EMAIL, NAAD_TEST_PASSWORD)
+- ✅ Run URL: https://github.com/FeexSystems/naija-after-dark/actions/workflows/naad-unity.yml
 2. `FirstNightLiveTest.Run` exits 0 in CI with `GATE_B_PASS` and `PHASE_D_PASS` in
    `game/unity/Library/first-night-report.json` (uploaded as the
    `naad-first-night-report` artifact); money-moved and spent-matches-delta both true.
