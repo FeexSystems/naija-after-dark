@@ -25,21 +25,21 @@ namespace NAAD.Editor
         // Source FBX clips - these will be referenced directly in the Animator Controller
         private static readonly string[] LocomotionClips = new string[]
         {
-            AnimationsRoot + "Locomotion/Standing Idle.fbx",
-            AnimationsRoot + "Locomotion/Standard Walk.fbx",
-            AnimationsRoot + "Locomotion/Standard Running.fbx"
+            AnimationsRoot + "MVP_Only/Standing Idle.fbx",
+            AnimationsRoot + "MVP_Only/Standard Walk.fbx",
+            AnimationsRoot + "MVP_Only/Standard Running.fbx"
         };
 
         private static readonly string[] PhoneClips = new string[]
         {
-            AnimationsRoot + "Phone/Female Answers A Phone While Walking.fbx",
-            AnimationsRoot + "Phone/Female Standing Talking On Phone.fbx",
-            AnimationsRoot + "Phone/Texting On A Smart Phone While Standing.fbx"
+            AnimationsRoot + "MVP_Only/Female Answers A Phone While Walking.fbx",
+            AnimationsRoot + "MVP_Only/Female Standing Talking On Phone.fbx",
+            AnimationsRoot + "MVP_Only/Texting On A Smart Phone While Standing.fbx"
         };
 
         private static readonly string[] SocialClips = new string[]
         {
-            AnimationsRoot + "Social/Aj Waving Gesture.fbx"
+            AnimationsRoot + "MVP_Only/Aj Waving Gesture.fbx"
         };
 
         [MenuItem("NAAD/Gate C/Setup All Assets")]
