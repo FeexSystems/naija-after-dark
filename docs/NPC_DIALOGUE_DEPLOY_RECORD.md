@@ -51,11 +51,7 @@ The key was supplied as a **literal command-line argument in a shared session**,
 
 1. **Revoke** the affected key at Google AI Studio → API keys.
 2. **Issue** a new key.
-3. **Re-set it without echoing it** — preferred path is the Supabase Dashboard (**Project Settings → Edge Functions → Secrets**), which never puts the value in a shell:
-   ```powershell
-   $k = Read-Host -AsSecureString "Gemini key"
-   supabase secrets set GEMINI_API_KEY=([Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($k)))
-   ```
+3. **Re-set it without echoing it** — use the Supabase Dashboard only (**Project Settings → Edge Functions → Secrets**) so the value is entered in the UI and never placed on a shell command line or in shell history.
 4. **Verify the shell history** on the machine that ran the command (`Get-Content (Get-PSReadLineOption).HistorySavePath`) and remove the line if present.
 
 **Secondary [ACTION]:** the value was assigned using Windows PowerShell single quotes (`'…'`). PowerShell does **not** strip single quotes the way bash does, so the stored secret may contain literal quote characters. **[UNVERIFIED — I did not read the stored value.]** If so, the key is wrong even before rotation, and `MISSING_GEMINI_KEY` would not fire but every Gemini call would fail authorisation. Step 3 above resolves both problems at once.
