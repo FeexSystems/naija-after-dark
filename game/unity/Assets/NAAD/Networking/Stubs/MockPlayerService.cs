@@ -1,5 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using NAAD.Gameplay;
+using NAAD.Networking;
 using NAAD.Networking.Supabase;
 using UnityEngine;
 
@@ -56,7 +59,7 @@ namespace NAAD.Mock
         {
             return Task.FromResult(new PlayerDto
             {
-                PlayerId = "mock_player",
+                Id = "mock_player",
                 DisplayName = "Player",
                 Balance = _currentBalance,
                 LocationId = _currentLocation,
@@ -96,6 +99,16 @@ namespace NAAD.Mock
         {
             _currentCareer = careerId;
             return Task.FromResult(true);
+        }
+
+        public void SetBalance(int amount)
+        {
+            _currentBalance = amount;
+        }
+
+        public void SetCareer(string careerId)
+        {
+            _currentCareer = careerId;
         }
 
         public Task<bool> UpdateNpcMessageCount(string npcId, string requestId)

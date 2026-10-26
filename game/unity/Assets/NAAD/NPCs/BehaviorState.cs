@@ -1,6 +1,7 @@
 using UnityEngine;
+using UnityEditor;
 
-[CreateAssetMenu(fileName = "NewBehaviorState", menu = "NAAD/Behavior/State")]
+[CreateAssetMenu(fileName = "NewBehaviorState", menuName = "NAAD/Behavior/State")]
 public class BehaviorState : ScriptableObject
 {
     [Header("State Settings")]

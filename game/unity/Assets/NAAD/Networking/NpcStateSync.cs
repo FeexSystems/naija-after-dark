@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using NAAD.Networking;
 
 namespace NAAD.Networking
 {
@@ -22,8 +23,8 @@ namespace NAAD.Networking
 
         private Dictionary<string, NpcStateData> npcStates = new Dictionary<string, NpcStateData>();
         private Dictionary<string, Transform> npcTransforms = new Dictionary<string, Transform>();
-        private Dictionary<string, NPCs.BehaviorStateMachine> npcStateMachines = new Dictionary<string, NPCs.BehaviorStateMachine>();
-        private Dictionary<string, Gameplay.DialogueManager> npcDialogueManagers = new Dictionary<string, Gameplay.DialogueManager>();
+        private Dictionary<string, BehaviorStateMachine> npcStateMachines = new Dictionary<string, BehaviorStateMachine>();
+        private Dictionary<string, IDialogueService> npcDialogueManagers = new Dictionary<string, IDialogueService>();
 
         private float lastSyncTime;
 
@@ -53,7 +54,7 @@ namespace NAAD.Networking
         /// <summary>
         /// Register an NPC for synchronization
         /// </summary>
-        public void RegisterNpc(string npcId, Transform npcTransform, NPCs.BehaviorStateMachine stateMachine = null, Gameplay.DialogueManager dialogueManager = null)
+        public void RegisterNpc(string npcId, Transform npcTransform, BehaviorStateMachine stateMachine = null, IDialogueService dialogueManager = null)
         {
             if (!npcTransforms.ContainsKey(npcId))
             {

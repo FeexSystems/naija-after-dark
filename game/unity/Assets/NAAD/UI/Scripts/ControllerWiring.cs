@@ -5,6 +5,7 @@ using NAAD.Networking.Supabase;
 using NAAD.Mock;
 using NAAD.UI.Scripts;
 using UnityEngine;
+using UnityEditor;
 
 namespace NAAD.Editor
 {

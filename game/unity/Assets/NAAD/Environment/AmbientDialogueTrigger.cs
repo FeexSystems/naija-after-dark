@@ -1,5 +1,5 @@
 using UnityEngine;
-using System.Collections.Generic;
+using NAAD.Networking;
 
 namespace NAAD.Environment
 {
@@ -105,10 +105,10 @@ namespace NAAD.Environment
             }
 
             // Trigger dialogue on NPC
-            var dialogueManager = npc.GetComponent<Gameplay.DialogueManager>();
+            var dialogueManager = npc.GetComponent<IDialogueService>();
             if (dialogueManager != null)
             {
-                dialogueManager.PlayAmbientLine(line);
+                dialogueManager.TalkToTundeAsync(line, System.Guid.NewGuid().ToString());
             }
 
             lastTriggerTime = Time.time;

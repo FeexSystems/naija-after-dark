@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using NAAD.Gameplay;
+using NAAD.Networking;
 using NAAD.Networking.Supabase;
 using UnityEngine;
 
@@ -134,6 +137,53 @@ namespace NAAD.Mock
                 ChosenAction = null,
                 CreatedAt = System.DateTime.UtcNow.AddHours(-1)
             });
+        }
+
+        // --- IPhoneService interface implementation ---
+
+        public Task<bool> SeedTundeInviteAsync()
+        {
+            // Tunde invite is seeded in the constructor.
+            return Task.FromResult(true);
+        }
+
+        public Task<string?> ListMessagesJsonAsync()
+        {
+            var items = new List<string>();
+            foreach (var m in _messages)
+            {
+                var action = m.ChosenAction == null ? "null" : $"\"{m.ChosenAction}\"";
+                items.Add($"{{\"id\":\"{m.Id}\",\"senderId\":\"{m.SenderId}\",\"senderName\":\"{m.SenderName}\",\"body\":\"{m.Body}\",\"senderType\":\"{m.SenderType}\",\"chosenAction\":{action}}}");
+            }
+            var json = "[" + string.Join(",", items) + "]";
+            return Task.FromResult<string?>(json);
+        }
+        public Task<bool> RespondAsync(string requestId, string messageId, string action)
+        {
+            return RespondToMessageAsync(messageId, action, requestId);
+        }
+
+        public Task<bool> StartNightAsync(string requestId)
+        {
+            return Task.FromResult(true);
+        }
+
+        public Task<NightSummaryDto?> CompleteNightAsync(string requestId)
+        {
+            return CompleteNightAsync().ContinueWith(_ =>
+                new NightSummaryDto
+                {
+                    Success = true,
+                    SpentNgn = 0,
+                    Transactions = 0,
+                    PeopleMet = 0,
+                    BestMoment = "Night complete"
+                });
+        }
+
+        public Task<int?> GetBalanceAsync()
+        {
+            return Task.FromResult<int?>(0);
         }
     }
 }

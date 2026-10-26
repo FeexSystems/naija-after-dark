@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 /// <summary>
@@ -70,7 +71,15 @@ public class DialogueBubble : MonoBehaviour
     }
 
     /// <summary>
-    /// Hide the dialogue bubble immediately.
+    /// Initialize the dialogue bubble for an NPC conversation.
+    /// </summary>
+    /// <param name="npc">The NPC initiating the conversation.</param>
+    public void InitializeForNPCConversation(TundeNPC npc)
+    {
+        // Set up default dialogue state for NPC conversation
+        // This can be overridden or extended per-NPC type
+        Debug.Log($"[DialogueBubble] Initializing NPC conversation for {npc?.npcName ?? "Unknown"}");
+    }
     /// </summary>
     public void Hide()
     {

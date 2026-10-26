@@ -5,6 +5,19 @@ using System.Collections.Generic;
 namespace NAAD.AI
 {
     /// <summary>
+    /// Emotional tone of a dialogue response.
+    /// </summary>
+    public enum DialogueEmotion
+    {
+        Neutral,
+        Happy,
+        Sad,
+        Angry,
+        Surprised,
+        Thoughtful
+    }
+
+    /// <summary>
     /// Provider-agnostic AI client supporting multiple LLM providers.
     /// Routes requests to Edge Function → Local AI → OpenAI with fallback.
     /// </summary>

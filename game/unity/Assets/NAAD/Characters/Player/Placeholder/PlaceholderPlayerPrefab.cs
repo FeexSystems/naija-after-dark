@@ -1,4 +1,5 @@
 using UnityEngine;
+using NAAD.Core.Bootstrap;
 
 namespace NAAD.Characters.Player
 {

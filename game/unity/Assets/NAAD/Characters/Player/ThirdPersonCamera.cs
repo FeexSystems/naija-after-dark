@@ -49,7 +49,6 @@ namespace NAAD.Characters.Player
         private float _collisionRadius = 0.25f;
 
         [SerializeField]
-        [LayerMask]
         [Tooltip("Layers the camera can collide with.")]
         private LayerMask _collisionMask = ~0;
 

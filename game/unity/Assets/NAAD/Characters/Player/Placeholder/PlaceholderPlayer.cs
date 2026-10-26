@@ -5,6 +5,7 @@ using NAAD.Core.Bootstrap;
 using NAAD.Characters.Player;
 using NAAD.Core.Logging;
 using NAAD.Gameplay.Input;
+using NAAD.Networking;
 using NAAD.Core.State;
 using UnityEngine;
 
