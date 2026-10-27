@@ -1,6 +1,6 @@
 # NAAD — Full Project Plan
 
-**Date:** 2026-10-14 · **Branch:** `feat/audit-gate-recovery-2026-10-14`  
+**Date:** 2026-10-27 · **Branch:** `chore/unity-mcp-scaffolding-and-gitignore`
 **Editor:** `6000.6.5f1` · **Live backend:** Supabase project `unzfqrfyejkyisalzkhc`
 
 ## 1. Vision (one paragraph)
@@ -47,14 +47,14 @@ Legend: ✅ Verified · 🟡 Implemented/pending CI · ⬜ Planned
 |---|---|---|
 | 7 | First World — Lagos Metro → Night District (Apartment, Street, Suya, Nightclub, Beach) | ✅ Verified on live DB |
 | 8 | NPCs — Tunde (AI), Mama Seyi, Amaka, Emeka, Dami (deterministic) | ✅ Verified |
-| 9 | Gemini dialogue path (Edge Function, key server-side, schema-validated) | 🟡 code + schema; Edge deploy + key pending |
+| 9 | Gemini dialogue path (Edge Function, key server-side, schema-validated) | 🟡 code + schema + HTTP client; Edge deploy + key pending |
 | 10 | NPC memory (memoryCandidate → commit, dedup 24h, top-5 context) | ✅ Verified |
 | 11 | Economy — SKUs + `naad_get_wallet` / `naad_spend` | ✅ Verified |
 | 12 | Relationships — `naad_apply_relationship_delta` (±10 clamp, 0–100) | ✅ Verified |
 | 13 | Phone — Tunde beach invite (GO/ASK/DECLINE) + `naad_respond_message` | ✅ Verified |
 | 14 | First Night server loop — start → phone → spend/travel → complete → summary | ✅ Verified |
 | 15 | Multiplayer rooms — `game_rooms` + `room_presence` (ephemeral) | ✅ Verified |
-| 17 | Content expansion — more locations/careers + `naad_set_career` | ⬜ Planned |
+| 17 | Content expansion — more locations/careers + `naad_set_career` | 🟡 Implemented (scaffolding + sample data) |
 | 18 | Social graph — `opportunities` + refresh/accept | ✅ Verified |
 | 19 | Events — `world_events` + `event_attendance` (Beach Party, Club Night) | ✅ Verified |
 | 20 | World reactivity — attendance raises nightlife/traffic; `WORLD_REACTIVITY` event | ✅ Verified |
@@ -74,7 +74,7 @@ Legend: ✅ Verified · 🟡 Implemented/pending CI · ⬜ Planned
 **Now → unblock the first green CI (days, not weeks):**
 1. Repository Actions secrets set (`UNITY_EMAIL`, `UNITY_PASSWORD`,
    `NAAD_TEST_EMAIL`, `NAAD_TEST_PASSWORD`) — **done per screenshot**.
-2. Open the PR for `feat/audit-gate-recovery-2026-10-14` → triggers CI
+2. Open the PR for `chore/unity-mcp-scaffolding-and-gitignore` → triggers CI
    (`verify-unity`, `verify-project-structure`, `list-packages`,
    `first-night-live-test`). Record run URL + SHA in `GATE_STATUS.md`.
 
@@ -100,13 +100,16 @@ Legend: ✅ Verified · 🟡 Implemented/pending CI · ⬜ Planned
 - Day/night lighting profiles, `WorldClockPresenter` integration, crowd/NPC
   presence visuals (hints only — server owns counts).
 
+**Gate 17 — content expansion:**
+- Scaffolding complete: DialogueConfig, CareerData, ContentInitialization, ContentExpansionUIController, ContentExpansionAssetCreator. Sample locations and careers registered at runtime. Full content population pending.
+
 **Gate F + Gate 16 — mobile:**
 - Phone apps UI, then **profile on device first** (`GATE16_MOBILE_OPT.md`):
   FPS/RAM/CPU/GPU/battery/size/load on low/mid/high Android + iPhone, only then
   optimize. Android device acceptance + on-device First Night → Summary.
 
 **Later / optional:**
-- Engineering Phase E (Presence Realtime), Gate 17 (content expansion).
+- Engineering Phase E (Presence Realtime).
 
 ## 6. Explicit non-goals (guardrails)
 
@@ -135,6 +138,7 @@ Legend: ✅ Verified · 🟡 Implemented/pending CI · ⬜ Planned
 5. Domain events queryable for a single night session.
 6. Gate C animator contract verified headless; player moves + phones + greets.
 7. First Night reaches Night Summary **on a physical device**.
+8. Gate 17 content expansion scaffolding complete with sample data.
 
 ## 9. Related docs
 

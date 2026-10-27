@@ -1,6 +1,6 @@
 # NAAD Gate Status
 
-Last audit: 2026-10-14
+Last audit: 2026-10-27
 Branch: `chore/unity-mcp-scaffolding-and-gitignore`
 Unity editor: `6000.6.5f1` (`game/unity/ProjectSettings/ProjectVersion.txt`) — also pinned by all jobs in `.github/workflows/naad-unity.yml`.
 
@@ -95,9 +95,9 @@ SKUs: `SUYA_PLATE` ₦5,000, `TRANSPORT_SHORT` ₦4,000, `CLUB_TICKET` ₦20,000
 
 ## Gate 17 — Content expansion
 
-**Status: 🟡 Implemented (models only)**
+**Status: 🟡 Implemented (scaffolding + sample data)**
 
-Content expansion data models created (`ContentExpansionLocations.cs`, `ContentExpansionService.cs`). Specific extra location data and career details not yet populated.
+Content expansion scaffolding complete: DialogueConfig ScriptableObject for NPC dialogue, CareerData ScriptableObject for career content, ContentInitialization for runtime content registration, ContentExpansionUIController for content expansion UI, ContentExpansionAssetCreator editor window. Sample locations (restaurant, lounge, hotel) and careers (tech, creative, hospitality) registered at startup. Full content population pending.
 
 ## Gate 18 — Social graph
 
@@ -122,6 +122,6 @@ Attendance raises `nightlife_level` and `traffic_level`. Domain event `WORLD_REA
 | Category | Gates |
 |---|---|
 | ✅ Implemented and verified | 10, 11, 12, 13, 14, 18, 19, 20 |
-| 🟡 In progress (code written, awaiting assets/conf) | C, D, E, 9 (deploy key), 16 (device test), 17 (content data) |
+| 🟡 In progress (code written, awaiting assets/conf) | C, D, E, 9 (deploy key), 16 (device test), 17 (content population) |
 | ⬜ Not yet started | 21 (CI green run), 22 (CI workflow green run) |
-The project is in a strong intermediate state: the technical foundation, server-authoritative command surface, First Night vertical slice, animation contract, player interaction layer, and all upstream world-model gates are complete. Remaining work is concentrated in asset import, content population, CI secret configuration, and on-device profiling — all familiar, executable next steps.
+The project is in a strong intermediate state: the technical foundation, server-authoritative command surface, First Night vertical slice, animation contract, player interaction layer, Gate 17 scaffolding, and all upstream world-model gates are complete. Remaining work is concentrated in asset import, content population, CI secret configuration, and on-device profiling — all familiar, executable next steps.
