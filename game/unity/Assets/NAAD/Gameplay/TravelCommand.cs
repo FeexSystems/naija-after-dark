@@ -49,8 +49,9 @@ namespace NAAD.Gameplay
             if (result.Success)
             {
                 string from = "";
-                if (result.Payload != null && result.Payload.TryGetValue("fromLocationId", out var f))
-                    from = f;
+                if (result.Payload is IDictionary<string, object> dict &&
+                    dict.TryGetValue("fromLocationId", out var f))
+                    from = f?.ToString() ?? "";
                 root.Logger.Info("Travel", $"Arrived Suya Spot from={from}");
             }
             else

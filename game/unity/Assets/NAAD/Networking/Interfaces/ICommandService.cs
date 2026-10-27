@@ -36,7 +36,7 @@ namespace NAAD.Networking
         public bool Success;
         public string? ErrorCode;
         public string? ErrorMessage;
-        public Dictionary<string, string>? Payload;
+        public object? Payload;
     }
 
     public interface ICommandService

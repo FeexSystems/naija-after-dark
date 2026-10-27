@@ -1,5 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using NAAD.Core.Logging;
+using NAAD.Gameplay;
+using NAAD.Networking;
 using NAAD.Networking.Supabase;
 using UnityEngine;
 
@@ -43,79 +47,83 @@ namespace NAAD.Mock
         /// returns deterministic results based on the current state.
         /// </para>
         /// </summary>
-        public Task<CommandResult> ExecuteAsync(CommandRequest request)
+        public Task<CommandResult> ExecuteAsync(GameCommand command)
         {
-            var cmd = request.Command ?? throw new System.ArgumentException("Command required.");
+            var request = new CommandRequest
+            {
+                RequestId = command.RequestId,
+                PlayerId = command.PlayerId
+            };
             var result = new CommandResult
             {
-                RequestId = request.RequestId,
+                RequestId = command.RequestId,
                 Success = true,
             };
 
             try
             {
-                switch (cmd.Type)
+                switch (command.Type)
                 {
-                    case GameCommandType.TRAVEL:
-                        result = ValidateAndExecuteTravel(request, cmd as TravelCommand);
+                    case GameCommandType.Travel:
+                        result = ValidateAndExecuteTravel(request, ReadTravel(command));
                         break;
 
-                    case GameCommandType.SPEND:
-                        result = ValidateAndExecuteSpend(request, cmd as SpendCommand);
+                    case GameCommandType.Spend:
+                        result = ValidateAndExecuteSpend(request, ReadSpend(command));
                         break;
 
-                    case GameCommandType.BUY:
-                        result = ValidateAndExecuteBuy(request, cmd as BuyCommand);
+                    case GameCommandType.Buy:
+                        result = ValidateAndExecuteBuy(request, ReadBuy(command));
                         break;
 
-                    case GameCommandType.START_NIGHT:
-                        result = ValidateAndExecuteStartNight(request, cmd as StartNightCommand);
+                    case GameCommandType.StartNight:
+                        result = ValidateAndExecuteStartNight(request, new StartNightCommand());
                         break;
 
-                    case GameCommandType.COMPLETE_NIGHT:
-                        result = ValidateAndExecuteCompleteNight(request, cmd as CompleteNightCommand);
+                    case GameCommandType.CompleteNight:
+                        result = ValidateAndExecuteCompleteNight(request, new CompleteNightCommand());
                         break;
 
-                    case GameCommandType.PHONE_REPLY:
-                        result = ValidateAndExecutePhoneReply(request, cmd as PhoneReplyCommand);
+                    case GameCommandType.PhoneReply:
+                        result = ValidateAndExecutePhoneReply(request, ReadPhoneReply(command));
                         break;
 
-                    case GameCommandType.JOIN_ROOM:
-                        result = ValidateAndExecuteJoinRoom(request, cmd as JoinRoomCommand);
+                    case GameCommandType.JoinRoom:
+                        result = ValidateAndExecuteJoinRoom(request, ReadJoinRoom(command));
                         break;
 
-                    case GameCommandType.LEAVE_ROOM:
-                        result = ValidateAndExecuteLeaveRoom(request, cmd as LeaveRoomCommand);
+                    case GameCommandType.LeaveRoom:
+                        result = ValidateAndExecuteLeaveRoom(request, new LeaveRoomCommand());
                         break;
 
-                    case GameCommandType.ATTEND_EVENT:
-                        result = ValidateAndExecuteAttendEvent(request, cmd as AttendEventCommand);
+                    case GameCommandType.AttendEvent:
+                        result = ValidateAndExecuteAttendEvent(request, ReadAttendEvent(command));
                         break;
 
-                    case GameCommandType.RELATIONSHIP_DELTA:
-                        result = ValidateAndExecuteRelationshipDelta(request, cmd as RelationshipDeltaCommand);
+                    case GameCommandType.RelationshipDelta:
+                        result = ValidateAndExecuteRelationshipDelta(request, ReadRelationshipDelta(command));
                         break;
 
-                    case GameCommandType.SET_CAREER:
-                        result = ValidateAndExecuteSetCareer(request, cmd as SetCareerCommand);
+                    case GameCommandType.SetCareer:
+                        result = ValidateAndExecuteSetCareer(request, ReadSetCareer(command));
                         break;
 
-                    case GameCommandType.ACCEPT_OPPORTUNITY:
-                        result = ValidateAndExecuteAcceptOpportunity(request, cmd as AcceptOpportunityCommand);
+                    case GameCommandType.AcceptOpportunity:
+                        result = ValidateAndExecuteAcceptOpportunity(request, ReadAcceptOpportunity(command));
                         break;
 
-                    case GameCommandType.COMMIT_MEMORY:
-                        result = ValidateAndExecuteCommitMemory(request, cmd as CommitMemoryCommand);
+                    case GameCommandType.CommitMemory:
+                        result = ValidateAndExecuteCommitMemory(request, ReadCommitMemory(command));
                         break;
 
-                    case GameCommandType.SET_WORLD_PERIOD:
-                        result = ValidateAndExecuteSetWorldPeriod(request, cmd as SetWorldPeriodCommand);
+                    case GameCommandType.SetWorldPeriod:
+                        result = ValidateAndExecuteSetWorldPeriod(request, ReadSetWorldPeriod(command));
                         break;
 
                     default:
                         result.Success = false;
                         result.ErrorCode = "UNKNOWN_COMMAND";
-                        result.ErrorMessage = $"Unknown command type: {cmd.Type}";
+                        result.ErrorMessage = $"Unknown command type: {command.Type}";
                         break;
                 }
             }
@@ -127,9 +135,100 @@ namespace NAAD.Mock
             }
 
             _history.Add(request);
-            OnCommandExecuted?.Invoke(request, result);
             return Task.FromResult(result);
         }
+
+        public Task<CommandResult> ExecuteAsync(CommandRequest request)
+        {
+            var command = new GameCommand
+            {
+                RequestId = request.RequestId,
+                PlayerId = request.PlayerId,
+                Type = request.Command.Type,
+                Payload = request.Command.Payload,
+                ClientTimestamp = request.Command.ClientTimestamp
+            };
+            return ExecuteAsync(command);
+        }
+
+        private static string? PayloadString(GameCommand command, string key)
+        {
+            if (command.Payload == null) return null;
+            if (command.Payload is IDictionary<string, object> dictObj &&
+                dictObj.TryGetValue(key, out var vObj))
+                return vObj?.ToString();
+            if (command.Payload is IDictionary<string, string> dictStr &&
+                dictStr.TryGetValue(key, out var vStr))
+                return vStr;
+            return null;
+        }
+
+        private static int? PayloadInt(GameCommand command, string key)
+        {
+            var s = PayloadString(command, key);
+            if (string.IsNullOrEmpty(s)) return null;
+            return int.TryParse(s, out var n) ? n : null;
+        }
+
+        private static TravelCommand ReadTravel(GameCommand command) => new()
+        {
+            ToLocationId = PayloadString(command, "toLocationId")
+        };
+
+        private static SpendCommand ReadSpend(GameCommand command) => new()
+        {
+            Sku = PayloadString(command, "sku")
+        };
+
+        private static BuyCommand ReadBuy(GameCommand command) => new()
+        {
+            Sku = PayloadString(command, "sku"),
+            LocationId = PayloadString(command, "locationId")
+        };
+
+        private static PhoneReplyCommand ReadPhoneReply(GameCommand command) => new()
+        {
+            MessageId = PayloadString(command, "messageId"),
+            Action = PayloadString(command, "action")
+        };
+
+        private static JoinRoomCommand ReadJoinRoom(GameCommand command) => new()
+        {
+            LocationId = PayloadString(command, "locationId")
+        };
+
+        private static AttendEventCommand ReadAttendEvent(GameCommand command) => new()
+        {
+            EventId = PayloadString(command, "eventId")
+        };
+
+        private static RelationshipDeltaCommand ReadRelationshipDelta(GameCommand command) => new()
+        {
+            TargetId = PayloadString(command, "targetId"),
+            Trust = PayloadInt(command, "trust")
+        };
+
+        private static SetCareerCommand ReadSetCareer(GameCommand command) => new()
+        {
+            CareerId = PayloadString(command, "careerId")
+        };
+
+        private static AcceptOpportunityCommand ReadAcceptOpportunity(GameCommand command) => new()
+        {
+            OpportunityId = PayloadString(command, "opportunityId")
+        };
+
+        private static CommitMemoryCommand ReadCommitMemory(GameCommand command) => new()
+        {
+            NpcId = PayloadString(command, "npcId"),
+            MemoryType = PayloadString(command, "memoryType"),
+            Summary = PayloadString(command, "summary")
+        };
+
+        private static SetWorldPeriodCommand ReadSetWorldPeriod(GameCommand command) => new()
+        {
+            Period = PayloadString(command, "period")
+        };
 
         private CommandResult ValidateAndExecuteRelationshipDelta(CommandRequest request, RelationshipDeltaCommand command)
         {
@@ -237,11 +336,10 @@ namespace NAAD.Mock
         {
             return new NightSummaryDto
             {
-                PlayerId = "mock_player",
-                Spent = GetNightTotalSpent(),
+                Success = true,
+                SpentNgn = GetNightTotalSpent(),
                 PeopleMet = 3,
-                BestMoment = "Dancing at the club with friends",
-                CompletedAt = System.DateTime.UtcNow
+                BestMoment = "Dancing at the club with friends"
             };
         }
 
@@ -259,7 +357,7 @@ namespace NAAD.Mock
         private CommandResult ValidateAndExecuteTravel(CommandRequest request, TravelCommand command)
         {
             var result = new CommandResult { RequestId = request.RequestId };
-            var currentLocation = _players.CurrentLocation.Value;
+            var currentLocation = _players.CurrentLocation;
 
             if (!command.ToLocationId.HasValue)
             {
@@ -309,7 +407,7 @@ namespace NAAD.Mock
                 return result;
             }
 
-            var currentBalance = _players.CurrentBalance.Value;
+            var currentBalance = _players.CurrentBalance;
             var price = GetSkuPrice(command.Sku);
 
             if (currentBalance < price)
@@ -346,7 +444,7 @@ namespace NAAD.Mock
                 return result;
             }
 
-            var currentLocation = _players.CurrentLocation.Value;
+            var currentLocation = _players.CurrentLocation;
             if (currentLocation != locationId.Value)
             {
                 result.Success = false;
@@ -355,7 +453,7 @@ namespace NAAD.Mock
                 return result;
             }
 
-            _players.SetBalance(_players.CurrentBalance.Value - GetSkuPrice(command.Sku));
+            _players.SetBalance(_players.CurrentBalance - GetSkuPrice(command.Sku));
             result.Payload = new { success = true };
             return result;
         }
@@ -372,7 +470,7 @@ namespace NAAD.Mock
                 return result;
             }
 
-            var currentLocation = _players.CurrentLocation.Value;
+            var currentLocation = _players.CurrentLocation;
             if (currentLocation != NightDistrictIds.Apartment)
             {
                 result.Success = false;
@@ -412,7 +510,7 @@ namespace NAAD.Mock
                 return result;
             }
 
-            var messages = _phone.Messages.Value;
+            var messages = _phone.Messages;
             var messageExists = messages.Exists(m => m.Id == command.MessageId && m.ChosenAction == null);
 
             if (!messageExists)

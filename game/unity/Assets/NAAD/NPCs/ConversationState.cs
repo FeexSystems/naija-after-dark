@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "ConversationState", menu = "NAAD/Behavior/Conversation")]
+[CreateAssetMenu(fileName = "ConversationState", menuName = "NAAD/Behavior/Conversation")]
 public class ConversationState : BehaviorState
 {
     [Header("Conversation State Settings")]

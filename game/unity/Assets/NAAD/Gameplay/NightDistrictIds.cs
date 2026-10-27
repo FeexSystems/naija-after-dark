@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace NAAD.Gameplay
 {
     /// <summary>Stable content IDs for One Night District (Gates 7–8).</summary>
@@ -19,5 +21,18 @@ namespace NAAD.Gameplay
 
         public const string SuyaSku = "SUYA_PLATE";
         public const string ClubTicketSku = "CLUB_TICKET";
+
+        public static readonly HashSet<string> ValidLocations = new(StringComparer.OrdinalIgnoreCase)
+        {
+            Apartment, SuyaSpot, Street, Nightclub, Beach
+        };
+
+        public static readonly HashSet<string> ValidDistricts = new(StringComparer.OrdinalIgnoreCase)
+        {
+            District
+        };
+
+        public static bool IsValidLocation(string locationId) => ValidLocations.Contains(locationId);
+        public static bool IsValidDistrict(string districtId) => ValidDistricts.Contains(districtId);
     }
 }

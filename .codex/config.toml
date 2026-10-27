@@ -1,0 +1,11 @@
+[mcp_servers.blender]
+command = 'C:\Users\user\.local\bin\uvx.exe'
+args = ['mcp-for-blender']
+startup_timeout_sec = 30
+tool_timeout_sec = 120
+
+[mcp_servers.blender.env]
+BLENDER_HOST = '127.0.0.1'
+BLENDER_PORT = '9876'
+BLENDER_MCP_SAFE_MODE = '1'
+DISABLE_TELEMETRY = 'true'

@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using NAAD.Gameplay;
+using NAAD.Mock;
+using NAAD.Networking;
 using UnityEditor;
 using UnityEngine;
 
@@ -83,7 +86,11 @@ namespace NAAD.Editor
             var request = new CommandRequest
             {
                 RequestId = "test-001",
-                Command = new TravelCommand { ToLocationId = NightDistrictIds.SuyaSpot },
+                Command = new GameCommand
+                {
+                    Type = GameCommandType.Travel,
+                    Payload = new Dictionary<string, object> { ["toLocationId"] = NightDistrictIds.SuyaSpot }
+                },
                 PlayerId = "mock_player"
             };
 
@@ -117,7 +124,7 @@ namespace NAAD.Editor
                 ErrorMessage = $"Expected 50000, got {players.CurrentBalance}"
             });
 
-            players.TravelAsync(NightDistrictIds.CityStreet, "test-002");
+            players.TravelAsync(NightDistrictIds.Street, "test-002");
             var afterTravel = players.CurrentLocation == NightDistrictIds.CityStreet;
             results.Add(new TestResult
             {
@@ -268,7 +275,7 @@ namespace NAAD.Editor
             var r1 = commands.ExecuteAsync(new CommandRequest
             {
                 RequestId = "flow-1",
-                Command = new TravelCommand { ToLocationId = NightDistrictIds.SuyaSpot }
+                Command = new GameCommand { Type = GameCommandType.Travel, Payload = new Dictionary<string, object> { ["toLocationId"] = NightDistrictIds.SuyaSpot } }
             }).Result;
 
             results.Add(new TestResult
@@ -281,7 +288,7 @@ namespace NAAD.Editor
             var r2 = commands.ExecuteAsync(new CommandRequest
             {
                 RequestId = "flow-2",
-                Command = new SpendCommand { Sku = "SUYA_PLATE" }
+                Command = new GameCommand { Type = GameCommandType.Spend, Payload = new Dictionary<string, object> { ["sku"] = "SUYA_PLATE" } }
             }).Result;
 
             results.Add(new TestResult
@@ -294,7 +301,7 @@ namespace NAAD.Editor
             var r3 = commands.ExecuteAsync(new CommandRequest
             {
                 RequestId = "flow-3",
-                Command = new TravelCommand { ToLocationId = NightDistrictIds.Nightclub }
+                Command = new GameCommand { Type = GameCommandType.Travel, Payload = new Dictionary<string, object> { ["toLocationId"] = NightDistrictIds.Nightclub } }
             }).Result;
 
             results.Add(new TestResult
@@ -307,7 +314,7 @@ namespace NAAD.Editor
             var r4 = commands.ExecuteAsync(new CommandRequest
             {
                 RequestId = "flow-4",
-                Command = new SpendCommand { Sku = "CLUB_TICKET" }
+                Command = new GameCommand { Type = GameCommandType.Spend, Payload = new Dictionary<string, object> { ["sku"] = "CLUB_TICKET" } }
             }).Result;
 
             results.Add(new TestResult

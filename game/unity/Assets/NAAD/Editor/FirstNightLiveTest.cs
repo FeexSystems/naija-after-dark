@@ -328,8 +328,8 @@ namespace NAAD.Editor
             // from the server-confirmed result rather than assuming a fixed scene, then
             // travel to THAT same location — the server must reject it with
             // ALREADY_THERE and leave the player untouched.
-            var currentLocation = firstTravel.Payload != null
-                && firstTravel.Payload.TryGetValue("toLocationId", out var cur) && !string.IsNullOrEmpty(cur)
+            var currentLocation = firstTravel.Payload is IDictionary<string, object> p
+                && p.TryGetValue("toLocationId", out var cur) && !string.IsNullOrEmpty(cur)
                 ? cur : NightDistrictIds.SuyaSpot;
             var sameLoc = Guid.NewGuid().ToString("N");
             var same = await probe.ExecuteAsync(new GameCommand

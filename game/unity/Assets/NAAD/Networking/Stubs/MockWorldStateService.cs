@@ -1,5 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using NAAD.Gameplay;
+using NAAD.Networking;
 using NAAD.Networking.Supabase;
 using UnityEngine;
 
@@ -98,6 +101,46 @@ namespace NAAD.Mock
             return Task.FromResult(true);
         }
 
+        public Task<WorldStateDto?> FetchWorldStateAsync()
+        {
+            return Task.FromResult<WorldStateDto?>(new WorldStateDto
+            {
+                Id = 1,
+                GameTime = "12:00",
+                Weather = "CLEAR",
+                TrafficLevel = 0,
+                NightlifeLevel = _worldPeriod == 1 ? 100 : 0,
+                TimeScale = 60f
+            });
+        }
+
+        public Task<WorldClockDto?> FetchWorldClockAsync()
+        {
+            return Task.FromResult(new WorldClockDto
+            {
+                Success = true,
+                GameDate = System.DateTime.UtcNow.ToString("yyyy-MM-dd"),
+                GameTime = "12:00",
+                MinutesSinceMidnight = _worldPeriod == 1 ? 1200 : 720,
+                Period = _worldPeriod == 1 ? "NIGHT" : "AFTER_HOURS",
+                TimeScale = 60f,
+                Weather = "CLEAR",
+                TrafficLevel = _worldPeriod == 1 ? 100 : 0,
+                NightlifeLevel = _worldPeriod == 1 ? 100 : 0
+            });
+        }
+
+        public Task<WorldClockDto?> AdvanceWorldTimeAsync()
+        {
+            return FetchWorldClockAsync();
+        }
+
+        public Task<WorldClockDto?> SetPeriodAsync(string period)
+        {
+            _worldPeriod = period == "NIGHT" ? 1 : 0;
+            return FetchWorldClockAsync();
+        }
+
         public Task<bool> SetWorldReactivity(float attendance, float trafficLevel)
         {
             // Mock: adjust world period if attendance is high
@@ -130,6 +173,11 @@ namespace NAAD.Mock
         {
             _events.Add(worldEvent);
             return Task.FromResult(true);
+        }
+
+        public void AddPendingTravel(PendingTravelCommand travel)
+        {
+            _pendingTravels.Add(travel);
         }
 
         public Task<List<WorldEvent>> GetWorldEvents(string period)

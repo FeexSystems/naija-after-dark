@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using NAAD.Core.Bootstrap;
 using NAAD.Core.Logging;
+using NAAD.Gameplay;
 using NAAD.Networking;
 using NAAD.Networking.Supabase;
 using UnityEngine;
@@ -118,8 +119,8 @@ namespace NAAD.Gameplay.FirstNight
             SetStep(FirstNightStep.Phone, "Replying " + action + "...");
 
             var cmd = NewCommand(GameCommandType.PhoneReply);
-            cmd.Payload["messageId"] = PendingMessageId;
-            cmd.Payload["action"] = action.ToUpperInvariant();
+            ((IDictionary<string, object>)cmd.Payload!)["messageId"] = PendingMessageId;
+            ((IDictionary<string, object>)cmd.Payload!)["action"] = action.ToUpperInvariant();
 
             var result = await Root.Commands.ExecuteAsync(cmd);
             if (!result.Success)
@@ -155,7 +156,7 @@ namespace NAAD.Gameplay.FirstNight
             SetStep(FirstNightStep.Travel, "Traveling to " + destinationId + "...");
 
             var travel = NewCommand(GameCommandType.Travel);
-            travel.Payload["toLocationId"] = destinationId;
+            ((IDictionary<string, object>)travel.Payload!)["toLocationId"] = destinationId;
             var result = await Root.Commands.ExecuteAsync(travel);
             if (!result.Success)
                 return Fail(result.ErrorCode, result.ErrorMessage);
@@ -203,7 +204,7 @@ namespace NAAD.Gameplay.FirstNight
 
             SetStep(FirstNightStep.Travel, "Travel to Suya Spot...");
             var travel = NewCommand(GameCommandType.Travel);
-            travel.Payload["toLocationId"] = NightDistrictIds.SuyaSpot;
+            ((IDictionary<string, object>)travel.Payload!)["toLocationId"] = NightDistrictIds.SuyaSpot;
             var tr = await Root.Commands.ExecuteAsync(travel);
             if (!tr.Success) return Fail(tr.ErrorCode, tr.ErrorMessage);
             await Delay();
@@ -213,8 +214,8 @@ namespace NAAD.Gameplay.FirstNight
 
             SetStep(FirstNightStep.BuySuya, "Buying suya...");
             var spend = NewCommand(GameCommandType.Spend);
-            spend.Payload["sku"] = NightDistrictIds.SuyaSku;
-            spend.Payload["locationId"] = NightDistrictIds.SuyaSpot;
+            ((IDictionary<string, object>)spend.Payload!)["sku"] = NightDistrictIds.SuyaSku;
+            ((IDictionary<string, object>)spend.Payload!)["locationId"] = NightDistrictIds.SuyaSpot;
             var sr = await Root.Commands.ExecuteAsync(spend);
             if (!sr.Success) return Fail(sr.ErrorCode, sr.ErrorMessage);
 
@@ -234,7 +235,7 @@ namespace NAAD.Gameplay.FirstNight
 
             SetStep(FirstNightStep.TravelClub, "Travel to Nightclub...");
             var travel = NewCommand(GameCommandType.Travel);
-            travel.Payload["toLocationId"] = NightDistrictIds.Nightclub;
+            ((IDictionary<string, object>)travel.Payload!)["toLocationId"] = NightDistrictIds.Nightclub;
             var tr = await Root.Commands.ExecuteAsync(travel);
             if (!tr.Success) return Fail(tr.ErrorCode, tr.ErrorMessage);
             await Delay();
@@ -244,8 +245,8 @@ namespace NAAD.Gameplay.FirstNight
 
             SetStep(FirstNightStep.BuyTicket, "Buying club ticket...");
             var spend = NewCommand(GameCommandType.Spend);
-            spend.Payload["sku"] = NightDistrictIds.ClubTicketSku;
-            spend.Payload["locationId"] = NightDistrictIds.Nightclub;
+            ((IDictionary<string, object>)spend.Payload!)["sku"] = NightDistrictIds.ClubTicketSku;
+            ((IDictionary<string, object>)spend.Payload!)["locationId"] = NightDistrictIds.Nightclub;
             var sr = await Root.Commands.ExecuteAsync(spend);
             if (!sr.Success) return Fail(sr.ErrorCode, sr.ErrorMessage);
 
@@ -264,7 +265,7 @@ namespace NAAD.Gameplay.FirstNight
 
             SetStep(FirstNightStep.Travel, "Travel to Beach...");
             var travel = NewCommand(GameCommandType.Travel);
-            travel.Payload["toLocationId"] = NightDistrictIds.Beach;
+            ((IDictionary<string, object>)travel.Payload!)["toLocationId"] = NightDistrictIds.Beach;
             var tr = await Root.Commands.ExecuteAsync(travel);
             if (!tr.Success) return Fail(tr.ErrorCode, tr.ErrorMessage);
             await Delay();
@@ -289,8 +290,8 @@ namespace NAAD.Gameplay.FirstNight
             IsBusy = true;
 
             var cmd = NewCommand(GameCommandType.RelationshipDelta);
-            cmd.Payload["npcId"] = "tunde";
-            cmd.Payload["delta"] = "1"; // Positive delta for friendship
+            ((IDictionary<string, object>)cmd.Payload!)["npcId"] = "tunde";
+            ((IDictionary<string, object>)cmd.Payload!)["delta"] = "1"; // Positive delta for friendship
             var result = await Root.Commands.ExecuteAsync(cmd);
             if (!result.Success)
                 return Fail(result.ErrorCode, result.ErrorMessage);
@@ -307,8 +308,8 @@ namespace NAAD.Gameplay.FirstNight
             IsBusy = true;
 
             var cmd = NewCommand(GameCommandType.CommitMemory);
-            cmd.Payload["memoryType"] = "first_night";
-            cmd.Payload["description"] = "First night out with Tunde";
+            ((IDictionary<string, object>)cmd.Payload!)["memoryType"] = "first_night";
+            ((IDictionary<string, object>)cmd.Payload!)["description"] = "First night out with Tunde";
             var result = await Root.Commands.ExecuteAsync(cmd);
             if (!result.Success)
                 return Fail(result.ErrorCode, result.ErrorMessage);
@@ -326,7 +327,7 @@ namespace NAAD.Gameplay.FirstNight
 
             SetStep(FirstNightStep.ReturnHome, "Returning home...");
             var travel = NewCommand(GameCommandType.Travel);
-            travel.Payload["toLocationId"] = NightDistrictIds.Apartment;
+            ((IDictionary<string, object>)travel.Payload!)["toLocationId"] = NightDistrictIds.Apartment;
             var result = await Root.Commands.ExecuteAsync(travel);
             if (!result.Success)
                 return Fail(result.ErrorCode, result.ErrorMessage);
@@ -453,21 +454,21 @@ namespace NAAD.Gameplay.FirstNight
                 + "\nMoment: " + s.BestMoment;
         }
 
-        private static string GetPayload(Dictionary<string, string> payload, string key)
+        private static string GetPayload(object? payload, string key)
         {
-            if (payload == null) return null;
-            string v;
-            return payload.TryGetValue(key, out v) ? v : null;
+            if (payload is IDictionary<string, object> dict && dict.TryGetValue(key, out var v))
+                return v?.ToString() ?? null;
+            return null;
         }
 
-        private static int ParseInt(Dictionary<string, string> payload, string key)
+        private static int ParseInt(object? payload, string key)
         {
             var v = GetPayload(payload, key);
             int n;
             return v != null && int.TryParse(v, out n) ? n : 0;
         }
 
-        private static int? ParseIntNullable(Dictionary<string, string> payload, string key)
+        private static int? ParseIntNullable(object? payload, string key)
         {
             var v = GetPayload(payload, key);
             int n;

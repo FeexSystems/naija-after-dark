@@ -1,5 +1,7 @@
 using System;
 using System.Threading.Tasks;
+using NAAD.Gameplay;
+using NAAD.Networking;
 using NAAD.Networking.Supabase;
 using UnityEngine;
 
@@ -20,16 +22,26 @@ namespace NAAD.Mock
         private bool _isAuthenticated = false;
         private string _playerId = "mock_player";
 
-        public Task<string?> GetSessionTokenAsync()
+        public Task<string?> GetAccessTokenAsync()
         {
             return Task.FromResult(_isAuthenticated ? "mock_token" : null);
+        }
+
+        public Task<string?> GetSessionTokenAsync()
+        {
+            return GetAccessTokenAsync();
+        }
+
+        public Task<string?> GetPlayerIdAsync()
+        {
+            return Task.FromResult(_isAuthenticated ? _playerId : null);
         }
 
         public Task<PlayerDto?> FetchCurrentPlayerAsync()
         {
             return Task.FromResult(new PlayerDto
             {
-                PlayerId = _playerId,
+                Id = _playerId,
                 DisplayName = "Mock Player",
                 Balance = 50000,
                 LocationId = NightDistrictIds.Apartment,
@@ -38,28 +50,28 @@ namespace NAAD.Mock
             });
         }
 
-        public Task<string?> SignUpAsync(string email, string password)
+        public Task<bool> SignUpAsync(string email, string password, string? displayName = null)
         {
             if (email == null || password == null || password.Length < 6)
             {
-                return Task.FromResult<string?>(null);
+                return Task.FromResult(false);
             }
 
             _isAuthenticated = true;
             _playerId = "mock_player";
-            return Task.FromResult<string?>("mock_token");
+            return Task.FromResult(true);
         }
 
-        public Task<string?> SignInAsync(string email, string password)
+        public Task<bool> SignInAsync(string email, string password)
         {
             if (email == null || password == null || password.Length < 6)
             {
-                return Task.FromResult<string?>(null);
+                return Task.FromResult(false);
             }
 
             _isAuthenticated = true;
             _playerId = "mock_player";
-            return Task.FromResult<string?>("mock_token");
+            return Task.FromResult(true);
         }
 
         public Task<bool> SignOutAsync()
