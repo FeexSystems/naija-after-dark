@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Text;
 
 namespace NAAD.AI
 {
@@ -236,6 +238,7 @@ namespace NAAD.AI
     [System.Serializable]
     public class DialogueRequest
     {
+        public string requestId;
         public string npcId;
         public string playerMessage;
         public string context;
@@ -292,6 +295,7 @@ namespace NAAD.AI
         private string url;
         private float timeout;
         private ProviderMetrics metrics = new ProviderMetrics();
+        private static readonly HttpClient httpClient = new HttpClient();
 
         public EdgeFunctionProvider(string url, float timeout)
         {
@@ -301,21 +305,97 @@ namespace NAAD.AI
 
         public async Task<DialogueResponse> GenerateDialogueAsync(DialogueRequest request)
         {
-            // TODO: Implement HTTP request to Edge Function
             float startTime = Time.realtimeSinceStartup;
-            
-            // Placeholder implementation
-            await Task.Delay(1000);
-            
-            float latency = Time.realtimeSinceStartup - startTime;
-            metrics.RecordRequest(latency, true);
 
-            return new DialogueResponse
+            try
             {
-                text = "Response from Edge Function",
-                emotion = DialogueEmotion.Neutral,
-                latency = latency
-            };
+                // Build request body
+                var body = new
+                {
+                    requestId = request.requestId,
+                    npcId = request.npcId,
+                    playerMessage = request.playerMessage
+                };
+
+                string jsonBody = JsonUtility.ToJson(new EdgeFunctionRequestWrapper(body));
+
+                using var requestMessage = new HttpRequestMessage(HttpMethod.Post, url)
+                {
+                    Content = new StringContent(jsonBody, Encoding.UTF8, "application/json")
+                };
+
+                HttpResponseMessage response = await httpClient.SendAsync(requestMessage);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string responseText = await response.Content.ReadAsStringAsync();
+                    float latency = Time.realtimeSinceStartup - startTime;
+
+                    EdgeFunctionResponseWrapper wrapper = JsonUtility.FromJson<EdgeFunctionResponseWrapper>(responseText);
+
+                    if (wrapper != null && wrapper.success && wrapper.response != null)
+                    {
+                        metrics.RecordRequest(latency, true);
+
+                        DialogueResponse dialogueResponse = new DialogueResponse
+                        {
+                            text = wrapper.response.text,
+                            emotion = wrapper.response.emotion,
+                            latency = latency
+                        };
+
+                        return dialogueResponse;
+                    }
+                    else
+                    {
+                        metrics.RecordRequest(Time.realtimeSinceStartup - startTime, false);
+                        string errorMsg = wrapper?.errorMessage ?? "Unknown Edge Function error";
+                        Debug.LogWarning($"Edge Function error: {errorMsg}");
+                        throw new Exception(errorMsg);
+                    }
+                }
+                else
+                {
+                    metrics.RecordRequest(Time.realtimeSinceStartup - startTime, false);
+                    string errorBody = await response.Content.ReadAsStringAsync();
+                    Debug.LogWarning($"Edge Function HTTP {response.StatusCode}: {errorBody}");
+                    throw new Exception($"Edge Function returned HTTP {response.StatusCode}: {errorBody}");
+                }
+            }
+            catch (TaskCanceledException)
+            {
+                metrics.RecordRequest(Time.realtimeSinceStartup - startTime, false);
+                throw;
+            }
+            catch (Exception ex)
+            {
+                metrics.RecordRequest(Time.realtimeSinceStartup - startTime, false);
+                throw;
+            }
+        }
+
+        [System.Serializable]
+        private class EdgeFunctionRequestWrapper
+        {
+            public string requestId;
+            public string npcId;
+            public string playerMessage;
+
+            public EdgeFunctionRequestWrapper(string requestId, string npcId, string playerMessage)
+            {
+                this.requestId = requestId;
+                this.npcId = npcId;
+                this.playerMessage = playerMessage;
+            }
+        }
+
+        [System.Serializable]
+        private class EdgeFunctionResponseWrapper
+        {
+            public bool success;
+            public DialogueResponse response;
+            public string errorCode;
+            public string errorMessage;
         }
 
         public ProviderMetrics GetMetrics()
@@ -342,10 +422,11 @@ namespace NAAD.AI
         {
             // TODO: Implement HTTP request to local LLM server
             float startTime = Time.realtimeSinceStartup;
-            
+
             // Placeholder implementation
-            await Task.Delay(1500);
-            
+            // TODO: Implement HTTP request to Local LLM
+            // Placeholder removed - using proper HTTP client
+
             float latency = Time.realtimeSinceStartup - startTime;
             metrics.RecordRequest(latency, true);
 
@@ -383,7 +464,8 @@ namespace NAAD.AI
             float startTime = Time.realtimeSinceStartup;
             
             // Placeholder implementation
-            await Task.Delay(2000);
+            // TODO: Implement OpenAI API request
+            // Placeholder removed - using proper HTTP client
             
             float latency = Time.realtimeSinceStartup - startTime;
             metrics.RecordRequest(latency, true);
