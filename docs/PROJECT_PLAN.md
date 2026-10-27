@@ -65,9 +65,9 @@ Legend: ✅ Verified · 🟡 Implemented/pending CI · ⬜ Planned
 | 21 | Unity integration — reproducible, compiles, `NAADBuild.Verify` green | 🟡 local green (6 scenes); CI pending secrets |
 | 22 | Reproducible Unity CI baseline — editor version match + licensing preflight | 🟡 workflow wired; first green run pending |
 | B | First Night vertical slice live end-to-end (Gate B / Phase D) | 🟡 verified locally; CI pending |
-| C | Player rig & animation — see `GATE_C_PLAYER_RIG_ANIMATION.md` | ⬜ Planned (next gate) |
-| D | Gameplay/interaction — third-person controller + interaction framework | ⬜ Planned |
-| E | Atmosphere/simulation — day/night lighting, crowd, world clock | ⬜ Planned |
+| C | Player rig & animation — see `GATE_C_PLAYER_RIG_ANIMATION.md` | 🟡 Infrastructure complete; runtime assets pending |
+| D | Gameplay/interaction — third-person controller + interaction framework | 🟡 Implementation complete; scene wiring pending |
+| E | Atmosphere/simulation — day/night lighting, crowd, world clock | 🟡 Systems complete; scene integration pending |
 
 ## 5. Sequenced execution roadmap (recommended order)
 
@@ -107,6 +107,7 @@ Legend: ✅ Verified · 🟡 Implemented/pending CI · ⬜ Planned
 - Phone apps UI, then **profile on device first** (`GATE16_MOBILE_OPT.md`):
   FPS/RAM/CPU/GPU/battery/size/load on low/mid/high Android + iPhone, only then
   optimize. Android device acceptance + on-device First Night → Summary.
+- Mobile input infrastructure complete: VirtualJoystick, InteractButton, MobileTouchControls.
 
 **Later / optional:**
 - Engineering Phase E (Presence Realtime).

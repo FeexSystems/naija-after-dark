@@ -33,23 +33,23 @@ Six environment placeholder prefabs authored (`NAAD.Editor.NaadPrefabAuthor.Auth
 
 ## Gate C — Characters / animation
 
-**Status: 🟡 In progress — implementation written, real rig/clip assets pending**
+**Status: 🟡 In progress — infrastructure complete, runtime assets pending**
 
-Added `PlayerLocomotionController` with script-driven, camera-relative movement and input injection for mobile joystick/run controls. Extended `VerifyAnimationAssets.RunVerification` into a strict headless contract check and added a `verify-animation` CI job. The check requires a valid Humanoid FBX/avatar, eight MVP clips, typed Animator parameters, an upper-body mask layer, and a wired player prefab containing Animator, animation bridge/state manager, CharacterController, and locomotion controller.
+Infrastructure complete: `PlayerLocomotionController` (script-driven, camera-relative movement), `CharacterAnimationController`, `AnimationStateManager`, `AnimationCommand`, `VerifyAnimationAssets` (headless contract check), `GateCAssetBuilder` (asset generation pipeline), `GateC` (unified workflow controller). MVP animation FBX files exist in `Animations/MVP_Only/` (7 files: idle, walk, run, phone animations, social greeting). `verify-animation` CI job wired in workflow.
 
-**Hard blocker:** real rig/clip/controller/prefab asset files must be imported and committed with stable `.meta` files. No Unity Editor compile or animation playback test has been executed by this change. Full exit criteria: [GATE_C_PLAYER_RIG_ANIMATION.md](GATE_C_PLAYER_RIG_ANIMATION.md).
+**Hard blocker:** No `.controller`, `.mask`, `.prefab`, or `.asset` files for player rig exist. `GateCAssetBuilder` can generate but has not been run. No Animator Controller, Avatar, UpperBodyMask, or PlayerRig prefab committed. Verification report (`VERIFICATION_REPORT.md`) confirms infrastructure complete but assets missing. Full exit criteria: [GATE_C_PLAYER_RIG_ANIMATION.md](GATE_C_PLAYER_RIG_ANIMATION.md).
 
 ## Gate D — Gameplay / interaction
 
-**Status: 🟡 In progress — implementation written, scene wiring pending**
+**Status: 🟡 Implemented (code complete, scene wiring pending)**
 
-Added `PlayerLocomotionController` (script-driven, camera-relative movement), `CharacterAnimationController`, `AnimationStateManager`, and `InteractionSystem`. Full player actor wiring is in `NAAD.Editor.PlayerPrefabCreator` (via `NAAD > Characters > Create Player Prefab`). The controller is presentation-only; all authoritative state flows through `ICommandService` → server RPC.
+Implementation complete: `PlayerLocomotionController` (script-driven, camera-relative movement), `CharacterAnimationController`, `AnimationStateManager`, `InteractionSystem` (discovery via OverlapSphere, facing-cone aware, HUD integration), `Interactable` (base component), `InteractableTarget` (helper), `PlayerPrefabCreator` (wiring via `NAAD > Characters > Create Player Prefab`). Mobile input support: `VirtualJoystick` (touch joystick with keyboard fallback), `InteractButton` (mobile interact button), `MobileTouchControls` (safe-area handling). Third-person camera: `ThirdPersonCamera` (follow target with smoothing, collision protection). Scene wiring and prefab instantiation pending.
 
 ## Gate E — Atmosphere / simulation
 
-**Status: 🟡 Implemented (foundation written)**
+**Status: 🟡 Implemented (systems complete, scene integration pending)**
 
-Day/night lighting profiles (`NightLightingProfile.cs`), world clock tracking (`WorldClockService.cs`), and content expansion models (`ContentExpansionLocations.cs`, `ContentExpansionService.cs`) are created. Crowd/presence systems remain unverified.
+Systems complete: `WorldClockService` (authoritative world clock, period tracking), `WorldClockPresenter` (presentation layer, period-based ambient lighting, demo cycle), `NightLightingProfile` (ScriptableObject for day/night lighting parameters with ambient, directional, skybox, fog, nightlife level). World clock contract verifier in CI (`verify-world-clock` job). Crowd/presence systems remain unverified. Scene integration of lighting profiles pending.
 
 ## Gate 9 — Gemini dialogue
 
@@ -89,9 +89,9 @@ SKUs: `SUYA_PLATE` ₦5,000, `TRANSPORT_SHORT` ₦4,000, `CLUB_TICKET` ₦20,000
 
 ## Gate 16 — Mobile optimization
 
-**Status: 🟡 Implemented (config only)**
+**Status: 🟡 Implemented (config complete, device profiling pending)**
 
-`MobileProfilingConfig` created with targets for low/mid/high Android + iPhone. Actual device profiling on low/mid/high Android and iPhone remains pending device access.
+Configuration complete: `MobileProfilingConfig` ScriptableObject with targets for low/mid/high Android + iPhone (FPS, RAM, load times, network P95). Mobile input infrastructure complete: `VirtualJoystick` (touch joystick with keyboard fallback, floating behavior, dead-zone), `InteractButton` (mobile interact button, 44dp touch target), `MobileTouchControls` (safe-area handling for notches/bezels, sensitivity config). Actual device profiling on low/mid/high Android and iPhone remains pending device access.
 
 ## Gate 17 — Content expansion
 
@@ -122,6 +122,6 @@ Attendance raises `nightlife_level` and `traffic_level`. Domain event `WORLD_REA
 | Category | Gates |
 |---|---|
 | ✅ Implemented and verified | 10, 11, 12, 13, 14, 18, 19, 20 |
-| 🟡 In progress (code written, awaiting assets/conf) | C, D, E, 9 (deploy key), 16 (device test), 17 (content population) |
+| 🟡 In progress (code complete, awaiting assets/conf/scene wiring) | C (rig/assets), D (scene wiring), E (scene integration), 9 (deploy key), 16 (device profiling), 17 (content population) |
 | ⬜ Not yet started | 21 (CI green run), 22 (CI workflow green run) |
-The project is in a strong intermediate state: the technical foundation, server-authoritative command surface, First Night vertical slice, animation contract, player interaction layer, Gate 17 scaffolding, and all upstream world-model gates are complete. Remaining work is concentrated in asset import, content population, CI secret configuration, and on-device profiling — all familiar, executable next steps.
+The project is in a strong intermediate state: the technical foundation, server-authoritative command surface, First Night vertical slice, animation infrastructure, player interaction layer, mobile input systems, atmosphere systems, Gate 17 scaffolding, and all upstream world-model gates are complete. Remaining work is concentrated in asset import (Gate C), scene wiring (Gates D/E), CI secret configuration, and on-device profiling — all familiar, executable next steps.
