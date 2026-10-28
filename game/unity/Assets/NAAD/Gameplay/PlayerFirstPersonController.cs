@@ -49,7 +49,6 @@ namespace NAAD.Gameplay
             _animationStateManager = GetComponent<AnimationStateManager>();
 
             _mainCamera = Camera.main ?? GameObject.FindObjectOfType<Camera>();
-            _locomotion.cameraTransform = _mainCamera?.transform;
 
             _animationStateManager ??= GetComponentInChildren<AnimationStateManager>(true);
 

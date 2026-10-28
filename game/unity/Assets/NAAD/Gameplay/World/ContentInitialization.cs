@@ -17,30 +17,48 @@ namespace NAAD.Gameplay.ContentExpansion
             {
                 new ContentExpansionLocations
                 {
-                    Id = "rest_01",
-                    Name = "Taste of Lagos Restaurant",
-                    Description = "A popular Lagos restaurant serving jollof rice and grilled fish.",
-                    Type = ContentExpansionLocations.LocationType.Restaurant,
-                    InteractionRange = 3f,
-                    CostToEnter = 2000
+                    ExtraLocations = new[]
+                    {
+                        new ContentExpansionLocations.LocationEntry
+                        {
+                            Id = "rest_01",
+                            Name = "Taste of Lagos Restaurant",
+                            Description = "A popular Lagos restaurant serving jollof rice and grilled fish.",
+                            Type = ContentExpansionLocations.LocationType.Restaurant,
+                            InteractionRange = 3f,
+                            CostToEnter = 2000
+                        }
+                    }
                 },
                 new ContentExpansionLocations
                 {
-                    Id = "lounge_01",
-                    Name = "City Lounge",
-                    Description = "Upscale lounge with views of the Lagos skyline.",
-                    Type = ContentExpansionLocations.LocationType.Lounge,
-                    InteractionRange = 2f,
-                    CostToEnter = 3000
+                    ExtraLocations = new[]
+                    {
+                        new ContentExpansionLocations.LocationEntry
+                        {
+                            Id = "lounge_01",
+                            Name = "City Lounge",
+                            Description = "Upscale lounge with views of the Lagos skyline.",
+                            Type = ContentExpansionLocations.LocationType.Lounge,
+                            InteractionRange = 2f,
+                            CostToEnter = 3000
+                        }
+                    }
                 },
                 new ContentExpansionLocations
                 {
-                    Id = "hotel_01",
-                    Name = "Eko Hotel & Suites",
-                    Description = "Luxury hotel in the heart of the business district.",
-                    Type = ContentExpansionLocations.LocationType.Hotel,
-                    InteractionRange = 1f,
-                    CostToEnter = 5000
+                    ExtraLocations = new[]
+                    {
+                        new ContentExpansionLocations.LocationEntry
+                        {
+                            Id = "hotel_01",
+                            Name = "Eko Hotel & Suites",
+                            Description = "Luxury hotel in the heart of the business district.",
+                            Type = ContentExpansionLocations.LocationType.Hotel,
+                            InteractionRange = 1f,
+                            CostToEnter = 5000
+                        }
+                    }
                 }
             };
 
