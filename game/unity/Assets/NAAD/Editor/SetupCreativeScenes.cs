@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using NAAD.Gameplay.World;
+using NAAD.Gameplay.Interaction;
 
 namespace NAAD.Editor
 {
@@ -116,7 +117,6 @@ namespace NAAD.Editor
             main.startSize = 0.1f;
             main.gravityModifier = 1f;
             main.maxParticles = 1000;
-            main.emissionRate = 100;
             
             var emission = rainParticles.emission;
             emission.rateOverTime = 100;
