@@ -242,6 +242,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 101820422}
+  - component: {fileID: 101820423}
   m_Layer: 0
   m_Name: Beach_Chair_1
   m_TagString: Untagged
@@ -265,6 +266,24 @@ Transform:
   - {fileID: 189770958}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &101820423
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 101820421}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5a7c9e1b3d54f6a8c0d2e4b6f8a1c04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NAAD.Gameplay.Interaction.Interactable
+  interactionType: 0
+  prompt: Talk
+  interactionRange: 2.5
+  facingConeDegrees: 0
+  isEnabled: 1
+  interactableId: 
 --- !u!1 &115373920
 GameObject:
   m_ObjectHideFlags: 0
@@ -979,6 +998,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 536163969}
+  - component: {fileID: 536163970}
   m_Layer: 0
   m_Name: Beach_Volleyball
   m_TagString: Untagged
@@ -1002,6 +1022,24 @@ Transform:
   - {fileID: 2113992266}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &536163970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 536163968}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5a7c9e1b3d54f6a8c0d2e4b6f8a1c04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NAAD.Gameplay.Interaction.Interactable
+  interactionType: 0
+  prompt: Talk
+  interactionRange: 2.5
+  facingConeDegrees: 0
+  isEnabled: 1
+  interactableId: 
 --- !u!21 &584509395
 Material:
   serializedVersion: 8
@@ -1745,6 +1783,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 747201992}
+  - component: {fileID: 747201994}
+  - component: {fileID: 747201993}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1767,6 +1807,45 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &747201993
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 747201991}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c16ced0ff3e5d949bd6559ad12b73cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NAAD.Characters.Player.PlayerLocomotionController
+  _config: {fileID: 0}
+  _animator: {fileID: 0}
+  _currentMoveDirection: {x: 0, y: 0, z: 0}
+  _currentSpeed: 0
+  _isRunning: 0
+--- !u!95 &747201994
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 747201991}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &797393567
 GameObject:
   m_ObjectHideFlags: 0
@@ -2347,6 +2426,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1130138893}
+  - component: {fileID: 1130138894}
   m_Layer: 0
   m_Name: Beach_Vendor
   m_TagString: Untagged
@@ -2370,6 +2450,24 @@ Transform:
   - {fileID: 1208370403}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1130138894
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1130138892}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5a7c9e1b3d54f6a8c0d2e4b6f8a1c04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NAAD.Gameplay.Interaction.Interactable
+  interactionType: 0
+  prompt: Talk
+  interactionRange: 2.5
+  facingConeDegrees: 0
+  isEnabled: 1
+  interactableId: 
 --- !u!1 &1143549773
 GameObject:
   m_ObjectHideFlags: 0
@@ -2379,6 +2477,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1143549774}
+  - component: {fileID: 1143549775}
   m_Layer: 0
   m_Name: Beach_Chair_2
   m_TagString: Untagged
@@ -2402,6 +2501,24 @@ Transform:
   - {fileID: 668841087}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1143549775
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1143549773}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5a7c9e1b3d54f6a8c0d2e4b6f8a1c04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NAAD.Gameplay.Interaction.Interactable
+  interactionType: 0
+  prompt: Talk
+  interactionRange: 2.5
+  facingConeDegrees: 0
+  isEnabled: 1
+  interactableId: 
 --- !u!21 &1157599240
 Material:
   serializedVersion: 8
@@ -3129,6 +3246,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1287405794}
+  - component: {fileID: 1287405796}
+  - component: {fileID: 1287405795}
   m_Layer: 0
   m_Name: MobileControls
   m_TagString: Untagged
@@ -3151,6 +3270,36 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1287405795
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1287405793}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 886e2a0f65cec2a4786e78f3bcd2dfe8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NAAD.Characters.Player.MobileTouchControls
+  _touchCanvas: {fileID: 0}
+  _joystickGraphics: {fileID: 0}
+  _runButton: {fileID: 0}
+  _jumpButton: {fileID: 0}
+  _touchSensitivity: 0.7
+  _useSafeArea: 1
+--- !u!225 &1287405796
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1287405793}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1301762827
 GameObject:
   m_ObjectHideFlags: 0
@@ -3762,6 +3911,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1999803571}
+  - component: {fileID: 1999803572}
   m_Layer: 0
   m_Name: Water_Edge
   m_TagString: Untagged
@@ -3785,6 +3935,24 @@ Transform:
   - {fileID: 1103494627}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1999803572
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1999803570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5a7c9e1b3d54f6a8c0d2e4b6f8a1c04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NAAD.Gameplay.Interaction.Interactable
+  interactionType: 0
+  prompt: Talk
+  interactionRange: 2.5
+  facingConeDegrees: 0
+  isEnabled: 1
+  interactableId: 
 --- !u!1 &2113992265
 GameObject:
   m_ObjectHideFlags: 0

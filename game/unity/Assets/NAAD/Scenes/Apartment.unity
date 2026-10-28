@@ -652,6 +652,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 499267502}
+  - component: {fileID: 499267503}
   m_Layer: 0
   m_Name: Phone
   m_TagString: Untagged
@@ -675,6 +676,24 @@ Transform:
   - {fileID: 1885641793}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &499267503
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 499267501}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5a7c9e1b3d54f6a8c0d2e4b6f8a1c04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NAAD.Gameplay.Interaction.Interactable
+  interactionType: 0
+  prompt: Talk
+  interactionRange: 2.5
+  facingConeDegrees: 0
+  isEnabled: 1
+  interactableId: 
 --- !u!21 &565604645
 Material:
   serializedVersion: 8
@@ -766,6 +785,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 689037269}
+  - component: {fileID: 689037270}
   m_Layer: 0
   m_Name: ReceiptPile
   m_TagString: Untagged
@@ -788,6 +808,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &689037270
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 689037268}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5a7c9e1b3d54f6a8c0d2e4b6f8a1c04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NAAD.Gameplay.Interaction.Interactable
+  interactionType: 0
+  prompt: Talk
+  interactionRange: 2.5
+  facingConeDegrees: 0
+  isEnabled: 1
+  interactableId: 
 --- !u!21 &728613060
 Material:
   serializedVersion: 8
@@ -1137,6 +1175,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1049343385}
+  - component: {fileID: 1049343386}
   m_Layer: 0
   m_Name: MessageDisplay
   m_TagString: Untagged
@@ -1159,6 +1198,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1049343386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1049343384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5a7c9e1b3d54f6a8c0d2e4b6f8a1c04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NAAD.Gameplay.Interaction.Interactable
+  interactionType: 0
+  prompt: Talk
+  interactionRange: 2.5
+  facingConeDegrees: 0
+  isEnabled: 1
+  interactableId: 
 --- !u!1 &1148293129
 GameObject:
   m_ObjectHideFlags: 0
@@ -1383,6 +1440,7 @@ GameObject:
   - component: {fileID: 1221869900}
   - component: {fileID: 1221869899}
   - component: {fileID: 1221869898}
+  - component: {fileID: 1221869901}
   m_Layer: 0
   m_Name: PhoneInteract
   m_TagString: Untagged
@@ -1442,6 +1500,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1221869901
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1221869897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5a7c9e1b3d54f6a8c0d2e4b6f8a1c04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NAAD.Gameplay.Interaction.Interactable
+  interactionType: 0
+  prompt: Talk
+  interactionRange: 2.5
+  facingConeDegrees: 0
+  isEnabled: 1
+  interactableId: 
 --- !u!1 &1308217258
 GameObject:
   m_ObjectHideFlags: 0
@@ -1451,6 +1527,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1308217259}
+  - component: {fileID: 1308217260}
   m_Layer: 0
   m_Name: Door_Apartment_To_Street
   m_TagString: Untagged
@@ -1474,6 +1551,24 @@ Transform:
   - {fileID: 881570309}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1308217260
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1308217258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5a7c9e1b3d54f6a8c0d2e4b6f8a1c04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NAAD.Gameplay.Interaction.Interactable
+  interactionType: 0
+  prompt: Talk
+  interactionRange: 2.5
+  facingConeDegrees: 0
+  isEnabled: 1
+  interactableId: 
 --- !u!1 &1367844002
 GameObject:
   m_ObjectHideFlags: 0
@@ -1897,6 +1992,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1576308719}
+  - component: {fileID: 1576308720}
   m_Layer: 0
   m_Name: Bed
   m_TagString: Untagged
@@ -1920,6 +2016,24 @@ Transform:
   - {fileID: 1367844003}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1576308720
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1576308718}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5a7c9e1b3d54f6a8c0d2e4b6f8a1c04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NAAD.Gameplay.Interaction.Interactable
+  interactionType: 0
+  prompt: Talk
+  interactionRange: 2.5
+  facingConeDegrees: 0
+  isEnabled: 1
+  interactableId: 
 --- !u!1 &1607881654
 GameObject:
   m_ObjectHideFlags: 0
@@ -1929,6 +2043,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1607881655}
+  - component: {fileID: 1607881656}
   m_Layer: 0
   m_Name: Fridge
   m_TagString: Untagged
@@ -1952,6 +2067,24 @@ Transform:
   - {fileID: 223126351}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1607881656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1607881654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5a7c9e1b3d54f6a8c0d2e4b6f8a1c04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NAAD.Gameplay.Interaction.Interactable
+  interactionType: 0
+  prompt: Talk
+  interactionRange: 2.5
+  facingConeDegrees: 0
+  isEnabled: 1
+  interactableId: 
 --- !u!1 &1726355042
 GameObject:
   m_ObjectHideFlags: 0
@@ -2314,6 +2447,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1934105016}
+  - component: {fileID: 1934105018}
+  - component: {fileID: 1934105017}
   m_Layer: 0
   m_Name: MobileControls
   m_TagString: Untagged
@@ -2336,6 +2471,36 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1934105017
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1934105015}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 886e2a0f65cec2a4786e78f3bcd2dfe8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NAAD.Characters.Player.MobileTouchControls
+  _touchCanvas: {fileID: 0}
+  _joystickGraphics: {fileID: 0}
+  _runButton: {fileID: 0}
+  _jumpButton: {fileID: 0}
+  _touchSensitivity: 0.7
+  _useSafeArea: 1
+--- !u!225 &1934105018
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1934105015}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &2013704952
 GameObject:
   m_ObjectHideFlags: 0
@@ -2459,6 +2624,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2079026180}
+  - component: {fileID: 2079026182}
+  - component: {fileID: 2079026181}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -2481,6 +2648,45 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2079026181
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2079026179}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c16ced0ff3e5d949bd6559ad12b73cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NAAD.Characters.Player.PlayerLocomotionController
+  _config: {fileID: 0}
+  _animator: {fileID: 0}
+  _currentMoveDirection: {x: 0, y: 0, z: 0}
+  _currentSpeed: 0
+  _isRunning: 0
+--- !u!95 &2079026182
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2079026179}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

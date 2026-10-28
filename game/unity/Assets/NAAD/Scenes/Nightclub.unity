@@ -322,6 +322,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 101820422}
+  - component: {fileID: 101820423}
   m_Layer: 0
   m_Name: DJ_Booth
   m_TagString: Untagged
@@ -345,6 +346,24 @@ Transform:
   - {fileID: 189770958}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &101820423
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 101820421}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5a7c9e1b3d54f6a8c0d2e4b6f8a1c04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NAAD.Gameplay.Interaction.Interactable
+  interactionType: 0
+  prompt: Talk
+  interactionRange: 2.5
+  facingConeDegrees: 0
+  isEnabled: 1
+  interactableId: 
 --- !u!1 &189770957
 GameObject:
   m_ObjectHideFlags: 0
@@ -756,6 +775,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 536163969}
+  - component: {fileID: 536163970}
   m_Layer: 0
   m_Name: Restroom
   m_TagString: Untagged
@@ -779,6 +799,121 @@ Transform:
   - {fileID: 2113992266}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &536163970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 536163968}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5a7c9e1b3d54f6a8c0d2e4b6f8a1c04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NAAD.Gameplay.Interaction.Interactable
+  interactionType: 0
+  prompt: Talk
+  interactionRange: 2.5
+  facingConeDegrees: 0
+  isEnabled: 1
+  interactableId: 
+--- !u!1 &553420174
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 553420175}
+  - component: {fileID: 553420176}
+  m_Layer: 0
+  m_Name: ClubLight_1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &553420175
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 553420174}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -2.5, y: 6, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 788271892}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!108 &553420176
+Light:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 553420174}
+  m_Enabled: 1
+  serializedVersion: 13
+  m_Type: 2
+  m_Color: {r: 0, g: 0, b: 1, a: 1}
+  m_Intensity: 2
+  m_Range: 15
+  m_SpotAngle: 30
+  m_InnerSpotAngle: 21.80208
+  m_CookieSize2D: {x: 0.5, y: 0.5}
+  m_Shadows:
+    m_Type: 0
+    m_Resolution: -1
+    m_CustomResolution: -1
+    m_Strength: 1
+    m_Bias: 0.05
+    m_NormalBias: 0.4
+    m_NearPlane: 0.2
+    m_CullingMatrixOverride:
+      e00: 1
+      e01: 0
+      e02: 0
+      e03: 0
+      e10: 0
+      e11: 1
+      e12: 0
+      e13: 0
+      e20: 0
+      e21: 0
+      e22: 1
+      e23: 0
+      e30: 0
+      e31: 0
+      e32: 0
+      e33: 1
+    m_UseCullingMatrixOverride: 0
+  m_Cookie: {fileID: 0}
+  m_DrawHalo: 0
+  m_Flare: {fileID: 0}
+  m_RenderMode: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RenderingLayerMask: 1
+  m_Lightmapping: 4
+  m_LightShadowCasterMode: 0
+  m_AreaSize: {x: 1, y: 1}
+  m_BounceIntensity: 1
+  m_ColorTemperature: 6570
+  m_UseColorTemperature: 0
+  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_UseBoundingSphereOverride: 0
+  m_UseViewFrustumForShadowCasterCull: 1
+  m_ForceVisible: 0
+  m_ShapeRadius: 0.025
+  m_ShadowAngle: 0
+  m_LightUnit: 1
+  m_LuxAtDistance: 1
+  m_EnableSpotReflector: 1
 --- !u!1 &567647314
 GameObject:
   m_ObjectHideFlags: 0
@@ -962,6 +1097,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 572171493}
+  - component: {fileID: 572171495}
+  - component: {fileID: 572171494}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -984,6 +1121,45 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &572171494
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 572171492}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c16ced0ff3e5d949bd6559ad12b73cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NAAD.Characters.Player.PlayerLocomotionController
+  _config: {fileID: 0}
+  _animator: {fileID: 0}
+  _currentMoveDirection: {x: 0, y: 0, z: 0}
+  _currentSpeed: 0
+  _isRunning: 0
+--- !u!95 &572171495
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 572171492}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &590612339
 GameObject:
   m_ObjectHideFlags: 0
@@ -1063,6 +1239,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 595789786}
+  - component: {fileID: 595789787}
   m_Layer: 0
   m_Name: Door_Nightclub_To_Street
   m_TagString: Untagged
@@ -1086,6 +1263,24 @@ Transform:
   - {fileID: 76597833}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &595789787
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 595789785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5a7c9e1b3d54f6a8c0d2e4b6f8a1c04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NAAD.Gameplay.Interaction.Interactable
+  interactionType: 0
+  prompt: Talk
+  interactionRange: 2.5
+  facingConeDegrees: 0
+  isEnabled: 1
+  interactableId: 
 --- !u!1 &646437016
 GameObject:
   m_ObjectHideFlags: 0
@@ -1523,13 +1718,65 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8658043822136559208, guid: 0ff373f2ce493da479b9bfb6a70718a0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 758030926}
+    - targetCorrespondingSourceObject: {fileID: 8692745499623012086, guid: 0ff373f2ce493da479b9bfb6a70718a0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 758030925}
   m_SourcePrefab: {fileID: 100100000, guid: 0ff373f2ce493da479b9bfb6a70718a0, type: 3}
 --- !u!4 &758030922 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5568499525547399028, guid: 0ff373f2ce493da479b9bfb6a70718a0, type: 3}
   m_PrefabInstance: {fileID: 758030921}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &758030923 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8692745499623012086, guid: 0ff373f2ce493da479b9bfb6a70718a0, type: 3}
+  m_PrefabInstance: {fileID: 758030921}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &758030924 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8658043822136559208, guid: 0ff373f2ce493da479b9bfb6a70718a0, type: 3}
+  m_PrefabInstance: {fileID: 758030921}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &758030925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 758030923}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5a7c9e1b3d54f6a8c0d2e4b6f8a1c04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NAAD.Gameplay.Interaction.Interactable
+  interactionType: 0
+  prompt: Talk
+  interactionRange: 2.5
+  facingConeDegrees: 0
+  isEnabled: 1
+  interactableId: 
+--- !u!114 &758030926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 758030924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5a7c9e1b3d54f6a8c0d2e4b6f8a1c04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NAAD.Gameplay.Interaction.Interactable
+  interactionType: 0
+  prompt: Talk
+  interactionRange: 2.5
+  facingConeDegrees: 0
+  isEnabled: 1
+  interactableId: 
 --- !u!1 &788271891
 GameObject:
   m_ObjectHideFlags: 0
@@ -1558,7 +1805,11 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
-  m_Children: []
+  m_Children:
+  - {fileID: 1024738406}
+  - {fileID: 553420175}
+  - {fileID: 1519979074}
+  - {fileID: 2086687579}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &825619547
@@ -1864,6 +2115,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 862546806}
+  - component: {fileID: 862546808}
+  - component: {fileID: 862546807}
   m_Layer: 0
   m_Name: MobileControls
   m_TagString: Untagged
@@ -1886,6 +2139,36 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &862546807
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 862546805}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 886e2a0f65cec2a4786e78f3bcd2dfe8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NAAD.Characters.Player.MobileTouchControls
+  _touchCanvas: {fileID: 0}
+  _joystickGraphics: {fileID: 0}
+  _runButton: {fileID: 0}
+  _jumpButton: {fileID: 0}
+  _touchSensitivity: 0.7
+  _useSafeArea: 1
+--- !u!225 &862546808
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 862546805}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!21 &863052248
 Material:
   serializedVersion: 8
@@ -2231,6 +2514,103 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1024738405
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1024738406}
+  - component: {fileID: 1024738407}
+  m_Layer: 0
+  m_Name: ClubLight_0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1024738406
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1024738405}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -7.5, y: 6, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 788271892}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!108 &1024738407
+Light:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1024738405}
+  m_Enabled: 1
+  serializedVersion: 13
+  m_Type: 2
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Intensity: 2
+  m_Range: 15
+  m_SpotAngle: 30
+  m_InnerSpotAngle: 21.80208
+  m_CookieSize2D: {x: 0.5, y: 0.5}
+  m_Shadows:
+    m_Type: 0
+    m_Resolution: -1
+    m_CustomResolution: -1
+    m_Strength: 1
+    m_Bias: 0.05
+    m_NormalBias: 0.4
+    m_NearPlane: 0.2
+    m_CullingMatrixOverride:
+      e00: 1
+      e01: 0
+      e02: 0
+      e03: 0
+      e10: 0
+      e11: 1
+      e12: 0
+      e13: 0
+      e20: 0
+      e21: 0
+      e22: 1
+      e23: 0
+      e30: 0
+      e31: 0
+      e32: 0
+      e33: 1
+    m_UseCullingMatrixOverride: 0
+  m_Cookie: {fileID: 0}
+  m_DrawHalo: 0
+  m_Flare: {fileID: 0}
+  m_RenderMode: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RenderingLayerMask: 1
+  m_Lightmapping: 4
+  m_LightShadowCasterMode: 0
+  m_AreaSize: {x: 1, y: 1}
+  m_BounceIntensity: 1
+  m_ColorTemperature: 6570
+  m_UseColorTemperature: 0
+  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_UseBoundingSphereOverride: 0
+  m_UseViewFrustumForShadowCasterCull: 1
+  m_ForceVisible: 0
+  m_ShapeRadius: 0.025
+  m_ShadowAngle: 0
+  m_LightUnit: 1
+  m_LuxAtDistance: 1
+  m_EnableSpotReflector: 1
 --- !u!21 &1054453995
 Material:
   serializedVersion: 8
@@ -2544,6 +2924,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1130138893}
+  - component: {fileID: 1130138894}
   m_Layer: 0
   m_Name: Bar
   m_TagString: Untagged
@@ -2567,6 +2948,24 @@ Transform:
   - {fileID: 1208370403}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1130138894
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1130138892}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5a7c9e1b3d54f6a8c0d2e4b6f8a1c04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NAAD.Gameplay.Interaction.Interactable
+  interactionType: 0
+  prompt: Talk
+  interactionRange: 2.5
+  facingConeDegrees: 0
+  isEnabled: 1
+  interactableId: 
 --- !u!1 &1143549773
 GameObject:
   m_ObjectHideFlags: 0
@@ -2576,6 +2975,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1143549774}
+  - component: {fileID: 1143549775}
   m_Layer: 0
   m_Name: Dance_Floor_Center
   m_TagString: Untagged
@@ -2599,6 +2999,24 @@ Transform:
   - {fileID: 668841087}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1143549775
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1143549773}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5a7c9e1b3d54f6a8c0d2e4b6f8a1c04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NAAD.Gameplay.Interaction.Interactable
+  interactionType: 0
+  prompt: Talk
+  interactionRange: 2.5
+  facingConeDegrees: 0
+  isEnabled: 1
+  interactableId: 
 --- !u!1 &1208370402
 GameObject:
   m_ObjectHideFlags: 0
@@ -3043,6 +3461,103 @@ Transform:
   - {fileID: 489620328}
   m_Father: {fileID: 1693991931}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1519979073
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1519979074}
+  - component: {fileID: 1519979075}
+  m_Layer: 0
+  m_Name: ClubLight_2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1519979074
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1519979073}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 2.5, y: 6, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 788271892}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!108 &1519979075
+Light:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1519979073}
+  m_Enabled: 1
+  serializedVersion: 13
+  m_Type: 2
+  m_Color: {r: 1, g: 0, b: 1, a: 1}
+  m_Intensity: 2
+  m_Range: 15
+  m_SpotAngle: 30
+  m_InnerSpotAngle: 21.80208
+  m_CookieSize2D: {x: 0.5, y: 0.5}
+  m_Shadows:
+    m_Type: 0
+    m_Resolution: -1
+    m_CustomResolution: -1
+    m_Strength: 1
+    m_Bias: 0.05
+    m_NormalBias: 0.4
+    m_NearPlane: 0.2
+    m_CullingMatrixOverride:
+      e00: 1
+      e01: 0
+      e02: 0
+      e03: 0
+      e10: 0
+      e11: 1
+      e12: 0
+      e13: 0
+      e20: 0
+      e21: 0
+      e22: 1
+      e23: 0
+      e30: 0
+      e31: 0
+      e32: 0
+      e33: 1
+    m_UseCullingMatrixOverride: 0
+  m_Cookie: {fileID: 0}
+  m_DrawHalo: 0
+  m_Flare: {fileID: 0}
+  m_RenderMode: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RenderingLayerMask: 1
+  m_Lightmapping: 4
+  m_LightShadowCasterMode: 0
+  m_AreaSize: {x: 1, y: 1}
+  m_BounceIntensity: 1
+  m_ColorTemperature: 6570
+  m_UseColorTemperature: 0
+  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_UseBoundingSphereOverride: 0
+  m_UseViewFrustumForShadowCasterCull: 1
+  m_ForceVisible: 0
+  m_ShapeRadius: 0.025
+  m_ShadowAngle: 0
+  m_LightUnit: 1
+  m_LuxAtDistance: 1
+  m_EnableSpotReflector: 1
 --- !u!1 &1556871937
 GameObject:
   m_ObjectHideFlags: 0
@@ -3637,6 +4152,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1999803571}
+  - component: {fileID: 1999803572}
   m_Layer: 0
   m_Name: VIP_Area
   m_TagString: Untagged
@@ -3660,6 +4176,24 @@ Transform:
   - {fileID: 1103494627}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1999803572
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1999803570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5a7c9e1b3d54f6a8c0d2e4b6f8a1c04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NAAD.Gameplay.Interaction.Interactable
+  interactionType: 0
+  prompt: Talk
+  interactionRange: 2.5
+  facingConeDegrees: 0
+  isEnabled: 1
+  interactableId: 
 --- !u!1 &2068893370
 GameObject:
   m_ObjectHideFlags: 0
@@ -3730,6 +4264,103 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2086687578
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2086687579}
+  - component: {fileID: 2086687580}
+  m_Layer: 0
+  m_Name: ClubLight_3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2086687579
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2086687578}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 7.5, y: 6, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 788271892}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!108 &2086687580
+Light:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2086687578}
+  m_Enabled: 1
+  serializedVersion: 13
+  m_Type: 2
+  m_Color: {r: 0, g: 1, b: 1, a: 1}
+  m_Intensity: 2
+  m_Range: 15
+  m_SpotAngle: 30
+  m_InnerSpotAngle: 21.80208
+  m_CookieSize2D: {x: 0.5, y: 0.5}
+  m_Shadows:
+    m_Type: 0
+    m_Resolution: -1
+    m_CustomResolution: -1
+    m_Strength: 1
+    m_Bias: 0.05
+    m_NormalBias: 0.4
+    m_NearPlane: 0.2
+    m_CullingMatrixOverride:
+      e00: 1
+      e01: 0
+      e02: 0
+      e03: 0
+      e10: 0
+      e11: 1
+      e12: 0
+      e13: 0
+      e20: 0
+      e21: 0
+      e22: 1
+      e23: 0
+      e30: 0
+      e31: 0
+      e32: 0
+      e33: 1
+    m_UseCullingMatrixOverride: 0
+  m_Cookie: {fileID: 0}
+  m_DrawHalo: 0
+  m_Flare: {fileID: 0}
+  m_RenderMode: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RenderingLayerMask: 1
+  m_Lightmapping: 4
+  m_LightShadowCasterMode: 0
+  m_AreaSize: {x: 1, y: 1}
+  m_BounceIntensity: 1
+  m_ColorTemperature: 6570
+  m_UseColorTemperature: 0
+  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_UseBoundingSphereOverride: 0
+  m_UseViewFrustumForShadowCasterCull: 1
+  m_ForceVisible: 0
+  m_ShapeRadius: 0.025
+  m_ShadowAngle: 0
+  m_LightUnit: 1
+  m_LuxAtDistance: 1
+  m_EnableSpotReflector: 1
 --- !u!1 &2113992265
 GameObject:
   m_ObjectHideFlags: 0
