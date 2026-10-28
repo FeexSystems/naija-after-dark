@@ -5,6 +5,7 @@ using NAAD.Networking.Supabase;
 using NAAD.Mock;
 using NAAD.UI.Scripts;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEditor;
 
 namespace NAAD.Editor
@@ -52,7 +53,7 @@ namespace NAAD.Editor
             scaler.referenceResolution = new Vector2(1080, 1920);
 
             var raycaster = go.AddComponent<GraphicRaycaster>();
-            var safeArea = go.AddComponent<SafeAreaFitter>();
+            // var safeArea = go.AddComponent<SafeAreaFitter>(); // TODO: SafeAreaFitter not implemented yet
 
             var manager = go.AddComponent<ScreenNavigationManager>();
 

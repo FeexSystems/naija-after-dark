@@ -146,7 +146,8 @@ namespace NAAD.Environment
                 var npcStateMachine = collider.GetComponent<BehaviorStateMachine>();
                 if (npcStateMachine != null)
                 {
-                    string currentState = npcStateMachine.CurrentState;
+                    var currentStateObj = npcStateMachine.GetCurrentState();
+                    string currentState = currentStateObj != null ? currentStateObj.GetType().Name : string.Empty;
 
                     // Check if current state is blocked
                     foreach (string blockedState in blockedNpcStates)

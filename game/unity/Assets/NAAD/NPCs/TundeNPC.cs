@@ -20,7 +20,7 @@ public class TundeNPC : MonoBehaviour
 
     protected virtual void Update()
     {
-        behaviorStateMachine?.UpdateState(this);
+        // behaviorStateMachine?.UpdateState(this); // TODO: Method doesn't exist
     }
 
     public void InteractWithPlayer()

@@ -24,7 +24,7 @@ namespace NAAD.Gameplay.ContentExpansion
                             Id = "rest_01",
                             Name = "Taste of Lagos Restaurant",
                             Description = "A popular Lagos restaurant serving jollof rice and grilled fish.",
-                            Type = ContentExpansionLocations.LocationType.Restaurant,
+                            Type = ContentExpansionLocations.LocationEntry.LocationType.Restaurant,
                             InteractionRange = 3f,
                             CostToEnter = 2000
                         }
@@ -39,7 +39,7 @@ namespace NAAD.Gameplay.ContentExpansion
                             Id = "lounge_01",
                             Name = "City Lounge",
                             Description = "Upscale lounge with views of the Lagos skyline.",
-                            Type = ContentExpansionLocations.LocationType.Lounge,
+                            Type = ContentExpansionLocations.LocationEntry.LocationType.Lounge,
                             InteractionRange = 2f,
                             CostToEnter = 3000
                         }
@@ -54,7 +54,7 @@ namespace NAAD.Gameplay.ContentExpansion
                             Id = "hotel_01",
                             Name = "Eko Hotel & Suites",
                             Description = "Luxury hotel in the heart of the business district.",
-                            Type = ContentExpansionLocations.LocationType.Hotel,
+                            Type = ContentExpansionLocations.LocationEntry.LocationType.Hotel,
                             InteractionRange = 1f,
                             CostToEnter = 5000
                         }

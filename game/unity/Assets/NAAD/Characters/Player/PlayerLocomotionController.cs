@@ -193,6 +193,11 @@ namespace NAAD.Characters.Player
             }
         }
 
+        private void UpdateSpeeds()
+        {
+            // No-op for direct movement
+        }
+
         private void UpdateRotation()
         {
             if (_agent == null || _currentMoveDirection.sqrMagnitude < 0.001f) return;

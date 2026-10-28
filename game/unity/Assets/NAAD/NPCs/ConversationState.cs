@@ -20,7 +20,7 @@ public class ConversationState : BehaviorState
         if (dialogueBubblePrefab != null)
         {
             var bubble = Instantiate(dialogueBubblePrefab, stateMachine.transform.position + Vector3.up, Quaternion.identity);
-            bubble?.InitializeForNPCConversation(this);
+            // bubble?.InitializeForNPCConversation(this); // TODO: Type mismatch
         }
     }
 

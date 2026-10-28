@@ -46,7 +46,17 @@ public class BehaviorStateMachine : MonoBehaviour
         if (stateTimer >= stateDuration)
         {
             stateTimer = 0f;
-            RequestStateTransition();
+            // Find next state randomly for now
+            if (availableStates.Count > 1 && currentState != null)
+            {
+                var currentStateType = currentState.GetType().Name;
+                var otherStates = availableStates.FindAll(s => s.GetType().Name != currentStateType);
+                if (otherStates.Count > 0)
+                {
+                    var nextState = otherStates[Random.Range(0, otherStates.Count)];
+                    TransitionToState(nextState);
+                }
+            }
         }
 
         currentState?.UpdateState(this);

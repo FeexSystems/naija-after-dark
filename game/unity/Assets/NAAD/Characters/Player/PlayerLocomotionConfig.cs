@@ -29,7 +29,7 @@ namespace NAAD.Characters.Player
 
         [SerializeField]
         [Tooltip("Area mask the NavMeshAgent can traverse.")]
-        private int _navMeshAreaMask = NavMesh.AllAreas;
+        private int _navMeshAreaMask = -1; // All areas
 
         [Header("Input")]
         [SerializeField]

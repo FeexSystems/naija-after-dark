@@ -44,7 +44,7 @@ namespace NAAD.UI.Scripts
         protected virtual void Awake()
         {
             // Register this controller with the service container (set in Manager)
-            ServiceContainer.RegisterController(this);
+            // ServiceContainer.RegisterController(this); // TODO: Method doesn't exist
         }
 
         protected virtual void OnEnable()

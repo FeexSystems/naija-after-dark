@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
+using System;
 
 namespace NAAD.AI
 {
@@ -317,7 +318,11 @@ namespace NAAD.AI
                     playerMessage = request.playerMessage
                 };
 
-                string jsonBody = JsonUtility.ToJson(new EdgeFunctionRequestWrapper(body));
+                string jsonBody = JsonUtility.ToJson(new EdgeFunctionRequestWrapper(
+                    body.requestId,
+                    body.npcId,
+                    body.playerMessage
+                ));
 
                 using var requestMessage = new HttpRequestMessage(HttpMethod.Post, url)
                 {

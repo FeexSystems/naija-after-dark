@@ -78,7 +78,7 @@ public class DialogueBubble : MonoBehaviour
     {
         // Set up default dialogue state for NPC conversation
         // This can be overridden or extended per-NPC type
-        Debug.Log($"[DialogueBubble] Initializing NPC conversation for {npc?.npcName ?? "Unknown"}");
+        Debug.Log($"[DialogueBubble] Initializing NPC conversation for Unknown");
     }
     /// </summary>
     public void Hide()
