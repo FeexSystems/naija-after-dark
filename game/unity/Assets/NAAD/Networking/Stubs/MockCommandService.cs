@@ -242,7 +242,7 @@ namespace NAAD.Mock
                 return result;
             }
 
-            _world.ApplyRelationshipDelta(command.TargetId.Value, (int)(command.Trust ?? 0));
+            _world.ApplyRelationshipDelta(command.TargetId ?? string.Empty, (int)(command.Trust ?? 0));
             result.Payload = new { success = true };
             return result;
         }
@@ -259,7 +259,7 @@ namespace NAAD.Mock
                 return result;
             }
 
-            _players.SetCareer(command.CareerId.Value);
+            _players.SetCareer(command.CareerId ?? string.Empty);
             result.Payload = new { success = true };
             return result;
         }
@@ -276,7 +276,7 @@ namespace NAAD.Mock
                 return result;
             }
 
-            result.Payload = new { accepted = true, opportunityId = command.OpportunityId.Value };
+            result.Payload = new { accepted = true, opportunityId = command.OpportunityId ?? string.Empty };
             return result;
         }
 
@@ -292,7 +292,7 @@ namespace NAAD.Mock
                 return result;
             }
 
-            _world.CommitMemory(command.NpcId.Value, command.MemoryType, command.Summary);
+            _world.CommitMemory(command.NpcId ?? string.Empty, command.MemoryType, command.Summary);
             result.Payload = new { success = true };
             return result;
         }
@@ -309,7 +309,7 @@ namespace NAAD.Mock
                 return result;
             }
 
-            _world.SetWorldPeriod(command.Period.Value);
+            _world.SetWorldPeriod(command.Period ?? string.Empty);
             result.Payload = new { success = true };
             return result;
         }
@@ -359,7 +359,7 @@ namespace NAAD.Mock
             var result = new CommandResult { RequestId = request.RequestId };
             var currentLocation = _players.CurrentLocation;
 
-            if (!command.ToLocationId.HasValue)
+            if (string.IsNullOrEmpty(command.ToLocationId))
             {
                 result.Success = false;
                 result.ErrorCode = "INVALID_PAYLOAD";
@@ -375,7 +375,7 @@ namespace NAAD.Mock
                 return result;
             }
 
-            if (!NightDistrictIds.IsValidLocation(command.ToLocationId.Value))
+            if (!NightDistrictIds.IsValidLocation(command.ToLocationId))
             {
                 result.Success = false;
                 result.ErrorCode = "INVALID_LOCATION";
@@ -386,7 +386,7 @@ namespace NAAD.Mock
             var pendingTravel = new PendingTravelCommand
             {
                 RequestId = request.RequestId,
-                ToLocationId = command.ToLocationId.Value,
+                ToLocationId = command.ToLocationId,
                 Coordinates = new Vector3(0f, 0f, 0f),
             };
 
@@ -426,9 +426,9 @@ namespace NAAD.Mock
         private CommandResult ValidateAndExecuteBuy(CommandRequest request, BuyCommand command)
         {
             var result = new CommandResult { RequestId = request.RequestId };
-            var locationId = command.LocationId?.Value;
+            var locationId = command.LocationId;
 
-            if (locationId == null)
+            if (string.IsNullOrEmpty(locationId))
             {
                 result.Success = false;
                 result.ErrorCode = "INVALID_PAYLOAD";
@@ -436,7 +436,7 @@ namespace NAAD.Mock
                 return result;
             }
 
-            if (!NightDistrictIds.IsValidDistrict(locationId.Value))
+            if (!NightDistrictIds.IsValidDistrict(locationId))
             {
                 result.Success = false;
                 result.ErrorCode = "INVALID_LOCATION";
@@ -445,7 +445,7 @@ namespace NAAD.Mock
             }
 
             var currentLocation = _players.CurrentLocation;
-            if (currentLocation != locationId.Value)
+            if (currentLocation != locationId)
             {
                 result.Success = false;
                 result.ErrorCode = "NOT_AT_LOCATION";
@@ -537,7 +537,7 @@ namespace NAAD.Mock
                 return result;
             }
 
-            result.Payload = new { roomJoined = true, locationId = command.LocationId.Value };
+            result.Payload = new { roomJoined = true, locationId = command.LocationId ?? string.Empty };
             return result;
         }
 

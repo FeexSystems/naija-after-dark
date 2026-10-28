@@ -123,12 +123,12 @@ namespace NAAD.Networking
 
             if (syncBehaviorState && npcStateMachines.ContainsKey(npcId))
             {
-                state.behaviorState = npcStateMachines[npcId].CurrentState;
+                state.behaviorState = npcStateMachines[npcId].GetCurrentState();
             }
 
             if (syncDialogueState && npcDialogueManagers.ContainsKey(npcId))
             {
-                state.isInDialogue = npcDialogueManagers[npcId].IsActive();
+                state.isInDialogue = false; // TODO: Implement proper dialogue state tracking
                 state.dialogueLineIndex = GetCurrentDialogueLineIndex(npcId);
             }
 
