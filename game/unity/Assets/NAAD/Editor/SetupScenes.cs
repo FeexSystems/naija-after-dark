@@ -1,8 +1,6 @@
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.SceneManagement;
-using NAAD.Characters.Player;
-using NAAD.Gameplay.World;
 
 namespace NAAD.Editor
 {
@@ -17,7 +15,7 @@ namespace NAAD.Editor
             SetupNightclubScene();
             SetupBeachScene();
             
-            Debug.Log("All scenes have been set up with core components.");
+            Debug.Log("All scenes have been set up with core GameObjects.");
         }
         
         [MenuItem("NAAD/Setup Apartment Scene")]
@@ -58,29 +56,25 @@ namespace NAAD.Editor
             var playerSpawn = new GameObject("PlayerSpawn");
             playerSpawn.transform.position = new Vector3(0, 1, 0);
             
-            // Create Player GameObject with PlayerLocomotionController
+            // Create Player GameObject (components to be added manually)
             var player = new GameObject("Player");
             player.transform.position = new Vector3(0, 1, 0);
-            var locomotion = player.AddComponent<PlayerLocomotionController>();
             
-            // Add WorldClockService
+            // Create WorldClockService GameObject (service to be configured manually)
             var worldClockService = new GameObject("WorldClockService");
-            worldClockService.AddComponent<WorldClockService>();
             
-            // Add ThirdPersonCamera
+            // Create ThirdPersonCamera GameObject (camera to be configured manually)
             var cameraObj = new GameObject("ThirdPersonCamera");
             var camera = cameraObj.AddComponent<Camera>();
-            cameraObj.AddComponent<ThirdPersonCamera>();
             camera.tag = "MainCamera";
             
-            // Add Mobile Input Controller
+            // Create Mobile Input Controller GameObject (controls to be configured manually)
             var mobileControls = new GameObject("MobileControls");
-            mobileControls.AddComponent<MobileTouchControls>();
             
             // Save scene
             EditorSceneManager.SaveScene(scene);
             
-            Debug.Log($"Setup {scenePath} with core components: PlayerSpawn, Player with PlayerLocomotionController, WorldClockService, ThirdPersonCamera, MobileTouchControls");
+            Debug.Log($"Setup {scenePath} with core GameObjects: PlayerSpawn, Player, WorldClockService, ThirdPersonCamera, MobileControls");
         }
     }
 }
