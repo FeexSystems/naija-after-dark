@@ -54,11 +54,15 @@ namespace NAAD.UI
                 var itemText = item.GetComponentInChildren<Text>();
                 if (itemText != null)
                 {
-                    itemText.text = "" + loc.Value.Name + "\n" +
-                                   "Type: " + loc.Value.Type + "\n" +
-                                   "Description: " + loc.Value.Description + "\n" +
-                                   "Cost to Enter: " + loc.Value.CostToEnter.ToString("N0") + " NGN\n" +
-                                   "Interaction Range: " + loc.Value.InteractionRange.ToString("F1") + "f";
+                    // Display location entry details
+                    foreach (var entry in loc.Value.ExtraLocations)
+                    {
+                        itemText.text = "" + entry.Name + "\n" +
+                                       "Type: " + entry.Type + "\n" +
+                                       "Description: " + entry.Description + "\n" +
+                                       "Cost to Enter: " + entry.CostToEnter.ToString("N0") + " NGN\n" +
+                                       "Interaction Range: " + entry.InteractionRange.ToString("F1") + "f";
+                    }
                 }
             }
         }

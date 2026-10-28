@@ -51,10 +51,6 @@ namespace NAAD.Gameplay
             _mainCamera = Camera.main ?? GameObject.FindObjectOfType<Camera>();
             _locomotion.cameraTransform = _mainCamera?.transform;
 
-            // Best-effort wiring so the controller is self-sufficient.
-            if (_locomotion.animationStateManager == null && _animationStateManager != null)
-                _locomotion.animationStateManager = _animationStateManager;
-
             _animationStateManager ??= GetComponentInChildren<AnimationStateManager>(true);
 
             if (_mainCamera == null)

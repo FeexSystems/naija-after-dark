@@ -17,7 +17,7 @@ namespace NAAD.UI.Scripts
         [Header("View Configuration")]
         [SerializeField]
         [Tooltip("Unique screen identifier for navigation.")]
-        private string _screenId = string.Empty;
+        protected string _screenId = string.Empty;
 
         [SerializeField]
         [Tooltip("Whether this view blocks input to views beneath it.")]
