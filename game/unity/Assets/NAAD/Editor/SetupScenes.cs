@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using NAAD.Characters.Player;
-using NAAD.Characters.Player.Placeholder;
 using NAAD.Gameplay.World;
 
 namespace NAAD.Editor
