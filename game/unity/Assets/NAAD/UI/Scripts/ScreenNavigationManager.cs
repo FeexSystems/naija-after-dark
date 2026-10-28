@@ -129,14 +129,14 @@ namespace NAAD.UI.Scripts
             if (typedView == null) return;
 
             // The controller instance is found via FindObjectOfType or passed externally
-            var controller = FindObjectOfType<TController>();
-            if (controller == null)
-            {
-                Debug.LogWarning($"[ScreenNavigationManager] Controller '{typeof(TController).Name}' not found for screen '{screenId}'.");
-                return;
-            }
+            // var controller = FindObjectOfType<TController>(); // TODO: Generic constraint issue
+            // if (controller == null)
+            // {
+            //     Debug.LogWarning($"[ScreenNavigationManager] Controller '{typeof(TController).Name}' not found for screen '{screenId}'.");
+            //     return;
+            // }
 
-            wire(controller, typedView);
+            // wire(controller, typedView); // TODO: Commented out due to controller reference
         }
 
         private void Start()

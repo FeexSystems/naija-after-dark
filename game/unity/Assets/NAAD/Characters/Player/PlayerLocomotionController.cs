@@ -200,7 +200,7 @@ namespace NAAD.Characters.Player
 
         private void UpdateRotation()
         {
-            if (_agent == null || _currentMoveDirection.sqrMagnitude < 0.001f) return;
+            if (_currentMoveDirection.sqrMagnitude < 0.001f) return;
 
             var targetRotation = Quaternion.LookRotation(_currentMoveDirection);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, _config.RotationSpeed * Time.deltaTime);
