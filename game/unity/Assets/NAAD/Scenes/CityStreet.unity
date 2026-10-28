@@ -423,6 +423,7 @@ GameObject:
   m_Component:
   - component: {fileID: 302475215}
   - component: {fileID: 302475216}
+  - component: {fileID: 302475217}
   m_Layer: 0
   m_Name: Door_Street_To_Nightclub
   m_TagString: Untagged
@@ -464,6 +465,18 @@ MonoBehaviour:
   facingConeDegrees: 0
   isEnabled: 1
   interactableId: 
+--- !u!114 &302475217
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 302475214}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1823928360}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp-Editor::NAAD.Editor.SceneLoader
 --- !u!1 &363958496
 GameObject:
   m_ObjectHideFlags: 0
@@ -1684,6 +1697,7 @@ GameObject:
   m_Component:
   - component: {fileID: 751392525}
   - component: {fileID: 751392526}
+  - component: {fileID: 751392527}
   m_Layer: 0
   m_Name: Door_Street_To_Apartment
   m_TagString: Untagged
@@ -1725,6 +1739,18 @@ MonoBehaviour:
   facingConeDegrees: 0
   isEnabled: 1
   interactableId: 
+--- !u!114 &751392527
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 751392524}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1823928360}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp-Editor::NAAD.Editor.SceneLoader
 --- !u!1001 &758030921
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2280,6 +2306,7 @@ GameObject:
   m_Component:
   - component: {fileID: 852863709}
   - component: {fileID: 852863710}
+  - component: {fileID: 852863711}
   m_Layer: 0
   m_Name: Door_Street_To_SuyaSpot
   m_TagString: Untagged
@@ -2321,6 +2348,18 @@ MonoBehaviour:
   facingConeDegrees: 0
   isEnabled: 1
   interactableId: 
+--- !u!114 &852863711
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 852863708}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1823928360}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp-Editor::NAAD.Editor.SceneLoader
 --- !u!1 &861248259
 GameObject:
   m_ObjectHideFlags: 0
@@ -6453,6 +6492,21 @@ Light:
   m_LightUnit: 1
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
+--- !u!115 &1823928360
+MonoScript:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  serializedVersion: 7
+  m_DefaultReferences: {}
+  m_Icon: {fileID: 0}
+  m_Type: 0
+  m_ExecutionOrder: 0
+  m_ClassName: SceneLoader
+  m_Namespace: NAAD.Editor
+  m_AssemblyName: Assembly-CSharp-Editor
 --- !u!1 &1831470013
 GameObject:
   m_ObjectHideFlags: 0

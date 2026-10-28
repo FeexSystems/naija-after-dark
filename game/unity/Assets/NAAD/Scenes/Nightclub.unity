@@ -1240,6 +1240,7 @@ GameObject:
   m_Component:
   - component: {fileID: 595789786}
   - component: {fileID: 595789787}
+  - component: {fileID: 595789788}
   m_Layer: 0
   m_Name: Door_Nightclub_To_Street
   m_TagString: Untagged
@@ -1281,6 +1282,18 @@ MonoBehaviour:
   facingConeDegrees: 0
   isEnabled: 1
   interactableId: 
+--- !u!114 &595789788
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 595789785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 2036594440}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp-Editor::NAAD.Editor.SceneLoader
 --- !u!1 &646437016
 GameObject:
   m_ObjectHideFlags: 0
@@ -4194,6 +4207,21 @@ MonoBehaviour:
   facingConeDegrees: 0
   isEnabled: 1
   interactableId: 
+--- !u!115 &2036594440
+MonoScript:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  serializedVersion: 7
+  m_DefaultReferences: {}
+  m_Icon: {fileID: 0}
+  m_Type: 0
+  m_ExecutionOrder: 0
+  m_ClassName: SceneLoader
+  m_Namespace: NAAD.Editor
+  m_AssemblyName: Assembly-CSharp-Editor
 --- !u!1 &2068893370
 GameObject:
   m_ObjectHideFlags: 0

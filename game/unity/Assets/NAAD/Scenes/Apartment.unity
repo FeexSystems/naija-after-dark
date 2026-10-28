@@ -1528,6 +1528,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1308217259}
   - component: {fileID: 1308217260}
+  - component: {fileID: 1308217261}
   m_Layer: 0
   m_Name: Door_Apartment_To_Street
   m_TagString: Untagged
@@ -1569,6 +1570,18 @@ MonoBehaviour:
   facingConeDegrees: 0
   isEnabled: 1
   interactableId: 
+--- !u!114 &1308217261
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1308217258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1405946705}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp-Editor::NAAD.Editor.SceneLoader
 --- !u!1 &1367844002
 GameObject:
   m_ObjectHideFlags: 0
@@ -1681,6 +1694,21 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1367844002}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!115 &1405946705
+MonoScript:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  serializedVersion: 7
+  m_DefaultReferences: {}
+  m_Icon: {fileID: 0}
+  m_Type: 0
+  m_ExecutionOrder: 0
+  m_ClassName: SceneLoader
+  m_Namespace: NAAD.Editor
+  m_AssemblyName: Assembly-CSharp-Editor
 --- !u!1 &1456310904
 GameObject:
   m_ObjectHideFlags: 0
