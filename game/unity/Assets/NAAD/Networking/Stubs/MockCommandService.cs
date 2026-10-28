@@ -170,7 +170,7 @@ namespace NAAD.Mock
             return int.TryParse(s, out var n) ? n : null;
         }
 
-        private static TravelCommand ReadTravel(GameCommand command) => new()
+        private static NAAD.Networking.TravelCommand ReadTravel(GameCommand command) => new()
         {
             ToLocationId = PayloadString(command, "toLocationId")
         };
@@ -354,7 +354,7 @@ namespace NAAD.Mock
 
         public int CommandCount => _history.Count;
 
-        private CommandResult ValidateAndExecuteTravel(CommandRequest request, TravelCommand command)
+        private CommandResult ValidateAndExecuteTravel(CommandRequest request, NAAD.Networking.TravelCommand command)
         {
             var result = new CommandResult { RequestId = request.RequestId };
             var currentLocation = _players.CurrentLocation;

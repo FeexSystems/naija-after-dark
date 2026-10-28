@@ -1,19 +1,17 @@
 using System;
 using UnityEngine;
-using UnityEngine.AI;
 
 namespace NAAD.Characters.Player
 {
     /// <summary>
     /// Authoritative client-side locomotion controller for the player character.
     /// <para>
-    /// Movement is driven by <see cref="PlayerInputBridge"/> and executed through a
-    /// <see cref="NavMeshAgent"/>. The Animator is driven by normalized speed and
+    /// Movement is driven by <see cref="PlayerInputBridge"/> and executed through
+    /// direct transform manipulation. The Animator is driven by normalized speed and
     /// direction parameters. All movement is client-predicted; the server validates
     /// via the <c>TRAVEL</c> command and may correct position if desynchronized.
     /// </para>
     /// </summary>
-    [RequireComponent(typeof(NavMeshAgent))]
     [RequireComponent(typeof(Animator))]
     [DisallowMultipleComponent]
     public sealed class PlayerLocomotionController : MonoBehaviour
@@ -25,9 +23,6 @@ namespace NAAD.Characters.Player
         [Header("References")]
         [SerializeField]
         private Animator _animator;
-
-        [SerializeField]
-        private NavMeshAgent _agent;
 
         [Header("Runtime State")]
         [SerializeField]
@@ -54,9 +49,6 @@ namespace NAAD.Characters.Player
         /// <summary>Current movement direction in world space.</summary>
         public Vector3 MoveDirection => _currentMoveDirection;
 
-        /// <summary>Whether the agent has reached its destination.</summary>
-        public bool IsAtDestination => _agent != null && !_agent.pathPending && _agent.remainingDistance <= _agent.stoppingDistance;
-
         /// <summary>Whether the character is currently running.</summary>
         public bool IsRunning => _isRunning;
 
@@ -64,7 +56,6 @@ namespace NAAD.Characters.Player
         {
             ValidateReferences();
             CacheAnimatorHashes();
-            ConfigureAgent();
         }
 
         private void Start()
@@ -89,9 +80,9 @@ namespace NAAD.Characters.Player
 
         private void Update()
         {
-            if (_agent == null || _config == null) return;
+            if (_config == null) return;
 
-            UpdateSpeeds();
+            UpdateMovement();
             UpdateRotation();
             UpdateAnimator();
         }
@@ -99,27 +90,15 @@ namespace NAAD.Characters.Player
         /// <summary>
         /// Programmatically move the player to a world-space position.
         /// <para>
-        /// This sets the NavMeshAgent destination. The server authoritative
+        /// This sets the target position. The server authoritative
         /// TRAVEL command should be issued separately by the gameplay layer.
         /// </para>
         /// </summary>
         /// <param name="destination">Target world-space position.</param>
         public void MoveTo(Vector3 destination)
         {
-            if (_agent == null)
-            {
-                Debug.LogError("[PlayerLocomotionController] NavMeshAgent is null. Cannot move.");
-                return;
-            }
-
-            if (!NavMesh.SamplePosition(destination, out var hit, 2.0f, _config.NavMeshAreaMask))
-            {
-                Debug.LogWarning($"[PlayerLocomotionController] Destination {destination} is not on NavMesh. Snapping to nearest.");
-                destination = hit.position;
-            }
-
-            _agent.destination = destination;
-            _agent.isStopped = false;
+            _currentMoveDirection = (destination - transform.position).normalized;
+            InputMagnitude = 1f;
         }
 
         /// <summary>
@@ -127,11 +106,9 @@ namespace NAAD.Characters.Player
         /// </summary>
         public void Stop()
         {
-            if (_agent == null) return;
-            _agent.isStopped = true;
-            _agent.ResetPath();
             InputMagnitude = 0f;
             _currentMoveDirection = Vector3.zero;
+            _currentSpeed = 0f;
         }
 
         /// <summary>
@@ -140,13 +117,11 @@ namespace NAAD.Characters.Player
         /// <param name="position">Target world-space position.</param>
         public void Warp(Vector3 position)
         {
-            if (_agent == null) return;
-            _agent.Warp(position);
+            transform.position = position;
         }
 
         private void ValidateReferences()
         {
-            if (_agent == null) _agent = GetComponent<NavMeshAgent>();
             if (_animator == null) _animator = GetComponent<Animator>();
             if (_config == null)
             {
@@ -164,15 +139,6 @@ namespace NAAD.Characters.Player
             _animDirectionHash = Animator.StringToHash("Direction");
             _animIsRunningHash = Animator.StringToHash("IsRunning");
             _animIsMovingHash = Animator.StringToHash("IsMoving");
-        }
-
-        private void ConfigureAgent()
-        {
-            if (_agent == null) return;
-            _agent.updateRotation = false; // We handle rotation manually for smooth turning
-            _agent.updatePosition = true;
-            _agent.stoppingDistance = _config.StoppingDistance;
-            _agent.areaMask = _config.NavMeshAreaMask;
         }
 
         private void HandleMoveInput(Vector2 input, bool isRunPressed)
@@ -216,28 +182,15 @@ namespace NAAD.Characters.Player
 
             // Smooth speed interpolation
             _currentSpeed = Mathf.MoveTowards(_currentSpeed, targetSpeed, _config.RotationSpeed * Time.deltaTime);
-
-            // Set NavMeshAgent destination when there is meaningful input
-            if (_agent != null && InputMagnitude >= _config.WalkThreshold && !_agent.pathPending)
-            {
-                var targetPosition = transform.position + _currentMoveDirection * (_currentSpeed * 2f);
-                if (NavMesh.SamplePosition(targetPosition, out var hit, 2.0f, _config.NavMeshAreaMask))
-                {
-                    _agent.destination = hit.position;
-                    _agent.speed = _currentSpeed > 0f ? _currentSpeed : _config.WalkSpeed;
-                    _agent.isStopped = false;
-                }
-            }
-            else if (_agent != null && InputMagnitude < _config.WalkThreshold)
-            {
-                _agent.isStopped = true;
-            }
         }
 
-        private void UpdateSpeeds()
+        private void UpdateMovement()
         {
-            if (_agent == null) return;
-            _agent.speed = _currentSpeed > 0f ? _currentSpeed : _config.WalkSpeed;
+            if (InputMagnitude >= _config.WalkThreshold)
+            {
+                // Move the character directly
+                transform.position += _currentMoveDirection * _currentSpeed * Time.deltaTime;
+            }
         }
 
         private void UpdateRotation()
@@ -261,18 +214,10 @@ namespace NAAD.Characters.Player
 #if UNITY_EDITOR
         private void OnDrawGizmosSelected()
         {
-            if (_agent == null) return;
-
-            Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(transform.position + Vector3.up, _agent.radius);
-
             if (!Application.isPlaying) return;
 
             Gizmos.color = Color.blue;
             Gizmos.DrawLine(transform.position, transform.position + _currentMoveDirection * 2f);
-
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(_agent.destination, 0.25f);
         }
 #endif
     }

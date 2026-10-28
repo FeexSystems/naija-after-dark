@@ -1,4 +1,6 @@
 using UnityEngine;
+using NAAD.Gameplay.ContentExpansion;
+using NAAD.AI;
 
 [CreateAssetMenu(fileName = "ConversationState", menuName = "NAAD/Behavior/Conversation")]
 public class ConversationState : BehaviorState
