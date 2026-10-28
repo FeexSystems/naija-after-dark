@@ -5,28 +5,22 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - serializedVersion: 2
-    enabled: 1
+  - enabled: 1
     path: Assets/Scenes/Bootstrap.unity
     guid: 9c9d0e1f2a3b4c5d9e8f7a6b5c4d3014
-  - serializedVersion: 2
-    enabled: 1
+  - enabled: 1
     path: Assets/NAAD/Scenes/Apartment.unity
     guid: 4e1906ad9c63ad841bdef0cc96a9fa1d
-  - serializedVersion: 2
-    enabled: 1
+  - enabled: 1
     path: Assets/NAAD/Scenes/CityStreet.unity
     guid: d8151fd26c5fe134ca54b1841ccc0d43
-  - serializedVersion: 2
-    enabled: 1
+  - enabled: 1
     path: Assets/NAAD/Scenes/SuyaSpot.unity
     guid: ff761e6db2cf34842b90a292f7671028
-  - serializedVersion: 2
-    enabled: 1
+  - enabled: 1
     path: Assets/NAAD/Scenes/Nightclub.unity
     guid: 691ac924f15ad704daff5cb7393ae06e
-  - serializedVersion: 2
-    enabled: 1
+  - enabled: 1
     path: Assets/NAAD/Scenes/Beach.unity
     guid: 856b1121199fefc499144d97bdc3a2f4
   m_configObjects:
