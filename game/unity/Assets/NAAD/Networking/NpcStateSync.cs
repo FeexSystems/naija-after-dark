@@ -123,7 +123,8 @@ namespace NAAD.Networking
 
             if (syncBehaviorState && npcStateMachines.ContainsKey(npcId))
             {
-                state.behaviorState = npcStateMachines[npcId].GetCurrentState();
+                var currentState = npcStateMachines[npcId].GetCurrentState();
+                state.behaviorState = currentState != null ? currentState.GetType().Name : string.Empty;
             }
 
             if (syncDialogueState && npcDialogueManagers.ContainsKey(npcId))

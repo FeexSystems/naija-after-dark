@@ -77,12 +77,12 @@ namespace NAAD.Gameplay
 
         private void UpdateLocomotionInput()
         {
-            if (Input.GetKeyDown(KeyCode.Escape))
+            if (UnityEngine.Input.GetKeyDown(KeyCode.Escape))
                 _locomotion?.StopMovement();
 
-            if (Input.GetKeyDown(KeyCode.LeftShift))
+            if (UnityEngine.Input.GetKeyDown(KeyCode.LeftShift))
                 _locomotion?.SetRunHeld(true);
-            else if (Input.GetKeyUp(KeyCode.LeftShift))
+            else if (UnityEngine.Input.GetKeyUp(KeyCode.LeftShift))
                 _locomotion?.SetRunHeld(false);
         }
 
@@ -92,7 +92,7 @@ namespace NAAD.Gameplay
 
             // Press E to interact. Unity input is handled in InteractionSystem.Update(),
             // but we expose a public API so automated tests and future UI buttons can call it.
-            if (Input.GetKeyDown(KeyCode.E) && _interaction.CurrentTarget != null)
+            if (UnityEngine.Input.GetKeyDown(KeyCode.E) && _interaction.CurrentTarget != null)
                 _interaction.TryInteract();
         }
 
