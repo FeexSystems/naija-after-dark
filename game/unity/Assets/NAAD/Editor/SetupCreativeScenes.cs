@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.SceneManagement;
+using NAAD.Gameplay.World;
 
 namespace NAAD.Editor
 {
