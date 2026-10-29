@@ -95,7 +95,8 @@ namespace NAAD.Editor
             importer.animationType = ModelImporterAnimationType.Human;
             importer.avatarSetup = ModelImporterAvatarSetup.CreateFromThisModel;
             var humanDescription = BuildPlayerHumanDescription();
-            humanDescription.skeleton = importedSkeleton ?? new SkeletonBone[0];
+            if (importedSkeleton != null && importedSkeleton.Length > 0)
+                humanDescription.skeleton = importedSkeleton;
             importer.humanDescription = humanDescription;
             importer.importAnimation = true;
             importer.SaveAndReimport();
@@ -122,9 +123,11 @@ namespace NAAD.Editor
                     HumanBone("LeftUpperLeg", "mixamorigLeftUpLeg"),
                     HumanBone("LeftLowerLeg", "mixamorigLeftLeg"),
                     HumanBone("LeftFoot", "mixamorigLeftFoot"),
+                    HumanBone("LeftToes", "mixamorigLeftToeBase"),
                     HumanBone("RightUpperLeg", "mixamorigRightUpLeg"),
                     HumanBone("RightLowerLeg", "mixamorigRightLeg"),
-                    HumanBone("RightFoot", "mixamorigRightFoot")
+                    HumanBone("RightFoot", "mixamorigRightFoot"),
+                    HumanBone("RightToes", "mixamorigRightToeBase")
                 },
                 skeleton = null,
                 upperArmTwist = 0.5f,
