@@ -32,7 +32,7 @@ public class TundeNPC : MonoBehaviour
 
     protected virtual void Update()
     {
-        behaviorStateMachine?.UpdateState(this);
+        // BehaviorStateMachine owns its Unity Update loop.
     }
 
     public void InteractWithPlayer()

@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using NAAD.Dialogue;
 using NAAD.Networking;
 
@@ -81,24 +82,35 @@ namespace NAAD.Gameplay
             // Otherwise, fetch from Supabase Edge Function
             else if (_dialogueService != null)
             {
-                StartCoroutine(_dialogueService.GetDialogueAsync(dialogueId, (node) =>
-                {
-                    if (node != null)
-                    {
-                        _dialogueTree = _dialogueTree ?? new Dictionary<string, DialogueNode>();
-                        _dialogueTree[dialogueId] = node;
-                        LoadNode(dialogueId);
-                    }
-                    else
-                    {
-                        Debug.LogError($"[DialogueManager] Failed to load dialogue: {dialogueId}");
-                        EndDialogue();
-                    }
-                }));
+                _ = LoadDialogueAsync(dialogueId);
             }
             else
             {
                 Debug.LogError("[DialogueManager] No dialogue service available and dialogue not in local tree");
+                EndDialogue();
+            }
+        }
+
+        private async Task LoadDialogueAsync(string dialogueId)
+        {
+            try
+            {
+                var node = await _dialogueService.GetDialogueAsync(dialogueId);
+                if (node != null)
+                {
+                    _dialogueTree = _dialogueTree ?? new Dictionary<string, DialogueNode>();
+                    _dialogueTree[dialogueId] = node;
+                    LoadNode(dialogueId);
+                }
+                else
+                {
+                    Debug.LogError($"[DialogueManager] Failed to load dialogue: {dialogueId}");
+                    EndDialogue();
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogError($"[DialogueManager] Dialogue load failed: {ex.Message}");
                 EndDialogue();
             }
         }
@@ -184,26 +196,7 @@ namespace NAAD.Gameplay
             // Send command to server for authoritative mutation
             if (_dialogueService != null)
             {
-                StartCoroutine(_dialogueService.SendDialogueCommandAsync(
-                    _currentNpcId,
-                    selectedResponse.id,
-                    selectedResponse.reputationChange,
-                    selectedResponse.relationshipFaction,
-                    selectedResponse.relationshipChange,
-                    (success) =>
-                    {
-                        if (!success)
-                        {
-                            Debug.LogWarning("[DialogueManager] Server rejected dialogue command - reverting local changes");
-                            // Revert local changes if server rejected
-                            _playerReputation -= selectedResponse.reputationChange;
-                            if (!string.IsNullOrEmpty(selectedResponse.relationshipFaction))
-                            {
-                                _relationships[selectedResponse.relationshipFaction] -= selectedResponse.relationshipChange;
-                            }
-                        }
-                    }
-                ));
+                _ = SendDialogueCommandAsync(selectedResponse);
             }
 
             // Advance to next node
@@ -214,6 +207,32 @@ namespace NAAD.Gameplay
             else
             {
                 EndDialogue();
+            }
+        }
+
+        private async Task SendDialogueCommandAsync(DialogueResponse response)
+        {
+            try
+            {
+                var success = await _dialogueService.SendDialogueCommandAsync(
+                    _currentNpcId,
+                    response.text,
+                    response.reputationChange,
+                    response.relationshipFaction,
+                    response.relationshipChange);
+                if (!success)
+                {
+                    Debug.LogWarning("[DialogueManager] Server rejected dialogue command - reverting local changes");
+                    _playerReputation -= response.reputationChange;
+                    if (!string.IsNullOrEmpty(response.relationshipFaction))
+                    {
+                        _relationships[response.relationshipFaction] -= response.relationshipChange;
+                    }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogWarning($"[DialogueManager] Dialogue command failed: {ex.Message}");
             }
         }
 

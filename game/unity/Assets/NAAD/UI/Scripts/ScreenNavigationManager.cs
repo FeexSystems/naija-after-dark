@@ -119,7 +119,7 @@ namespace NAAD.UI.Scripts
         /// <param name="screenId">The screen ID.</param>
         /// <param name="wire">Action to perform the wiring.</param>
         public void WireController<TController, TView>(string screenId, Action<TController, TView> wire)
-            where TController : class
+            where TController : MonoBehaviour
             where TView : ScreenViewBase
         {
             if (!_views.TryGetValue(screenId, out var view)) return;

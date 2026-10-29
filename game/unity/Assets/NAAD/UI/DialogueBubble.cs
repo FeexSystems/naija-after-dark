@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using NAAD.AI;
 
 /// <summary>
 /// Minimal TextMesh Pro dialogue bubble for NPC interactions.
@@ -43,6 +44,17 @@ public class DialogueBubble : MonoBehaviour
     public float maxTextHeight = 100f;
 
     private Coroutine displayCoroutine;
+
+    public void Initialize(string dialogueText, DialogueEmotion emotion)
+    {
+        gameObject.SetActive(true);
+        Show(dialogueText);
+    }
+
+    public void InitializeForNPCConversation(object context)
+    {
+        gameObject.SetActive(true);
+    }
 
     /// <summary>
     /// Display a dialogue line with optional auto-hide.

@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using NAAD.Core.Logging;
+using NAAD.Dialogue;
 using NAAD.Networking.Config;
 
 namespace NAAD.Networking.Supabase
@@ -116,6 +117,30 @@ namespace NAAD.Networking.Supabase
                 token);
 
             return result.Ok && NaadJson.ReadSuccess(result.Body);
+        }
+
+        public async Task<DialogueNode?> GetDialogueAsync(string npcId)
+        {
+            var result = await GreetAsync(npcId);
+            if (result == null || !result.Success) return null;
+            return new DialogueNode
+            {
+                id = npcId,
+                speakerId = result.NpcId,
+                text = result.Dialogue,
+                responses = new System.Collections.Generic.List<DialogueResponse>()
+            };
+        }
+
+        public async Task<bool> SendDialogueCommandAsync(
+            string npcId,
+            string playerMessage,
+            int reputationChange,
+            string relationshipFaction,
+            int relationshipChange)
+        {
+            var result = await TalkToTundeAsync(playerMessage, Guid.NewGuid().ToString("N"));
+            return result != null && result.Success;
         }
 
         private static string Escape(string s) =>
