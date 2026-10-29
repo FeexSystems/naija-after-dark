@@ -556,19 +556,6 @@ namespace NAAD.Editor
             return mat;
         }
 
-        private static GameObject Primitive(Transform parent, string name, PrimitiveType type, Vector3 position, Vector3 scale, Color color, bool emissive = false, Color emission = default)
-        {
-            var go = GameObject.CreatePrimitive(type);
-            go.name = name;
-            go.transform.SetParent(parent, false);
-            go.transform.localPosition = position;
-            go.transform.localScale = scale;
-            var mr = go.GetComponent<Renderer>();
-            mr.material = emissive ? GetEmissive(color, emission) : GetMaterial(color);
-            go.isStatic = true;
-            return go;
-        }
-
         // =================================================================================
         // District structures
         // =================================================================================
@@ -920,7 +907,6 @@ namespace NAAD.Editor
         }
     }
 }
-
 
 
 

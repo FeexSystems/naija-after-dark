@@ -1,5 +1,5 @@
 using UnityEditor;
-using UnityEditor.TestTools.TestRunner.API;
+using UnityEditor.TestTools.TestRunner.Api;
 using System;
 
 namespace NAAD.Editor
