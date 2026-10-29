@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "test": "tsx src/validate.test.ts",
+    "build": "tsc",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
