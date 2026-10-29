@@ -113,8 +113,7 @@ namespace NAAD.Editor
         }
 
         private static void Save(GameObject r, string n) { PrefabUtility.SaveAsPrefabAsset(r, Dir + "/" + n + ".prefab"); Object.DestroyImmediate(r); }
-    }
-}
+
         private static void CreateMainHUDScreen()
         {
             var r = new GameObject("MainHUDScreen");
@@ -306,3 +305,6 @@ namespace NAAD.Editor
                 btr.offsetMin = Vector2.zero; btr.offsetMax = Vector2.zero;
             }
         }
+
+    }
+}

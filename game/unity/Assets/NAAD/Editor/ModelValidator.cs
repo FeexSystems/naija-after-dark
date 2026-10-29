@@ -90,7 +90,7 @@ public class NAADModelValidator : EditorWindow
             {
                 failed++;
                 warnings.Add($"{path}: {issues}");
-                Debug.LogWarning($"⚠️ {System.IO.Path.GetFileName(path)} - {issues.TrimEnd('/n')}");
+                Debug.LogWarning($"⚠️ {System.IO.Path.GetFileName(path)} - {issues.TrimEnd('\n')}");
             }
         }
         
