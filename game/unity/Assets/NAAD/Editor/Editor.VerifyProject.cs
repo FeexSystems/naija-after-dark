@@ -46,7 +46,7 @@ namespace NAAD.Editor
                 "Assets/NAAD/UI/DialogueBubble.cs",
                 "Assets/NAAD/NPCs/TundeNPC.cs",
                 "Assets/NAAD/NPCs/BehaviorStateMachine.cs",
-                "Assets/NAAD/Networking/SupabaseConfig.cs"
+                "Assets/NAAD/Networking/Config/SupabaseConfig.cs"
             };
 
             foreach (string script in requiredScripts)
