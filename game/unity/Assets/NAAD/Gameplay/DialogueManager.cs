@@ -2,7 +2,6 @@ using UnityEngine;
 using System.Collections.Generic;
 using NAAD.Dialogue;
 using NAAD.Networking;
-using NAAD.AI;
 
 namespace NAAD.Gameplay
 {
