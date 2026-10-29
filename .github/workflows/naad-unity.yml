@@ -61,7 +61,7 @@ jobs:
           unityVersion: 6000.6.5f1
           targetPlatform: StandaloneLinux64
           buildMethod: NAAD.Editor.NAADBuild.Verify
-          customParameters: -nographics -logFile /github/workspace/game/unity/Logs/ci-diagnostics/unity-editor.log
+          customParameters: -nographics -logFile -
 
       - name: Collect Unity diagnostics
         if: always()
