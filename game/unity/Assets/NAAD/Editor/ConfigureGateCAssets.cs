@@ -73,14 +73,17 @@ namespace NAAD.Editor
 
         private static void PromoteSourceRig()
         {
-            if (AssetDatabase.LoadAssetAtPath<GameObject>(RigPath) != null)
-                return;
-
-            if (!AssetDatabase.CopyAsset(SourceRigPath, RigPath))
-                throw new InvalidOperationException("Could not copy source rig to: " + RigPath);
-
-            AssetDatabase.ImportAsset(RigPath, ImportAssetOptions.ForceSynchronousImport);
             var importer = AssetImporter.GetAtPath(RigPath) as ModelImporter;
+            if (importer == null)
+            {
+                if (AssetDatabase.LoadMainAssetAtPath(RigPath) != null)
+                    AssetDatabase.DeleteAsset(RigPath);
+
+                File.Copy(SourceRigPath, RigPath, true);
+                AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
+                importer = AssetImporter.GetAtPath(RigPath) as ModelImporter;
+            }
+
             if (importer == null)
                 throw new InvalidOperationException("Promoted player rig is not a ModelImporter: " + RigPath);
 
