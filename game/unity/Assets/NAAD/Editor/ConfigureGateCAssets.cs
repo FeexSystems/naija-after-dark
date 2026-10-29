@@ -87,9 +87,16 @@ namespace NAAD.Editor
             if (importer == null)
                 throw new InvalidOperationException("Promoted player rig is not a ModelImporter: " + RigPath);
 
+            // Keep Unity's complete imported skeleton description. Replacing it with
+            // an empty array can make an otherwise correctly mapped Mixamo rig fail
+            // Avatar validation because the importer no longer has the bind-pose
+            // skeleton data needed to build the humanoid Avatar.
+            var importedSkeleton = importer.humanDescription.skeleton;
             importer.animationType = ModelImporterAnimationType.Human;
             importer.avatarSetup = ModelImporterAvatarSetup.CreateFromThisModel;
-            importer.humanDescription = BuildPlayerHumanDescription();
+            var humanDescription = BuildPlayerHumanDescription();
+            humanDescription.skeleton = importedSkeleton ?? new SkeletonBone[0];
+            importer.humanDescription = humanDescription;
             importer.importAnimation = true;
             importer.SaveAndReimport();
         }
@@ -119,7 +126,7 @@ namespace NAAD.Editor
                     HumanBone("RightLowerLeg", "mixamorigRightLeg"),
                     HumanBone("RightFoot", "mixamorigRightFoot")
                 },
-                skeleton = new SkeletonBone[0],
+                skeleton = null,
                 upperArmTwist = 0.5f,
                 lowerArmTwist = 0.5f,
                 upperLegTwist = 0.5f,
