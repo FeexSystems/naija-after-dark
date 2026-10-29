@@ -1,4 +1,7 @@
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 [CreateAssetMenu(fileName = "NewBehaviorState", menuName = "NAAD/Behavior/State")]
 public class BehaviorState : ScriptableObject
@@ -27,6 +30,8 @@ public class BehaviorState : ScriptableObject
     {
         Gizmos.color = gizmosColor;
         Gizmos.DrawSphere(Vector3.zero, 0.5f);
+#if UNITY_EDITOR
         Handles.Label(Vector3.zero, stateName);
+#endif
     }
 }

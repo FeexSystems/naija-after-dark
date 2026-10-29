@@ -1,3 +1,4 @@
+#if NAAD_LEGACY_EDITOR_TOOLS
 using System;
 using System.Threading.Tasks;
 using NAAD.Core.Logging;
@@ -150,3 +151,4 @@ namespace NAAD.Editor
         private static string B(bool v) => v ? "true" : "false";
     }
 }
+#endif

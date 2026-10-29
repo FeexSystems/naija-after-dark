@@ -64,6 +64,14 @@ public class BehaviorStateMachine : MonoBehaviour
         }
     }
 
+    public void RequestStateTransition()
+    {
+        if (availableStates.Count == 0) return;
+        var currentIndex = currentState == null ? -1 : availableStates.IndexOf(currentState);
+        var nextIndex = (currentIndex + 1) % availableStates.Count;
+        TransitionToState(availableStates[nextIndex]);
+    }
+
     protected void TransitionToState(BehaviorState newState)
     {
         currentState?.Exit(this);
@@ -78,6 +86,7 @@ public class BehaviorStateMachine : MonoBehaviour
     }
 
     public BehaviorState GetCurrentState() => currentState;
+    public string CurrentState => currentState == null ? string.Empty : currentState.GetType().Name;
 
     public bool IsInState(string stateType)
     {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using NAAD.Core.Logging;
 using NAAD.Networking;
 using NAAD.Networking.Supabase;
+using UnityEngine;
 
 namespace NAAD.UI.Scripts
 {
@@ -24,6 +25,14 @@ namespace NAAD.UI.Scripts
         public static void Register<T>(T implementation) where T : class
         {
             _registrations[typeof(T)] = implementation;
+        }
+
+        public static void RegisterController(MonoBehaviour controller)
+        {
+            if (controller != null)
+            {
+                _registrations[controller.GetType()] = controller;
+            }
         }
 
         /// <summary>

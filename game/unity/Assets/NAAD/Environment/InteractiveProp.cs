@@ -143,7 +143,7 @@ namespace NAAD.Environment
             
             foreach (var collider in hitColliders)
             {
-                var npcStateMachine = collider.GetComponent<NPCs.BehaviorStateMachine>();
+                var npcStateMachine = collider.GetComponent<BehaviorStateMachine>();
                 if (npcStateMachine != null)
                 {
                     string currentState = npcStateMachine.CurrentState;

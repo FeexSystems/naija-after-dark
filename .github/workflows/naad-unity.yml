@@ -27,6 +27,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Validate Unity metadata
+        run: python3 tools/validate-unity-meta.py game/unity
+
       - name: Check Unity licensing configuration
         shell: bash
         env:
@@ -40,6 +43,12 @@ jobs:
           fi
           echo "Unity licensing inputs are configured."
 
+      - name: Prepare Unity diagnostics directory
+        shell: bash
+        run: |
+          sudo mkdir -p game/unity/Logs/ci-diagnostics
+          sudo chown -R "$(id -u):$(id -g)" game/unity/Logs/ci-diagnostics
+
       - name: Unity verification
         uses: game-ci/unity-builder@v4
         env:
@@ -52,14 +61,37 @@ jobs:
           unityVersion: 6000.6.5f1
           targetPlatform: StandaloneLinux64
           buildMethod: NAAD.Editor.NAADBuild.Verify
-          customParameters: -nographics
+          customParameters: -nographics -logFile -
+
+      - name: Collect Unity diagnostics
+        if: always()
+        shell: bash
+        run: |
+          sudo mkdir -p game/unity/Logs/ci-diagnostics
+          mapfile -t unity_logs < <(sudo find game/unity/Library -type f \( -name '*.log' -o -name '*.txt' \) -print 2>/dev/null | head -n 50 || true)
+          for file in "${unity_logs[@]}"; do
+            [ -z "$file" ] || sudo cp "$file" "game/unity/Logs/ci-diagnostics/$(basename "$file")"
+          done
+          for file in \
+            /root/.config/unity3d/Editor.log \
+            /github/home/.config/unity3d/Editor.log \
+            /root/.cache/unity3d/*.log; do
+            if [ -f "$file" ]; then
+              sudo cp "$file" game/unity/Logs/ci-diagnostics/"$(basename "$file")"
+            fi
+          done
+          sudo chown -R "$(id -u):$(id -g)" game/unity/Logs/ci-diagnostics
+          grep -RIn -E 'error CS|Scripts have compiler errors|Compilation failed|compiler error' \
+            game/unity/Logs/ci-diagnostics || true
 
       - name: Upload verification report
         uses: actions/upload-artifact@v4
         if: always()
         with:
           name: naad-verification-report
-          path: game/unity/Logs/verification-report.json
+          path: |
+            game/unity/Logs/verification-report.json
+            game/unity/Logs/ci-diagnostics
           if-no-files-found: warn
 
   # Additional, independent checks. These are separate jobs so that a failure in the
@@ -108,7 +140,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Verify humanoid rig, clips, prefab wiring, and Animator contract
+      - name: Configure and verify humanoid rig, clips, prefab wiring, and Animator contract
         uses: game-ci/unity-builder@v4
         env:
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
@@ -118,7 +150,7 @@ jobs:
           projectPath: game/unity
           unityVersion: 6000.6.5f1
           targetPlatform: StandaloneLinux64
-          buildMethod: NAAD.Editor.VerifyAnimationAssets.RunVerification
+          buildMethod: NAAD.Editor.ConfigureGateCAssets.ConfigureAndVerify
           customParameters: -nographics
 
       - name: Upload Gate C report
@@ -286,4 +318,3 @@ jobs:
           name: naad-first-night-report
           path: game/unity/Library/first-night-report.json
           if-no-files-found: warn
-

@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using NAAD.Dialogue;
 
 namespace NAAD.Networking
 {
@@ -21,5 +22,7 @@ namespace NAAD.Networking
         Task<DialogueResult?> GreetAsync(string npcId);
         Task<DialogueResult?> TalkToTundeAsync(string playerMessage, string requestId);
         Task<bool> CommitMemoryAsync(string requestId, string npcId, string type, string summary, float importance);
+        Task<DialogueNode?> GetDialogueAsync(string npcId);
+        Task<bool> SendDialogueCommandAsync(string npcId, string playerMessage, int reputationChange, string relationshipFaction, int relationshipChange);
     }
 }

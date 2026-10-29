@@ -49,9 +49,9 @@ namespace NAAD.Editor
         private const string ReportPath = "Library/first-night-report.json";
 
         private static readonly string _email =
-            Environment.GetEnvironmentVariable("NAAD_TEST_EMAIL") ?? "";
+            System.Environment.GetEnvironmentVariable("NAAD_TEST_EMAIL") ?? "";
         private static readonly string _password =
-            Environment.GetEnvironmentVariable("NAAD_TEST_PASSWORD") ?? "";
+            System.Environment.GetEnvironmentVariable("NAAD_TEST_PASSWORD") ?? "";
 
         private static readonly List<string> _lines = new List<string>();
         private static Task? _task;

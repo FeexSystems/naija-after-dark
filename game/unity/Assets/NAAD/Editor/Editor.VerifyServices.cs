@@ -14,7 +14,7 @@ namespace NAAD.Editor
             bool allChecksPassed = true;
 
             // Check SupabaseConfig
-            string supabaseConfigPath = "Assets/NAAD/Networking/SupabaseConfig.cs";
+            string supabaseConfigPath = "Assets/NAAD/Networking/Config/SupabaseConfig.cs";
             string fullPath = Path.Combine(Application.dataPath, supabaseConfigPath.Substring("Assets/".Length));
 
             if (!File.Exists(fullPath))
