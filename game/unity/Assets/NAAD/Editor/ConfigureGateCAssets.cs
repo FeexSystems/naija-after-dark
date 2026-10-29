@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
@@ -18,6 +19,7 @@ namespace NAAD.Editor
         private const string RigPath = "Assets/NAAD/Animation/Characters/Player/PlayerRig.fbx";
         private const string PrefabPath = "Assets/NAAD/Animation/Characters/Player/PlayerRig.prefab";
         private const string ControllerPath = "Assets/NAAD/Animation/Controllers/PlayerController.controller";
+        private const string AvatarPath = "Assets/NAAD/Animation/Avatars/PlayerAvatar.asset";
         private const string MaskPath = "Assets/NAAD/Animation/Avatars/UpperBodyMask.mask";
 
         [MenuItem("NAAD/Gate C/Configure Player Rig Wiring", priority = 100)]
@@ -29,6 +31,7 @@ namespace NAAD.Editor
                 throw new InvalidOperationException("Gate C source rig is missing: " + SourceRigPath);
 
             PromoteSourceRig();
+            CreatePlayerAvatar();
             var mask = CreateUpperBodyMask();
             var controller = CreateController(mask);
             CreatePlayerPrefab(controller);
@@ -36,6 +39,12 @@ namespace NAAD.Editor
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
             Debug.Log("[NAAD][GateC] Player rig wiring configured. Animation clips remain pending external assets.");
+        }
+
+        public static void ConfigureAndVerify()
+        {
+            Configure();
+            VerifyAnimationAssets.RunVerification();
         }
 
         private static void EnsureFolders()
@@ -79,6 +88,22 @@ namespace NAAD.Editor
             importer.avatarSetup = ModelImporterAvatarSetup.CreateFromThisModel;
             importer.importAnimation = true;
             importer.SaveAndReimport();
+        }
+
+        private static void CreatePlayerAvatar()
+        {
+            if (AssetDatabase.LoadAssetAtPath<Avatar>(AvatarPath) != null)
+                return;
+
+            var avatar = AssetDatabase.LoadAllAssetsAtPath(RigPath)
+                .OfType<Avatar>()
+                .FirstOrDefault(candidate => candidate != null && candidate.isValid && candidate.isHuman);
+            if (avatar == null)
+                throw new InvalidOperationException("The promoted player rig does not contain a valid humanoid Avatar: " + RigPath);
+
+            var savedAvatar = UnityEngine.Object.Instantiate(avatar);
+            savedAvatar.name = "PlayerAvatar";
+            AssetDatabase.CreateAsset(savedAvatar, AvatarPath);
         }
 
         private static AvatarMask CreateUpperBodyMask()
