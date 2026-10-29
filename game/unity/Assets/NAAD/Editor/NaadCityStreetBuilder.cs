@@ -1,3 +1,4 @@
+#if NAAD_LEGACY_EDITOR_TOOLS
 using System;
 using System.Collections.Generic;
 using NAAD.Core.Bootstrap;
@@ -907,6 +908,4 @@ namespace NAAD.Editor
         }
     }
 }
-
-
-
+#endif

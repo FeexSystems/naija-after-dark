@@ -20,7 +20,11 @@ namespace NAAD.Editor
 
             if (listRequest.Status == StatusCode.Success)
             {
-                Debug.Log($"Found {listRequest.Result.Count} packages:");
+                var packageCount = 0;
+                foreach (var package in listRequest.Result)
+                    packageCount++;
+
+                Debug.Log($"Found {packageCount} packages:");
                 foreach (var package in listRequest.Result)
                 {
                     Debug.Log($"  {package.name} - {package.version} ({package.source})");

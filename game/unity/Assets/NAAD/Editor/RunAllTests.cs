@@ -1,3 +1,4 @@
+#if NAAD_LEGACY_EDITOR_TOOLS
 using UnityEditor;
 using UnityEditor.TestTools.TestRunner.Api;
 using System;
@@ -54,3 +55,4 @@ namespace NAAD.Editor
         }
     }
 }
+#endif

@@ -1,3 +1,4 @@
+#if NAAD_LEGACY_EDITOR_TOOLS
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -105,3 +106,4 @@ namespace NAAD.Editor
         }
     }
 }
+#endif

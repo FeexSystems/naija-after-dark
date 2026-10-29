@@ -1,3 +1,4 @@
+#if NAAD_LEGACY_EDITOR_TOOLS
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.UIElements;
@@ -338,3 +339,4 @@ namespace NAAD.Dialogue.Editor
         }
     }
 }
+#endif

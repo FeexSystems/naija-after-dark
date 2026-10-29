@@ -1,3 +1,4 @@
+#if NAAD_LEGACY_EDITOR_TOOLS
 using System.IO;
 using UnityEditor;
 using UnityEditor.Animations;
@@ -498,3 +499,4 @@ namespace NAAD.Editor
         }
     }
 }
+#endif

@@ -1,3 +1,4 @@
+#if NAAD_LEGACY_EDITOR_TOOLS
 using System;
 using System.Linq;
 using UnityEditor;
@@ -133,3 +134,4 @@ namespace NAAD.Editor
         }
     }
 }
+#endif

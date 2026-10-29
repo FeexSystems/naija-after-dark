@@ -1,3 +1,4 @@
+#if NAAD_LEGACY_EDITOR_TOOLS
 using UnityEditor;
 using UnityEngine;
 
@@ -129,3 +130,4 @@ public class NAADModelValidator : EditorWindow
         Legacy = 2
     }
 }
+#endif
