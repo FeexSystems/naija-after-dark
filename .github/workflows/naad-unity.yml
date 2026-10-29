@@ -61,18 +61,20 @@ jobs:
         if: always()
         shell: bash
         run: |
-          mkdir -p game/unity/Logs/ci-diagnostics
-          find game/unity/Library -type f \( -name '*.log' -o -name '*.txt' \) -print 2>/dev/null \
-            | head -n 50 \
-            | while read -r file; do cp --parents "$file" game/unity/Logs/ci-diagnostics/; done
+          sudo mkdir -p game/unity/Logs/ci-diagnostics
+          mapfile -t unity_logs < <(sudo find game/unity/Library -type f \( -name '*.log' -o -name '*.txt' \) -print 2>/dev/null | head -n 50 || true)
+          for file in "${unity_logs[@]}"; do
+            [ -z "$file" ] || sudo cp "$file" "game/unity/Logs/ci-diagnostics/$(basename "$file")"
+          done
           for file in \
             /root/.config/unity3d/Editor.log \
             /github/home/.config/unity3d/Editor.log \
             /root/.cache/unity3d/*.log; do
             if [ -f "$file" ]; then
-              cp "$file" game/unity/Logs/ci-diagnostics/"$(basename "$file")"
+              sudo cp "$file" game/unity/Logs/ci-diagnostics/"$(basename "$file")"
             fi
           done
+          sudo chown -R "$(id -u):$(id -g)" game/unity/Logs/ci-diagnostics
           grep -RIn -E 'error CS|Scripts have compiler errors|Compilation failed|compiler error' \
             game/unity/Logs/ci-diagnostics || true
 
