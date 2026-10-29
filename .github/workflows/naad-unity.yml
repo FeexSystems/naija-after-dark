@@ -57,12 +57,33 @@ jobs:
           buildMethod: NAAD.Editor.NAADBuild.Verify
           customParameters: -nographics
 
+      - name: Collect Unity diagnostics
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p game/unity/Logs/ci-diagnostics
+          find game/unity/Library -type f \( -name '*.log' -o -name '*.txt' \) -print 2>/dev/null \
+            | head -n 50 \
+            | while read -r file; do cp --parents "$file" game/unity/Logs/ci-diagnostics/; done
+          for file in \
+            /root/.config/unity3d/Editor.log \
+            /github/home/.config/unity3d/Editor.log \
+            /root/.cache/unity3d/*.log; do
+            if [ -f "$file" ]; then
+              cp "$file" game/unity/Logs/ci-diagnostics/"$(basename "$file")"
+            fi
+          done
+          grep -RIn -E 'error CS|Scripts have compiler errors|Compilation failed|compiler error' \
+            game/unity/Logs/ci-diagnostics || true
+
       - name: Upload verification report
         uses: actions/upload-artifact@v4
         if: always()
         with:
           name: naad-verification-report
-          path: game/unity/Logs/verification-report.json
+          path: |
+            game/unity/Logs/verification-report.json
+            game/unity/Logs/ci-diagnostics
           if-no-files-found: warn
 
   # Additional, independent checks. These are separate jobs so that a failure in the
