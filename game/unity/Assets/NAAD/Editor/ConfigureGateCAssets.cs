@@ -97,8 +97,6 @@ namespace NAAD.Editor
             mask.SetHumanoidBodyPartActive(AvatarMaskBodyPart.RightFingers, true);
             mask.SetHumanoidBodyPartActive(AvatarMaskBodyPart.LeftLeg, false);
             mask.SetHumanoidBodyPartActive(AvatarMaskBodyPart.RightLeg, false);
-            mask.SetHumanoidBodyPartActive(AvatarMaskBodyPart.LeftFoot, false);
-            mask.SetHumanoidBodyPartActive(AvatarMaskBodyPart.RightFoot, false);
             AssetDatabase.CreateAsset(mask, MaskPath);
             return mask;
         }
