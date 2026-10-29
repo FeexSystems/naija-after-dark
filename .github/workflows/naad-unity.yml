@@ -43,6 +43,12 @@ jobs:
           fi
           echo "Unity licensing inputs are configured."
 
+      - name: Prepare Unity diagnostics directory
+        shell: bash
+        run: |
+          sudo mkdir -p game/unity/Logs/ci-diagnostics
+          sudo chown -R "$(id -u):$(id -g)" game/unity/Logs/ci-diagnostics
+
       - name: Unity verification
         uses: game-ci/unity-builder@v4
         env:
@@ -55,7 +61,7 @@ jobs:
           unityVersion: 6000.6.5f1
           targetPlatform: StandaloneLinux64
           buildMethod: NAAD.Editor.NAADBuild.Verify
-          customParameters: -nographics
+          customParameters: -nographics -logFile /github/workspace/game/unity/Logs/ci-diagnostics/unity-editor.log
 
       - name: Collect Unity diagnostics
         if: always()
