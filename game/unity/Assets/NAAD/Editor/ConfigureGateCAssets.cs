@@ -89,8 +89,56 @@ namespace NAAD.Editor
 
             importer.animationType = ModelImporterAnimationType.Human;
             importer.avatarSetup = ModelImporterAvatarSetup.CreateFromThisModel;
+            importer.humanDescription = BuildPlayerHumanDescription();
             importer.importAnimation = true;
             importer.SaveAndReimport();
+        }
+
+        private static HumanDescription BuildPlayerHumanDescription()
+        {
+            return new HumanDescription
+            {
+                human = new[]
+                {
+                    HumanBone("Hips", "mixamorigHips"),
+                    HumanBone("Spine", "mixamorigSpine"),
+                    HumanBone("Chest", "mixamorigSpine1"),
+                    HumanBone("UpperChest", "mixamorigSpine2"),
+                    HumanBone("Neck", "mixamorigNeck"),
+                    HumanBone("Head", "mixamorigHead"),
+                    HumanBone("LeftUpperArm", "mixamorigLeftArm"),
+                    HumanBone("LeftLowerArm", "mixamorigLeftForeArm"),
+                    HumanBone("LeftHand", "mixamorigLeftHand"),
+                    HumanBone("RightUpperArm", "mixamorigRightArm"),
+                    HumanBone("RightLowerArm", "mixamorigRightForeArm"),
+                    HumanBone("RightHand", "mixamorigRightHand"),
+                    HumanBone("LeftUpperLeg", "mixamorigLeftUpLeg"),
+                    HumanBone("LeftLowerLeg", "mixamorigLeftLeg"),
+                    HumanBone("LeftFoot", "mixamorigLeftFoot"),
+                    HumanBone("RightUpperLeg", "mixamorigRightUpLeg"),
+                    HumanBone("RightLowerLeg", "mixamorigRightLeg"),
+                    HumanBone("RightFoot", "mixamorigRightFoot")
+                },
+                skeleton = new SkeletonBone[0],
+                upperArmTwist = 0.5f,
+                lowerArmTwist = 0.5f,
+                upperLegTwist = 0.5f,
+                lowerLegTwist = 0.5f,
+                armStretch = 0.05f,
+                legStretch = 0.05f,
+                feetSpacing = 0.0f,
+                hasTranslationDoF = false
+            };
+        }
+
+        private static HumanBone HumanBone(string humanName, string boneName)
+        {
+            return new HumanBone
+            {
+                humanName = humanName,
+                boneName = boneName,
+                limit = new HumanLimit { useDefaultValues = true }
+            };
         }
 
         private static void CreatePlayerAvatar()
