@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEditor;
@@ -96,13 +97,41 @@ namespace NAAD.Editor
             importer.avatarSetup = ModelImporterAvatarSetup.CreateFromThisModel;
             importer.autoGenerateAvatarMappingIfUnspecified = true;
             var humanDescription = BuildPlayerHumanDescription();
-            if (importedSkeleton != null && importedSkeleton.Length > 0)
+            var hierarchySkeleton = BuildSkeletonFromImportedModel();
+            if (hierarchySkeleton.Length > 0)
+                humanDescription.skeleton = hierarchySkeleton;
+            else if (importedSkeleton != null && importedSkeleton.Length > 0)
                 humanDescription.skeleton = importedSkeleton;
             importer.humanDescription = humanDescription;
             importer.importAnimation = true;
             importer.SaveAndReimport();
 
             Debug.Log($"[NAAD][GateC] Humanoid import configured: animationType={importer.animationType}, avatarSetup={importer.avatarSetup}, skeletonBones={humanDescription.skeleton?.Length ?? 0}, autoMapping={importer.autoGenerateAvatarMappingIfUnspecified}");
+        }
+
+        private static SkeletonBone[] BuildSkeletonFromImportedModel()
+        {
+            var model = AssetDatabase.LoadAssetAtPath<GameObject>(RigPath);
+            if (model == null)
+                return new SkeletonBone[0];
+
+            var bones = new List<SkeletonBone>();
+            AppendSkeletonBone(model.transform, bones);
+            return bones.ToArray();
+        }
+
+        private static void AppendSkeletonBone(Transform transform, List<SkeletonBone> bones)
+        {
+            bones.Add(new SkeletonBone
+            {
+                name = transform.name,
+                position = transform.localPosition,
+                rotation = transform.localRotation,
+                scale = transform.localScale
+            });
+
+            for (var index = 0; index < transform.childCount; index++)
+                AppendSkeletonBone(transform.GetChild(index), bones);
         }
 
         private static HumanDescription BuildPlayerHumanDescription()
