@@ -94,12 +94,15 @@ namespace NAAD.Editor
             var importedSkeleton = importer.humanDescription.skeleton;
             importer.animationType = ModelImporterAnimationType.Human;
             importer.avatarSetup = ModelImporterAvatarSetup.CreateFromThisModel;
+            importer.autoGenerateAvatarMappingIfUnspecified = true;
             var humanDescription = BuildPlayerHumanDescription();
             if (importedSkeleton != null && importedSkeleton.Length > 0)
                 humanDescription.skeleton = importedSkeleton;
             importer.humanDescription = humanDescription;
             importer.importAnimation = true;
             importer.SaveAndReimport();
+
+            Debug.Log($"[NAAD][GateC] Humanoid import configured: animationType={importer.animationType}, avatarSetup={importer.avatarSetup}, skeletonBones={humanDescription.skeleton?.Length ?? 0}, autoMapping={importer.autoGenerateAvatarMappingIfUnspecified}");
         }
 
         private static HumanDescription BuildPlayerHumanDescription()
@@ -160,7 +163,14 @@ namespace NAAD.Editor
                 .OfType<Avatar>()
                 .FirstOrDefault(candidate => candidate != null && candidate.isValid && candidate.isHuman);
             if (avatar == null)
+            {
+                var importedAvatars = AssetDatabase.LoadAllAssetsAtPath(RigPath)
+                    .OfType<Avatar>()
+                    .Where(candidate => candidate != null)
+                    .Select(candidate => $"{candidate.name}(valid={candidate.isValid},human={candidate.isHuman})");
+                Debug.LogError("[NAAD][GateC] No valid humanoid Avatar was generated. Imported Avatar sub-assets: " + string.Join(", ", importedAvatars));
                 throw new InvalidOperationException("The promoted player rig does not contain a valid humanoid Avatar: " + RigPath);
+            }
 
             var savedAvatar = UnityEngine.Object.Instantiate(avatar);
             savedAvatar.name = "PlayerAvatar";
