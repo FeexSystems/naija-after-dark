@@ -8,6 +8,21 @@ EditorBuildSettings:
   - fileID: 10705320304065845
     guid: 9c9d0e1f2a3b4c5d9e8f7a6b5c4d3014
     enabled: 1
+  - fileID: 102900000
+    guid: 4e1906ad9c63ad841bdef0cc96a9fa1d
+    enabled: 1
+  - fileID: 102900000
+    guid: d8151fd26c5fe134ca54b1841ccc0d43
+    enabled: 1
+  - fileID: 102900000
+    guid: ff761e6db2cf34842b90a292f7671028
+    enabled: 1
+  - fileID: 102900000
+    guid: 691ac924f15ad704daff5cb7393ae06e
+    enabled: 1
+  - fileID: 102900000
+    guid: 856b1121199fefc499144d97bdc3a2f4
+    enabled: 1
   m_configObjects:
     com.unity.adaptivePerformance.basic.provider_settings: {fileID: 11400000, guid: 9c9d5fff1c43d8d4280e97a313d29432, type: 2}
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: bcc5e2ac1ab7e88438523bb655a52630, type: 2}

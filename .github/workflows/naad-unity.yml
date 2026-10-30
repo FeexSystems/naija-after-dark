@@ -128,6 +128,31 @@ jobs:
           path: game/unity/Logs/verification-report.json
           if-no-files-found: warn
 
+  # Gate B — invoke the authoritative scene pipeline directly. The broader project
+  # verifier checks structural health, while this gate asserts build indices, enabled
+  # scene paths, spawn/exit anchors, and the registered transition contract.
+  verify-scene-registration:
+    name: Unity scene registration and transition contract
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: verify-unity
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate registered scenes and anchors
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+        with:
+          projectPath: game/unity
+          unityVersion: 6000.6.5f1
+          targetPlatform: StandaloneLinux64
+          buildMethod: NAAD.Editor.NaadScenePipeline.ValidateScenes
+          customParameters: -nographics
+
   # Gate C — fail the PR when the committed player rig / Animator contract is incomplete.
   # This is intentionally strict: missing FBX/clip/controller/prefab assets are a real
   # release blocker, not a warning that source inspection can waive.
