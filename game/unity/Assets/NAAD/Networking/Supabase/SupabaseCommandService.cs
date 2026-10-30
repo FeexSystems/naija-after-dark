@@ -43,7 +43,7 @@ namespace NAAD.Networking.Supabase
             var url = _config.RestBaseUrl + "/rpc/naad_execute_command";
             _log.Info("Command", type + " requestId=" + command.RequestId);
 
-            var result = await _http.SendAsync(
+            _log.Info("Command", "requestId=" + command.RequestId + " type=" + command.Type.ToApiString());\n            var result = await _http.SendAsync(
                 url,
                 UnityEngine.Networking.UnityWebRequest.kHttpVerbPOST,
                 body,

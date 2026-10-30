@@ -1,33 +1,18 @@
-# NAAD game-api contracts
+# NAAD game-api (contracts only)
 
-TypeScript command contracts for the authoritative server path.
+This package is **not** a deployable HTTP service. It is the TypeScript **API catalog**
+and contract tests for the authoritative Supabase RPCs.
 
-## Gate 5
+## Phase D
 
-- `src/contracts/commands.ts` — `GameCommand`, `CommandResult`, TRAVEL types
-- Runtime validation lives in Postgres RPC `public.naad_travel(request_id, to_location_id)`
-- Unity calls the RPC via PostgREST (`/rest/v1/rpc/naad_travel`) with the user JWT
-
-No service-role in the client. No direct wallet/location UPDATEs from Unity.
-
-## Type Check
+- `src/contracts/commands.ts` — command types + `toExecuteCommandBody`
+- `src/contracts/rpc-catalog.ts` — explicit RPC list (router + reads)
+- `src/contracts/contracts.test.ts` — registry, payloads, adversarial cases
 
 ```bash
-npm run typecheck
+cd backend/game-api
+node --experimental-strip-types src/contracts/contracts.test.ts
 ```
 
-## Test
-
-```bash
-npm run test
-```
-
-## Development
-
-This package uses npm workspaces. From the backend root:
-
-```bash
-npm install
-npm run typecheck
-npm run test
-```
+Mutations: `naad_execute_command` only.  
+AI dialogue: Edge Function `npc-dialogue` (never writes DB directly).

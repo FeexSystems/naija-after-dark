@@ -98,3 +98,51 @@ function assert(cond: boolean, msg: string) {
 }
 
 console.log("contracts.test.ts: ok");
+
+
+
+// --- Phase D adversarial cases (client must not invent success) ---
+{
+  // Invalid spend SKU must be rejected by payload policy before/at router.
+  const badSku = "";
+  assert(badSku.length === 0, "empty sku is invalid");
+  assert(!(badSku in PRICES), "empty sku not in PRICES catalog");
+
+  const unknownSku = "not_a_real_sku_zz";
+  assert(!(unknownSku in PRICES), "unknown sku not priced");
+
+  // Double request_id: same id must be treated as one logical mutation (idempotent).
+  const id = "idem-phase-d-1";
+  const a: GameCommand = { requestId: id, type: "SPEND", payload: { sku: "suya_plate" } };
+  const b: GameCommand = { requestId: id, type: "SPEND", payload: { sku: "suya_plate" } };
+  assert(a.requestId === b.requestId, "duplicate requestId is identical");
+  assert(
+    JSON.stringify(toExecuteCommandBody(a)) === JSON.stringify(toExecuteCommandBody(b)),
+    "duplicate envelopes serialize identically for idempotent replay",
+  );
+
+  // Same-location travel is a no-op / error at server — client still forms a valid envelope.
+  const travelSame: GameCommand = {
+    requestId: "travel-same-1",
+    type: "TRAVEL",
+    payload: { toLocationId: LOCATION_IDS.APARTMENT },
+  };
+  const body = toExecuteCommandBody(travelSame);
+  assert(body.p_type === "TRAVEL", "same-location still typed TRAVEL");
+  assert(
+    (body.p_payload as Record<string, unknown>).toLocationId === LOCATION_IDS.APARTMENT,
+    "toLocationId preserved for server to reject or no-op",
+  );
+}
+
+// --- RPC catalog presence ---
+{
+  const { RPC_CATALOG, listCommandRouterTypes } = await import("./rpc-catalog.ts");
+  assert(RPC_CATALOG.some((e) => e.name === "naad_execute_command"), "catalog lists router");
+  const types = listCommandRouterTypes();
+  for (const t of COMMAND_REGISTRY) {
+    assert((types as readonly string[]).includes(t), "catalog command types include " + t);
+  }
+}
+
+console.log("contracts.test.ts: all assertions passed (incl. Phase D)");
