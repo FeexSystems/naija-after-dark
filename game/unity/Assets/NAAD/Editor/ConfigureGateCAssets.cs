@@ -102,6 +102,14 @@ namespace NAAD.Editor
                 humanDescription.skeleton = hierarchySkeleton;
             else if (importedSkeleton != null && importedSkeleton.Length > 0)
                 humanDescription.skeleton = importedSkeleton;
+            var diagnosticModel = AssetDatabase.LoadAssetAtPath<GameObject>(RigPath);
+            if (diagnosticModel != null)
+            {
+                var diagnosticAvatar = AvatarBuilder.BuildHumanAvatar(diagnosticModel, humanDescription);
+                Debug.Log($"[NAAD][GateC] AvatarBuilder diagnostic: valid={diagnosticAvatar != null && diagnosticAvatar.isValid}, human={diagnosticAvatar != null && diagnosticAvatar.isHuman}, humanBones={humanDescription.human?.Length ?? 0}, skeletonBones={humanDescription.skeleton?.Length ?? 0}");
+                if (diagnosticAvatar == null || !diagnosticAvatar.isValid || !diagnosticAvatar.isHuman)
+                    Debug.LogError("[NAAD][GateC] AvatarBuilder rejected the explicit human description before FBX reimport.");
+            }
             importer.humanDescription = humanDescription;
             importer.importAnimation = true;
             importer.SaveAndReimport();
