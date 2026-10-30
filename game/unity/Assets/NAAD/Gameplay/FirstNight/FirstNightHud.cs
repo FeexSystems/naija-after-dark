@@ -58,6 +58,11 @@ namespace NAAD.Gameplay.FirstNight
                 _ = controller.GoToClubAndBuyTicketAsync();
             y += 32;
 
+            
+            if (GUI.Button(new Rect(x + 10, y, 220, 28), "Talk to Tunde (AI)"))
+                _ = controller.TalkToTundeAsync("Tunde, wetin dey happen tonight?");
+            y += 32;
+
             if (GUI.Button(new Rect(x + 10, y, 180, 28), "5. Complete Night"))
                 _ = controller.CompleteNightAsync();
             y += 36;

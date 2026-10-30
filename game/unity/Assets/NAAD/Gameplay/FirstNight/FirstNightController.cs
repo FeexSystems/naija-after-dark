@@ -29,6 +29,10 @@ namespace NAAD.Gameplay.FirstNight
         public string LastError { get; private set; }
         public bool IsBusy { get; private set; }
 
+        /// <summary>Last Tunde AI line from Phase C <c>npc-dialogue</c> Edge Function.</summary>
+        public string LastDialogue { get; private set; }
+        public string LastDialogueEmotion { get; private set; }
+
         /// <summary>
         /// Whether the full-night flow purchases the club ticket step. Backed by the
         /// serialized <see cref="includeClubTicket"/> field so the Inspector remains
@@ -338,6 +342,61 @@ namespace NAAD.Gameplay.FirstNight
             return true;
         }
 
+
+        /// <summary>
+        /// Phase C — talk to Tunde via Edge Function <c>npc-dialogue</c>.
+        /// Gemini proposes dialogue only; mutations (memory / relationship) stay on the server
+        /// when <c>NPC_DIALOGUE_APPLY_PROPOSALS=true</c>, otherwise proposal-only.
+        /// </summary>
+        public async Task<bool> TalkToTundeAsync(string playerMessage)
+        {
+            if (!EnsureRoot()) return false;
+            if (string.IsNullOrWhiteSpace(playerMessage))
+            {
+                Fail("TalkToTunde requires a non-empty player message");
+                return false;
+            }
+
+            if (Root.Dialogue == null)
+            {
+                Fail("IDialogueService not wired on NAADApplicationRoot");
+                return false;
+            }
+
+            IsBusy = true;
+            SetStep(FirstNightStep.NpcInteraction, "Talking to Tunde...");
+            LastDialogue = null;
+            LastDialogueEmotion = null;
+
+            try
+            {
+                var requestId = Guid.NewGuid().ToString("N");
+                var result = await Root.Dialogue.TalkToTundeAsync(playerMessage.Trim(), requestId);
+                if (result == null || !result.Success)
+                {
+                    Fail(result?.ErrorCode ?? "Tunde AI path failed — deploy npc-dialogue + GEMINI_API_KEY");
+                    return false;
+                }
+
+                LastDialogue = result.Dialogue ?? "";
+                LastDialogueEmotion = result.Emotion ?? "neutral";
+                var line = string.IsNullOrEmpty(LastDialogue) ? "(empty dialogue)" : LastDialogue;
+                SetStep(FirstNightStep.NpcInteraction,
+                    "Tunde [" + LastDialogueEmotion + "]: " + Truncate(line, 120));
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Fail("TalkToTunde exception: " + ex.Message);
+                return false;
+            }
+            finally
+            {
+                IsBusy = false;
+                Changed?.Invoke();
+            }
+        }
+
         public async Task<bool> CompleteNightAsync()
         {
             if (!EnsureRoot()) return false;
@@ -556,5 +615,11 @@ namespace NAAD.Gameplay.FirstNight
                 if (start < 0) break;
             }
         }
+        private static string Truncate(string value, int max)
+        {
+            if (string.IsNullOrEmpty(value) || value.Length <= max) return value;
+            return value.Substring(0, max - 1) + "…";
+        }
+
     }
 }

@@ -67,7 +67,16 @@ namespace NAAD.Networking.Supabase
             if (!result.Ok)
             {
                 _log.Warn("Dialogue", $"AI path failed ({result.StatusCode}); check Edge Function deploy");
-                return null;
+                string? err = null;
+                NaadJson.TryGetString(result.Body, "errorCode", out err);
+                return new DialogueResult
+                {
+                    Success = false,
+                    ErrorCode = err ?? ("HTTP_" + result.StatusCode),
+                    NpcId = TundeId,
+                    NpcName = "Tunde",
+                    DialogueMode = "AI"
+                };
             }
 
             // The Edge Function may nest the validated Gemini payload under
