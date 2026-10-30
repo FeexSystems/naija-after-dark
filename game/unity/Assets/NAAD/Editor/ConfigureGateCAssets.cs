@@ -23,6 +23,18 @@ namespace NAAD.Editor
         private const string AvatarPath = "Assets/NAAD/Animation/Avatars/PlayerAvatar.asset";
         private const string MaskPath = "Assets/NAAD/Animation/Avatars/UpperBodyMask.mask";
 
+        private static readonly string[] RequiredClipPaths =
+        {
+            "Assets/NAAD/Animation/Animations/Locomotion/Idle.anim",
+            "Assets/NAAD/Animation/Animations/Locomotion/Walk.anim",
+            "Assets/NAAD/Animation/Animations/Locomotion/Run.anim",
+            "Assets/NAAD/Animation/Animations/Phone/Retrieve.anim",
+            "Assets/NAAD/Animation/Animations/Phone/Hold.anim",
+            "Assets/NAAD/Animation/Animations/Phone/Browse.anim",
+            "Assets/NAAD/Animation/Animations/Phone/PutAway.anim",
+            "Assets/NAAD/Animation/Animations/Social/Greeting.anim"
+        };
+
         [MenuItem("NAAD/Gate C/Configure Player Rig Wiring", priority = 100)]
         public static void Configure()
         {
@@ -357,6 +369,18 @@ namespace NAAD.Editor
             EnsureState(seating.stateMachine, "Stand");
             seating.stateMachine.defaultState = FindState(seating.stateMachine, "None");
 
+            // Bind MVP clips so VerifyAnimationAssets can assert controller.animationClips.
+            // Clips must already exist on disk (length > 0). Do not fabricate motion curves here.
+            AssignClip(baseLayer.stateMachine, "Idle", "Assets/NAAD/Animation/Animations/Locomotion/Idle.anim");
+            AssignClip(baseLayer.stateMachine, "Walk", "Assets/NAAD/Animation/Animations/Locomotion/Walk.anim");
+            AssignClip(baseLayer.stateMachine, "Run", "Assets/NAAD/Animation/Animations/Locomotion/Run.anim");
+            AssignClip(social.stateMachine, "Greeting", "Assets/NAAD/Animation/Animations/Social/Greeting.anim");
+            AssignClip(phone.stateMachine, "Retrieve", "Assets/NAAD/Animation/Animations/Phone/Retrieve.anim");
+            AssignClip(phone.stateMachine, "Hold", "Assets/NAAD/Animation/Animations/Phone/Hold.anim");
+            AssignClip(phone.stateMachine, "Browse", "Assets/NAAD/Animation/Animations/Phone/Browse.anim");
+            AssignClip(phone.stateMachine, "PutAway", "Assets/NAAD/Animation/Animations/Phone/PutAway.anim");
+            controller.layers = ReplaceLayer(controller.layers, 0, baseLayer);
+
             EditorUtility.SetDirty(controller);
             return controller;
         }
@@ -409,6 +433,22 @@ namespace NAAD.Editor
             foreach (var state in machine.states)
                 if (state.state.name == name) return state.state;
             return null;
+        }
+
+
+        private static void AssignClip(AnimatorStateMachine machine, string stateName, string clipPath)
+        {
+            var state = FindState(machine, stateName);
+            if (state == null)
+                throw new InvalidOperationException("Animator state missing for clip bind: " + stateName);
+
+            var clip = AssetDatabase.LoadAssetAtPath<AnimationClip>(clipPath);
+            if (clip == null || clip.length <= 0f)
+                throw new InvalidOperationException(
+                    "Gate C required AnimationClip missing or zero-length: " + clipPath
+                    + " (import Mixamo takes or keep MVP placeholders under Animations/).");
+
+            state.motion = clip;
         }
 
         private static void CreatePlayerPrefab(AnimatorController controller)
