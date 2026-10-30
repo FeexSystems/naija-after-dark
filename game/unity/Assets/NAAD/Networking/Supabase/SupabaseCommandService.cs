@@ -41,9 +41,9 @@ namespace NAAD.Networking.Supabase
                 "{\"p_request_id\":\"" + Escape(command.RequestId) + "\",\"p_type\":\"" + Escape(type) + "\",\"p_payload\":" + payloadJson + "}";
 
             var url = _config.RestBaseUrl + "/rpc/naad_execute_command";
-            _log.Info("Command", type + " requestId=" + command.RequestId);
 
-            _log.Info("Command", "requestId=" + command.RequestId + " type=" + command.Type.ToApiString());\n            var result = await _http.SendAsync(
+            _log.Info("Command", "requestId=" + command.RequestId + " type=" + command.Type.ToApiString());
+            var result = await _http.SendAsync(
                 url,
                 UnityEngine.Networking.UnityWebRequest.kHttpVerbPOST,
                 body,
