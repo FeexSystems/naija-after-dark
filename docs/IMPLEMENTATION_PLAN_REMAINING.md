@@ -8,6 +8,24 @@ This plan supersedes the "next steps" sections of `PROJECT_PLAN.md`,
 three documents describe the project at three different dates and all of them
 understate the current state of Gate C and Gate D.
 
+## Progress log
+
+**2026-11-02 — commit `33bccc8`** (branch `feat/unity-mcp-integration`), verified locally:
+
+| Verified | Evidence |
+|---|---|
+| Unity recompiles clean after the C# edits | `Assembly-CSharp-Editor.dll` rebuilt 07:57:30, 0 `error CS` |
+| Metadata gate passes | `validate-unity-meta.py` → 2298 files, 0 problems, exit 0 |
+| Backend typecheck passes | `npm run build --workspaces` exit 0 (was failing with TS5097) |
+| Backend tests pass | `validate.test.ts: ok`, `contracts.test.ts: all assertions passed` |
+
+Landed from this plan: **W0** (build/CI/docs fixes — CI result still pending),
+part of **W5** (submodule initialised, backend build scoping, legacy-define hazard
+documented), part of **W6** (`[functions.npc-dialogue]` JWT config), **W7**
+(ledger consolidated, stale counts corrected).
+
+Still open below: W1, W2, W3, W4, and the remainder of W5/W6.
+
 > **Confidence note:** every item below was verified by reading code, assets or
 > config in the working tree. Two automated deep-dives (a full C# client sweep and a
 > SQL/contract-vs-`naad_execute_command` sweep) were started but never returned
