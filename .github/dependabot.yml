@@ -16,6 +16,13 @@ updates:
         dependency-type: development
       backend-production-dependencies:
         dependency-type: production
+    ignore:
+      # @typescript-eslint/eslint-plugin@8.x peers on typescript ">=4.8.4 <6.1.0".
+      # Dependabot bumped it to ^7.0.2, which fails npm ci with ERESOLVE and took
+      # 'Install dependencies' down on main. Remove this once typescript-eslint
+      # widens its peer range.
+      - dependency-name: typescript
+        update-types: ["version-update:semver-major"]
 
   # Supabase Edge Functions (Deno). No lockfile is committed, so only major/minor
   # signal is available; keep the PR volume low.
