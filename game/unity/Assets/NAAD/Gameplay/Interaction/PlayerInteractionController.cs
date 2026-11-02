@@ -3,14 +3,19 @@ using System.Threading.Tasks;
 using NAAD.Core.Bootstrap;
 using NAAD.Core.Logging;
 using NAAD.Networking;
+using NAAD.World;
 using UnityEngine;
 
 namespace NAAD.Gameplay.Interaction
 {
     /// <summary>
-    /// Gate D — script-driven interaction over <see cref="SceneAnchor"/>s.
+    /// Gate D — script-driven interaction over world <see cref="SceneAnchor"/>s.
     /// Movement remains on PlayerLocomotionController; this only probes and
     /// dispatches authoritative commands (never mutates wallet/location locally).
+    ///
+    /// Anchors are the <c>NAAD.World.SceneAnchor</c> markers that NaadScenePipeline
+    /// authors into each scene. Their contentId is translated by
+    /// <see cref="SceneAnchorCommandMap"/> — there is no second anchor type.
     /// </summary>
     [RequireComponent(typeof(CharacterController))]
     public sealed class PlayerInteractionController : MonoBehaviour
@@ -46,10 +51,16 @@ namespace NAAD.Gameplay.Interaction
             var pos = transform.position;
             foreach (var anchor in anchors)
             {
-                if (anchor == null || anchor.Kind == InteractionKind.None) continue;
+                if (anchor == null) continue;
+
+                // Spawn points and camera rigs are positioning markers, not interactions.
+                if (anchor.Kind == SceneAnchor.AnchorKind.PlayerSpawn ||
+                    anchor.Kind == SceneAnchor.AnchorKind.CameraRig) continue;
+
+                if (!SceneAnchorCommandMap.TryResolve(anchor, out _)) continue;
+
                 var d = Vector3.Distance(pos, anchor.transform.position);
-                var limit = Mathf.Max(pollRadius, anchor.Radius);
-                if (d <= limit && d < bestDist)
+                if (d <= pollRadius && d < bestDist)
                 {
                     best = anchor;
                     bestDist = d;
@@ -59,7 +70,9 @@ namespace NAAD.Gameplay.Interaction
             if (best != CurrentAnchor)
             {
                 CurrentAnchor = best;
-                Status = best != null ? best.Prompt + " [" + best.Kind + "]" : "";
+                Status = best != null
+                    ? (string.IsNullOrEmpty(best.DisplayName) ? best.ContentId : best.DisplayName)
+                    : "";
                 Changed?.Invoke();
             }
         }
@@ -73,35 +86,41 @@ namespace NAAD.Gameplay.Interaction
                 return false;
             }
 
+            if (!SceneAnchorCommandMap.TryResolve(anchor, out var command))
+            {
+                Status = "No command mapped for " + anchor.ContentId;
+                Changed?.Invoke();
+                return false;
+            }
+
             IsBusy = true;
-            Status = "Interacting: " + anchor.AnchorId;
+            Status = "Interacting: " + anchor.DisplayName;
             Changed?.Invoke();
 
             try
             {
-                switch (anchor.Kind)
+                switch (command.Kind)
                 {
                     case InteractionKind.Travel:
-                        return await DispatchTravel(anchor.TargetLocationId);
+                        return await DispatchTravel(command.Payload);
                     case InteractionKind.Spend:
-                        return await DispatchSpend(anchor.Sku);
+                        return await DispatchSpend(command.Payload);
                     case InteractionKind.AttendEvent:
-                        return await DispatchAttend(anchor.EventId);
+                        return await DispatchAttend(command.Payload);
                     case InteractionKind.Talk:
                         if (Root.Dialogue == null)
                         {
                             Status = "Dialogue service missing";
                             return false;
                         }
-                        var talk = await Root.Dialogue.TalkToTundeAsync(
-                            "Hey — " + (string.IsNullOrEmpty(anchor.Prompt) ? "how far?" : anchor.Prompt),
-                            Guid.NewGuid().ToString("N"));
+                        var prompt = "Hey — " + (string.IsNullOrEmpty(anchor.DisplayName) ? "how far?" : anchor.DisplayName);
+                        var talk = await Root.Dialogue.TalkToTundeAsync(prompt, Guid.NewGuid().ToString("N"));
                         Status = talk != null && talk.Success
                             ? (talk.Dialogue ?? "…")
                             : (talk?.ErrorCode ?? "Talk failed");
                         return talk != null && talk.Success;
                     case InteractionKind.Examine:
-                        Status = "Examined " + anchor.AnchorId;
+                        Status = "Examined " + anchor.DisplayName;
                         return true;
                     default:
                         Status = "No interaction";
@@ -119,7 +138,7 @@ namespace NAAD.Gameplay.Interaction
         {
             if (string.IsNullOrEmpty(locationId))
             {
-                Status = "Travel anchor missing locationId";
+                Status = "Travel anchor missing destination";
                 return false;
             }
 
