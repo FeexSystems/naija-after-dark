@@ -27,7 +27,7 @@ jobs:
     timeout-minutes: 30
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Validate Unity metadata
         run: python3 tools/validate-unity-meta.py game/unity
@@ -52,7 +52,7 @@ jobs:
           sudo chown -R "$(id -u):$(id -g)" game/unity/Logs/ci-diagnostics
 
       - name: Unity verification
-        uses: game-ci/unity-builder@v4
+        uses: game-ci/unity-builder@v6
         env:
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
@@ -87,7 +87,7 @@ jobs:
             game/unity/Logs/ci-diagnostics || true
 
       - name: Upload verification report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: naad-verification-report
@@ -107,10 +107,10 @@ jobs:
     needs: verify-unity
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Verify project structure
-        uses: game-ci/unity-builder@v4
+        uses: game-ci/unity-builder@v6
         env:
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
@@ -123,7 +123,7 @@ jobs:
           customParameters: -nographics
 
       - name: Upload verification report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: naad-project-verification-report
@@ -140,10 +140,10 @@ jobs:
     needs: verify-unity
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Validate registered scenes and anchors
-        uses: game-ci/unity-builder@v4
+        uses: game-ci/unity-builder@v6
         env:
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
@@ -165,10 +165,10 @@ jobs:
     needs: verify-unity
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Configure and verify humanoid rig, clips, prefab wiring, and Animator contract
-        uses: game-ci/unity-builder@v4
+        uses: game-ci/unity-builder@v6
         env:
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
@@ -181,7 +181,7 @@ jobs:
           customParameters: -nographics
 
       - name: Upload Gate C report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: naad-animation-verification-report
@@ -199,10 +199,10 @@ jobs:
     continue-on-error: true
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: List installed packages
-        uses: game-ci/unity-builder@v4
+        uses: game-ci/unity-builder@v6
         env:
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
@@ -222,10 +222,10 @@ jobs:
     needs: verify-unity
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Verify UI components
-        uses: game-ci/unity-builder@v4
+        uses: game-ci/unity-builder@v6
         env:
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
@@ -238,7 +238,7 @@ jobs:
           customParameters: -nographics
 
       - name: Upload UI verification report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: naad-ui-verification-report
@@ -253,10 +253,10 @@ jobs:
     needs: verify-unity
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Verify service configuration
-        uses: game-ci/unity-builder@v4
+        uses: game-ci/unity-builder@v6
         env:
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
@@ -269,7 +269,7 @@ jobs:
           customParameters: -nographics
 
       - name: Upload service verification report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: naad-service-verification-report
@@ -300,7 +300,7 @@ jobs:
     needs: verify-unity
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Check Unity licensing and First Night test-credential configuration
         shell: bash
@@ -322,7 +322,7 @@ jobs:
           echo "Unity licensing and First Night test credentials are configured."
 
       - name: Run First Night live test
-        uses: game-ci/unity-builder@v4
+        uses: game-ci/unity-builder@v6
         env:
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
@@ -339,7 +339,7 @@ jobs:
           manualExit: true
 
       - name: Upload First Night report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: naad-first-night-report
