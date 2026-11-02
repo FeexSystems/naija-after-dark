@@ -282,8 +282,8 @@ MCP (Model Context Protocol) integration documentation and command registry.
 
 4. **Unity MCP** (`unity-mcp`)
    - Purpose: Unity Editor automation
-   - Endpoint: `http://localhost:17890/mcp/rpc`
-   - Plugin: `com.ivanmurzak.unity.mcp`
+   - Endpoint: read from `game/unity/.mcp.json` (port/path is assigned per Unity session)
+   - Plugin: MCP plugin loaded in the Unity Editor
    - Note: Requires Unity Editor to be running
 
 ### MCP Command Registry
@@ -339,9 +339,9 @@ await mcp_call_tool({
 #### Unity MCP Setup
 
 1. Open Unity Editor
-2. Ensure `com.ivanmurzak.unity.mcp` package is installed (check Packages/manifest.json)
-3. MCP server starts automatically on port 17890
-4. Verify with: `curl http://localhost:17890/mcp/rpc`
+2. Ensure the MCP plugin is installed (check Packages/manifest.json)
+3. The MCP endpoint url is written to `game/unity/.mcp.json` when the Editor starts — read the port and path from there; it is not a fixed 17890
+4. Verify with: `curl <url from .mcp.json>` (a 400 on GET is the expected response for an MCP HTTP endpoint)
 
 **Note:** Unity MCP endpoint must be reachable for MCP tools to work.
 
@@ -552,8 +552,8 @@ node C:\Users\ENGR\BILLI\.claude\skills\game-development\game.mjs shot
 **Unity MCP not reachable:**
 
 - Start Unity Editor
-- Check port 17890 is listening: `netstat -an | grep 17890`
-- Verify MCP plugin is installed in Packages/manifest.json
+- Read the port from `game/unity/.mcp.json`, then check it is listening: `netstat -an | grep <port>`
+- Verify the MCP plugin is installed in Packages/manifest.json
 
 **GitHub MCP authentication error:**
 

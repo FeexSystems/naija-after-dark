@@ -32,8 +32,8 @@ namespace NAAD.Gameplay.Interaction
         {
             if (IsBusy) return;
             RefreshNearestAnchor();
-            var pressed = Input.GetKeyDown(interactKey)
-                          || (interactOnFire1 && Input.GetButtonDown("Fire1"));
+            var pressed = UnityEngine.Input.GetKeyDown(interactKey)
+                          || (interactOnFire1 && UnityEngine.Input.GetButtonDown("Fire1"));
             if (pressed && CurrentAnchor != null)
                 _ = InteractAsync(CurrentAnchor);
         }

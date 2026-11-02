@@ -1,0 +1,291 @@
+# NAAD — Remaining Work Implementation Plan
+
+**Created:** 2026-11-02 · **Branch:** `feat/unity-mcp-integration` · **Editor:** `6000.6.5f1`
+**Basis:** direct inspection of the working tree during the 2026-11-02 audit.
+
+This plan supersedes the "next steps" sections of `PROJECT_PLAN.md`,
+`GATE_STATUS.md` and `PRODUCTION_READINESS_STATUS.md` where they disagree. Those
+three documents describe the project at three different dates and all of them
+understate the current state of Gate C and Gate D.
+
+> **Confidence note:** every item below was verified by reading code, assets or
+> config in the working tree. Two automated deep-dives (a full C# client sweep and a
+> SQL/contract-vs-`naad_execute_command` sweep) were started but never returned
+> results, so additional defects in those areas may surface. Budget for that.
+
+---
+
+## 1. Where the project actually stands
+
+| Area | Reality (verified) | Blocker? |
+|---|---|---|
+| Unity compile | Clean — 0 `error CS` in `Logs/Editor.log` | No |
+| Uncommitted work | 28 modified, 117 deleted, 1 renamed, 43 untracked | **Yes** |
+| Trust boundary | Client only calls `/rpc/*`; anon key only; `SupabaseConfig.cs:26` rejects `service_role` | No |
+| Metadata integrity | Validator passes — 2369 `.meta`, 0 problems (after the 31-char GUID repair) | No |
+| Scenes | 5 registered + Bootstrap; all exist; `SceneAnchor` present in all 5 | No |
+| Gate C (rig/animation) | Contract wired, **8 placeholder clips**, rig has `clipAnimations: []` | **Yes — needs external assets** |
+| Gate D (gameplay) | Framework present but **probes a `SceneAnchor` type that no scene contains** — inert at runtime (see W2) | **Yes — 1 real defect** |
+| Gate E (atmosphere) | `WorldClockPresenter` exists; **no lighting profile assets**, only a `.md` spec | No |
+| Gate F / 16 (mobile) | No device acceptance, no size/perf baseline | No |
+| AI dialogue (Phase C) | Edge function present; deployment + `GEMINI_API_KEY` unverified | Unknown |
+
+---
+
+## 2. Workstreams
+
+Each workstream lists **objective → tasks → exit criteria → dependencies**.
+Sizes are T-shirt, not estimates in hours: S ≈ half a day, M ≈ 1–3 days,
+L ≈ a week or more.
+
+---
+
+### W0 — Land the current working tree · **S** · blocks everything
+
+The audit's fixes are all uncommitted, and **the Unity compile after the C# edits
+has not been observed.** `Assembly-CSharp-Editor.dll` is still stamped 03:30 while
+the edits landed 06:53–06:54.
+
+- [ ] Focus the Unity window; confirm the console is clean after recompile.
+- [ ] Re-run `tools/validate-unity-meta.py game/unity` (expect exit 0).
+- [ ] Commit the audit fixes (`BuildMethods`, meta validator, GUID repair, verifier
+      guards, `com.unity.splines` pin, MCP defines, dependabot, CI filter, docs).
+- [ ] Push and open the PR — the branch filter is now `feat/**`, so push should
+      trigger CI; confirm **all seven Unity jobs** run.
+- [ ] Record the run URL + SHA into `docs/GATE_STATUS.md`.
+
+**Exit:** green CI on a pushed commit, with the run linked from the ledger.
+
+> The 117 staged deletions include `naad-fntest/`, which held `SceneLoader.cs`,
+> `GamePhase.cs`, `GameStateManager.cs` and `RunVerify.cs` — scripts that exist
+> nowhere else. Decide whether any of them are wanted *before* committing.
+> Recovery: `git checkout HEAD -- naad-fntest`.
+
+---
+
+### W1 — Gate C: real player animation · **M** (plus human asset acquisition)
+
+This is the longest-standing blocker. The eight clips are placeholders by their own
+documentation, and **the assets do not exist anywhere in the repo** — see
+`knowledge/architecture/gate-c-asset-gap.md`. `PlayerRig.fbx` is a humanoid rig with
+`clipAnimations: []`.
+
+- [ ] **Human task:** acquire real humanoid takes for Idle / Walk / Run /
+      Retrieve / Hold / Browse / PutAway / Greeting (Mixamo or Unity Starter Assets;
+      route documented in `Assets/NAAD/Animation/ASSET_ACQUISITION.md`).
+- [ ] Import, **preserving the existing `.meta` GUIDs** so AnimatorController
+      bindings survive — this is why the clips are committed as `.anim` at all.
+- [ ] Re-run `NAAD.Editor.ConfigureGateCAssets.ConfigureAndVerify` headlessly.
+- [ ] Play-test on device or in Editor: move, phone in/out, greet. The contract job
+      proves wiring, not motion.
+- [ ] Replace `MVP_PLACEHOLDER_CLIPS.md` with a real provenance record (source,
+      licence, actor/take).
+
+**Exit:** eight non-placeholder clips with recorded provenance, contract job green,
+and observed in-game playback.
+
+> **Do not** wire clips from `Assets/Kevin Iglesias/`. It is gitignored
+> (`.gitignore:52-53`), contains only Idles + farming/crafting work, and using it
+> would reintroduce the clean-checkout failure this plan is trying to remove.
+
+---
+
+### W2 — Gate D: gameplay/interaction is **wired but inert** · **M**
+
+> **Correction to earlier readings of this gate (2026-11-02).** The framework exists
+> and looks complete, but it probes for a component type that no scene contains.
+
+There are **two different `SceneAnchor` MonoBehaviour classes**:
+
+| Type | Fields | Present in scenes |
+|---|---|---|
+| `NAAD.World.SceneAnchor` | `contentId`, `AnchorKind{PlayerSpawn, ExitTravel, Interaction, CameraRig, Landmark}`, `displayName`, `travelSceneName` | **yes — 22 instances across all 5 scenes** |
+| `NAAD.Gameplay.Interaction.SceneAnchor` | `anchorId`, `InteractionKind{None,Talk,Travel,Spend,AttendEvent,Examine}`, `prompt`, `radius`, `targetLocationId`, `sku`, `npcId`, `eventId` | **zero** |
+
+`PlayerInteractionController.RefreshNearestAnchor()` does
+`FindObjectsByType<SceneAnchor>()` in namespace `NAAD.Gameplay.Interaction` with no
+`using NAAD.World;` — so it binds to the interaction type and finds **nothing at
+runtime**. Nothing ever `AddComponent`s that type; the only creators
+(`NaadScenePipeline.CreateAnchor`, `NaadCityStreetBuilder`) add the `NAAD.World` one.
+
+Tasks:
+
+- [ ] Choose the canonical type. Scenes and CI already standardise on
+      `NAAD.World.SceneAnchor` (22 instances, validated by `ValidateScenes`), so the
+      cheaper direction is to make that canonical.
+- [ ] Map `AnchorKind` → command intent, and carry the payload the interaction type
+      encodes (`sku`, `npcId`, `eventId`, `targetLocationId`). `contentId` currently
+      holds mixed identifiers (`"nightclub"`, `"syu.grill.open"`,
+      `"npc.crew.mama-seyi"`), so this needs a deliberate decision, not a guess —
+      a wrong mapping sends players to the wrong location.
+- [ ] Delete the losing type so this cannot silently recur.
+- [ ] Extend `NaadScenePipeline.ValidateScenes` to assert every non-spawn anchor
+      resolves to a known command intent — catches the disconnect class of bug in CI.
+- [ ] Verify `StubCommandService` is never selected at runtime when a live config is
+      present.
+- [ ] Play-test First Night through real interactions.
+
+**Exit:** anchors in all five scenes drive real commands end-to-end, validator
+enforces the mapping, and only one `SceneAnchor` type exists.
+
+---
+
+### W3 — Gate E: atmosphere / simulation · **L**
+
+Only `WorldClockPresenter` and a spec document exists; there are no lighting assets.
+
+- [ ] Author day/night lighting profiles as real assets (the spec is
+      `Assets/NAAD/Content/LIGHTING_PROFILES.md` — it describes intent, not assets).
+- [ ] Drive them from `WorldClockPresenter`; the server owns time
+      (`naad_get_world_clock`), the client only renders it.
+- [ ] Ambient/crowd presentation from presence hints — **display only**; server owns
+      counts (pillar #4, ephemeral ≠ persistent).
+- [ ] Confirm atmosphere never writes authoritative state (Gate C invariant, applied
+      to lighting).
+
+**Exit:** the same scene reads visibly different across night phases, driven by the
+server clock, with zero state writes.
+
+---
+
+### W4 — Gate F / Gate 16: mobile and device acceptance · **L**
+
+- [ ] **Measure before optimizing** (the explicit Gate 16 rule). Baseline size, load
+      time, FPS, RAM, battery on low/mid/high Android and one iPhone.
+- [ ] **Build-size blast radius first:** `Assets/` is **5.1 GB**, of which
+      `Assets/StreamingAssets/` is **3.96 GB** of LLM native binaries across six
+      platforms (gitignored). A mobile build cannot carry this. Decide what ships.
+- [ ] Reconcile the 14 unused heavy packages: `com.unity.xr.openxr`, `com.unity.ml-agents`,
+      `com.unity.services.vivox`, `com.unity.services.leaderboards`,
+      `com.unity.services.ccd.management`, `com.unity.ai.assistant`,
+      `com.unity.ai.inference`, `com.unity.feature.ecs`, `com.unity.2d.animation`.
+      None are referenced by `Assets/NAAD` code.
+- [ ] Fix `scriptingBackend: {}` — Android with `AndroidTargetArchitectures: 2`
+      (ARM64) implies IL2CPP; the empty map leaves it implicit.
+- [ ] Release build smoke: install, launch, First Night → Night Summary, save-state,
+      network-failure behaviour.
+
+**Exit:** First Night reaches Night Summary on a physical device, with recorded
+measurements and a build size the store will accept.
+
+---
+
+### W5 — Structural & hygiene debt · **M** · parallel, no dependencies
+
+- [ ] **Collapse the two UI systems.** `Assets/NAAD/UI/*.cs` (Controllers) and
+      `Assets/NAAD/UI/Scripts/*.cs` (Views + `ScreenNavigationManager`) are parallel
+      implementations. Pick one; delete the other.
+- [ ] **CityStreet reproducibility.** The committed scene references
+      `lamp_pole_small.prefab` and `bench.prefab` from `Assets/Versatile Studio Assets/`,
+      which `.gitignore:58-59` excludes. Either commit those two prefabs (+ deps) or
+      remove the references. Every other scene is self-contained.
+- [ ] Backend build scoping: per-package `tsconfig.json` **done 2026-11-02** — it also
+      revealed that `npm run build --workspaces` had been failing outright with TS5097
+      (`.ts` import extensions without `allowImportingTsExtensions`). Now a typecheck
+      (`noEmit`), which is correct because nothing consumes emitted JS: the edge
+      function runs under Deno and the tests under `tsx`. Both workspaces and both
+      test suites pass.
+- [ ] **Do not enable `NAAD_LEGACY_EDITOR_TOOLS`.** It is defined nowhere, so 18
+      editor files are silently dead. Defining it does not just revive dead code — it
+      **breaks the build immediately**: `NaadCityStreetBuilder.cs` imports both
+      `NAAD.World` and `NAAD.Gameplay.Interaction`, and its unqualified
+      `AddComponent<SceneAnchor>()` at lines 818/829 becomes an ambiguous reference
+      (CS0104) once both types are visible with the duplicate `SceneAnchor` still
+      present. Fix W2 first, then either delete these files or repair them.
+- [ ] Initialize the `tools/unity-cloud-asset-manager-for-blender` submodule properly
+      (`git submodule status` shows `-`, despite content on disk).
+- [ ] Warning debt: ~40 warnings — `FindObjectOfType` deprecations, `CS1998` in
+      `FirstNightTests`, unused fields.
+- [ ] Review the flagged high-severity dependency advisory (dependabot now configured
+      to surface the next one automatically).
+
+---
+
+### W6 — Backend & world-model hardening · **M**
+
+- [ ] Stand up a **disposable staging Supabase project** + test account.
+- [ ] Move `first-night-live-test` onto staging with resettable state; only then can
+      it become a required gate instead of a manual ritual
+      (`naad-unity.yml:294` is `workflow_dispatch`-only and skipped on PRs).
+- [ ] Verify the hosted-project surface is reproducible: `supabase/config.toml` has
+      **no `[functions.npc-dialogue]` block**, so JWT verification relies on the CLI
+      default, and hosted auth/RLS config is not versioned anywhere.
+- [ ] Confirm `npc-dialogue` is deployed with `GEMINI_API_KEY` set, and that Gemini
+      output is schema-validated before return (AI proposes; it must never write).
+- [ ] Contract tests for the failure modes already proven by hand: invalid SKU,
+      duplicate `request_id`, same-location travel — promote them from probes to CI.
+
+---
+
+### W7 — Documentation & ledger discipline · **S**
+
+Status docs are written as snapshots but read as current truth; that is how Gate C
+and Gate D ended up understated.
+
+- [ ] Establish one source of truth. Recommendation: `GATE_STATUS.md` becomes the
+      only live ledger; retire `PRODUCTION_READINESS_STATUS.md` into it and keep
+      `PROJECT_PLAN.md` for roadmap only.
+- [ ] Rule going forward: **whatever commit lands a gate updates the ledger.**
+- [ ] `docs/Kevin_Iglesias_Import_Guide.md` claims "57 CHR_* NPC models"; the repo
+      contains **9**. Correct it or mark the 57 as planned content.
+- [ ] `docs/HUMANOID_ANIMATION_ASSET_AUDIT.md` (root) still reports "0 `.anim` files",
+      which is stale after the placeholder clips landed.
+
+---
+
+## 3. Sequencing
+
+```
+W0 (land + verify)
+ │
+ ├── W5 hygiene ──────────────────────────┐  (parallel, anytime)
+ ├── W6 backend hardening ────────────────┤  (parallel)
+ │                                       │
+ ├── W1 Gate C ── needs human asset buy ──┐
+ │                                       │
+ ├── W2 Gate D ──────────────────┐        │
+ │                              ▼        │
+ │                         W3 Gate E      │
+ │                              │        │
+ └──────────────────────────────┴──► W4 Gate F/16 ──► W7 ledger close-out
+```
+
+**Critical path:** W0 → W2 → W4. Gate C (W1) is the highest-*visibility* gap but it
+is gated on asset acquisition, not on engineering — start the acquisition
+immediately and let engineering run W2 in parallel rather than blocking on it.
+
+**Recommended order:** W0, then start W1 acquisition + W2 concurrently, W5/W6 in the
+margins, W3 after W2, W4 last.
+
+---
+
+## 4. Open decisions
+
+| # | Decision | Blocks |
+|---|---|---|
+| 1 | Commit the 117 deletions as-is, or rescue any of `naad-fntest`'s unique scripts first? | W0 |
+| 2 | Which UI system survives — `UI/*.cs` Controllers or `UI/Scripts/*.cs` Views? | W5 |
+| 3 | CityStreet: commit the two vendor prefabs, or drop the references? | W5 |
+| 4 | Does `Assets/StreamingAssets` (3.96 GB of LLM binaries) ship in the mobile build at all? | W4 |
+| 5 | Is on-device LLM a product requirement? Nothing in `Assets/NAAD` references LLMUnity, but 3.96 GB of native libs says someone intended it. | W4 |
+
+---
+
+## 5. Explicitly out of scope
+
+Per `PROJECT_PLAN.md` §6, and re-affirmed here: no microservices split, no Unity
+networking rewrite, no Redis/Kafka/custom game server, no full-city expansion, no
+art/CPU optimisation before Gate 16 measurements, no service-role or Gemini keys in
+the client, no client-side authoritative state, and animation events never mutate
+game state.
+
+---
+
+## 6. Related
+
+- `docs/PROJECT_PLAN.md` — roadmap and architecture pillars.
+- `docs/GATE_STATUS.md` — live ledger.
+- `game/unity/.ai-game-dev/knowledge/architecture/` — mutation surface, Gate C asset
+  gap, doc-drift gotcha.
+- `docs/GATE_C_PLAYER_RIG_ANIMATION.md` — Gate C detail.
+- `Assets/NAAD/UNITY_CLI_COMMANDS.md` — headless verification entrypoints.

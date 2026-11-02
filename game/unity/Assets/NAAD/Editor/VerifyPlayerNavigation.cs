@@ -1,3 +1,8 @@
+#if NAAD_LEGACY_EDITOR_TOOLS
+// Legacy navigation verifier. It walks `Assets/NAAD/Content/Scenes/Blockout/*`, which no
+// longer exists; the registered production scenes live under `Assets/NAAD/Scenes/*` and
+// are validated by `NAAD.Editor.NaadScenePipeline.ValidateScenes`. Kept behind the legacy
+// define so it cannot report failures against scenes that were never built out.
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -506,3 +511,4 @@ namespace NAAD.Editor
         }
     }
 }
+#endif

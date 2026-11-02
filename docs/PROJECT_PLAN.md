@@ -17,9 +17,18 @@ and AI never overrides it.
 
 1. **World-state authority** — Postgres is truth. Client sends *commands*; server
    validates + applies. No client-side wallet/relationship/location truth.
-2. **Single command surface** — all mutations go through `naad_execute_command`
-   (type + payload + `request_id`); reads stay separate. Idempotency on
-   `command_receipts.request_id`.
+2. **Closed mutation surface** — the client never writes Postgres by direct table
+   access; every state change goes through a named server-side RPC.
+   `naad_execute_command` (type + payload + `request_id`) is the general gameplay
+   router and the one that carries idempotency on `command_receipts.request_id`.
+   Alongside it sits a small, fixed set of workflow RPCs, because the night
+   lifecycle, phone, NPC memory and world clock are server-owned transitions rather
+   than player "commands": `naad_start_night`, `naad_complete_night`,
+   `naad_respond_message`, `naad_seed_tunde_beach_invite`,
+   `naad_commit_npc_memory`, `naad_set_world_period`, `naad_advance_world_time`.
+   Reads stay separate (`naad_get_wallet`, `naad_list_messages`,
+   `naad_get_npc_greeting`, `naad_get_world_clock`). That list is the whole surface —
+   a new mutation means a new named RPC, never a client-side table write.
 3. **AI with boundaries** — Gemini interprets/proposes dialogue only; it never
    writes the DB. Server validates the response against a JSON schema.
 4. **Ephemeral ≠ persistent** — rooms/presence are hints; money/relationships/
@@ -37,6 +46,16 @@ Unity (untrusted client)
   └── AI talk             → Edge Function npc-dialogue (JWT, Gemini)
 
 Supabase (authoritative)
+  ├── Postgres world model + RPCs + RLS
+  ├── Auth
+  ├── Realtime (later: presence)
+  └── Edge Functions (Gemini only; keys server-side)
+
+ai-orchestrator
+  └── validate + prompt assembly (shared with Edge Function)
+```
+
+No new deployable service until a measured bottleneck appears (explicit non-goal).
 
 ## 4. Gate roadmap (current truth, 2026-10-14)
 
@@ -68,6 +87,8 @@ Legend: ✅ Verified · 🟡 Implemented/pending CI · ⬜ Planned
 | C | Player rig & animation — see `GATE_C_PLAYER_RIG_ANIMATION.md` | ⬜ Planned (next gate) |
 | D | Gameplay/interaction — third-person controller + interaction framework | ⬜ Planned |
 | E | Atmosphere/simulation — day/night lighting, crowd, world clock | ⬜ Planned |
+| F | Mobile UI / AI / release — phone apps, Android device acceptance | ⬜ Planned |
+| 16 | Mobile optimization — profile-on-device before optimizing | ⬜ Planned (after on-device play) |
 
 ## 5. Sequenced execution roadmap (recommended order)
 
@@ -129,7 +150,8 @@ Legend: ✅ Verified · 🟡 Implemented/pending CI · ⬜ Planned
 ## 8. Success metrics ("done enough")
 
 1. One Unity build completes First Night against the live project, **in CI** (green run recorded).
-2. All mutations go through ≤ 2 entry points (command RPC + AI edge).
+2. All mutations go through the documented RPC surface (`naad_execute_command` plus
+   the listed workflow RPCs), with zero direct table writes from the client.
 3. Contract list in `backend/game-api` matches live RPCs.
 4. Zero service-role usage in the client.
 5. Domain events queryable for a single night session.
@@ -139,24 +161,11 @@ Legend: ✅ Verified · 🟡 Implemented/pending CI · ⬜ Planned
 ## 9. Related docs
 
 - `GATE_C_PLAYER_RIG_ANIMATION.md` — next gate detail.
+- `IMPLEMENTATION_PLAN_REMAINING.md` — **current** workstreams and sequencing; supersedes the "next steps" in this file where they disagree.
 - `NEXT_ARCHITECTURE.md` — engineering phases A–F.
 - `GATES_7_10.md`, `GATES_11_14.md`, `GATES_15_20.md`, `GATE_21.md`, `GATE_22.md` — backend + CI gate specs.
 - `GATE_STATUS.md` — live status ledger. `GATE16_MOBILE_OPT.md` — mobile profiling gate.
 - `ARCHITECTURE.md`, `WORLD-MODEL-SPEC.md` — system + world model.
 
-| F | Mobile UI / AI / release — phone apps, Android device acceptance | ⬜ Planned |
-| 16 | Mobile optimization — profile-on-device before optimizing | ⬜ Planned (after on-device play) |
-
 > Note: engineering "Phase C" (AI dialogue) is distinct from client "Gate C"
 > (player rig/animation). This plan uses **Gate C = player rig/animation**.
-
-  ├── Postgres world model + RPCs + RLS
-  ├── Auth
-  ├── Realtime (later: presence)
-  └── Edge Functions (Gemini only; keys server-side)
-
-ai-orchestrator
-  └── validate + prompt assembly (shared with Edge Function)
-```
-
-No new deployable service until a measured bottleneck appears (explicit non-goal).

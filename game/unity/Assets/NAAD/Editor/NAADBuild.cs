@@ -11,7 +11,7 @@ namespace NAAD.Editor
 {
     public static class NAADBuild
     {
-        private const string BootstrapScenePath = "Assets/Scenes/Bootstrap.unity";
+        internal const string BootstrapScenePath = "Assets/Scenes/Bootstrap.unity";
 
         public static void Verify()
         {

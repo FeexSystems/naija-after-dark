@@ -26,7 +26,7 @@ namespace NAAD.Editor
             }
 
             GraphicsSettings.defaultRenderPipeline = urpAsset;
-            GraphicsSettings.renderPipelineAsset = urpAsset;
+            GraphicsSettings.defaultRenderPipeline = urpAsset;
 
             UpgradeMaterialsToURP();
             UpgradeShadersToURP();

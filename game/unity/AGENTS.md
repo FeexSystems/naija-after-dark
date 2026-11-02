@@ -197,11 +197,11 @@ The skill requires a `.codegpt-game.json` manifest in the Unity project root:
 
 ### Unity MCP Integration
 
-The Unity MCP plugin (`com.ivanmurzak.unity.mcp`) provides JSON-RPC endpoint at `http://localhost:17890/mcp/rpc`. This enables automated Unity Editor operations via MCP tools.
+The Unity MCP plugin exposes an HTTP MCP endpoint for automated Unity Editor operations. **The endpoint url lives in `game/unity/.mcp.json` and its port/path is assigned per Unity session — read it there rather than assuming a port.** The previously documented fixed port `17890` is no longer listened on.
 
 **Requirements:**
-- Unity Editor must be running with MCP plugin loaded
-- MCP endpoint must be reachable (check with `curl http://localhost:17890/mcp/rpc`)
+- Unity Editor must be running with the MCP plugin loaded
+- MCP endpoint must be reachable (read the url from `.mcp.json`, then `curl` it — a 400 on GET is expected)
 - See `game/unity/mcp-manifest.json` for configuration
 
 ### Unity CLI Commands

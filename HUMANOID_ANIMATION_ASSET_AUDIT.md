@@ -1,5 +1,15 @@
 # Humanoid / Animation Asset Audit
 
+> **SUPERSEDED (2026-11-02).** Kept for provenance only — it describes commit `1a82e4b`
+> and its asset counts are no longer accurate. Since this audit: `PlayerRig.fbx`,
+> `PlayerRig.prefab`, `PlayerController.controller`, `UpperBodyMask.mask` and eight
+> (placeholder) `.anim` clips were added, so "0 `.anim` files" and the Missing rows
+> below are stale.
+>
+> For current state see `docs/IMPLEMENTATION_PLAN_REMAINING.md` and
+> `game/unity/.ai-game-dev/knowledge/architecture/gate-c-asset-gap.md`. The finding
+> that still holds: the clips are placeholders and no real takes exist in the repo.
+
 **Repository:** `FeexSystems/naija-after-dark`  
 **Branch:** `chore/production-readiness-foundation`  
 **Latest inspected commit:** `1a82e4b`  

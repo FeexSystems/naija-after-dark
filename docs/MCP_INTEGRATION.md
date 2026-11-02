@@ -116,14 +116,18 @@ await mcp_call_tool({
 **Purpose:** Unity Editor automation via JSON-RPC
 
 **Configuration:**
-- Endpoint: `http://localhost:17890/mcp/rpc`
-- Plugin: `com.ivanmurzak.unity.mcp`
+- Endpoint: read from `game/unity/.mcp.json` (authoritative; the port and path are assigned per Unity session)
+- Plugin: MCP plugin loaded in the Unity Editor
 - Manifest: `game/unity/mcp-manifest.json`
+
+> The fixed port `17890` documented here previously is **no longer listened on**. Verify the
+> current endpoint with `netstat -an | grep <port>` against the url in `.mcp.json` rather than
+> assuming a port number.
 
 **Requirements:**
 - Unity Editor must be running
 - MCP plugin must be loaded
-- Port 17890 must be listening
+- The endpoint in `game/unity/.mcp.json` must be listening
 
 **Startup Instructions:**
 1. Open Unity Editor

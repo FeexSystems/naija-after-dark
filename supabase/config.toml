@@ -386,6 +386,16 @@ deno_version = 2
 # [edge_runtime.secrets]
 # secret_key = "env(SECRET_VALUE)"
 
+# Per-function configuration.
+#
+# `verify_jwt = true` makes the platform reject a request with no valid JWT before the
+# function body runs. It was previously left implicit (defaulting on), so nothing in the
+# repo recorded the security posture of the one function that talks to a paid upstream.
+# Gemini is never given DB access, so JWT verification here is the boundary that keeps
+# the function from being an open relay.
+[functions.npc-dialogue]
+verify_jwt = true
+
 [analytics]
 enabled = true
 port = 54327

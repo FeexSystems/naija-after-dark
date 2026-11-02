@@ -1,7 +1,12 @@
 # Kevin Iglesias Humanoid Rig Import Guide
 
 ## Overview
-Kevin Iglesias reference rigs (`HumanM_Model.fbx` / `HumanF_Model.fbx`) serve as the humanoid avatar configuration template for all 57 CHR_* NPC models in Naija After Dark.
+Kevin Iglesias reference rigs (`HumanM_Model.fbx` / `HumanF_Model.fbx`) serve as the humanoid avatar configuration template for the CHR_* NPC models in Naija After Dark.
+
+> **Correction (2026-11-02):** this guide previously said "all 57 CHR_* NPC models". The
+> repository currently contains **9** `CHR_*.fbx` models under
+> `game/unity/Assets/NAAD/Content/Models/`. Treat 57 as the planned content target, not
+> the present count — every "57" below refers to the eventual set.
 
 ## Rig Files Available
 

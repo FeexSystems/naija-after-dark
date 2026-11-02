@@ -2,7 +2,9 @@ name: NAAD Unity Gate 22
 
 on:
   push:
-    branches: [main, "feat/naad-*"]
+    # `feat/naad-*` alone silently skipped every other feature branch in this repo
+    # (feat/unity-mcp-integration, fix/*, chore/*). Match the prefixes actually in use.
+    branches: [main, "feat/**", "fix/**"]
     paths:
       - "game/unity/**"
       - ".github/workflows/naad-unity.yml"

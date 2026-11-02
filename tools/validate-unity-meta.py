@@ -16,6 +16,27 @@ from pathlib import Path
 GUID_LINE = re.compile(r"^guid:\s*(.*?)\s*$", re.MULTILINE)
 VALID_GUID = re.compile(r"^[0-9a-fA-F]{32}$")
 
+# Only these top-level folders hold imported project content. Library/, Temp/, Logs/ and
+# obj/ are machine-local caches: Library/PackageCache bundles sample payloads under
+# `Samples~/` that the editor never imports and that can legitimately reuse GUIDs from
+# Assets/. Scanning them made this gate fail locally while staying green in CI (where
+# Library/ does not exist yet), so the check validated a different file set in each place.
+SCAN_DIRS = ("Assets", "Packages", "ProjectSettings")
+
+
+def iter_meta_files(root: Path):
+    """Yield .meta files under the imported project folders, skipping ~-suffixed dirs."""
+    for name in SCAN_DIRS:
+        base = root / name
+        if not base.is_dir():
+            continue
+        for path in sorted(base.rglob("*.meta")):
+            # Unity ignores folders ending in '~' (e.g. PackageCache samples). They are
+            # never imported, so their GUIDs cannot collide with project assets.
+            if any(part.endswith("~") for part in path.relative_to(root).parts):
+                continue
+            yield path
+
 
 def main() -> int:
     root = Path(sys.argv[1] if len(sys.argv) > 1 else "game/unity").resolve()
@@ -25,7 +46,7 @@ def main() -> int:
 
     problems: list[str] = []
     by_guid: defaultdict[str, list[Path]] = defaultdict(list)
-    files = sorted(root.rglob("*.meta"))
+    files = list(iter_meta_files(root))
 
     for path in files:
         relative = path.relative_to(root)

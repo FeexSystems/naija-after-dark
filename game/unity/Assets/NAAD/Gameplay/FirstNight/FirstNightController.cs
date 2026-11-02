@@ -353,13 +353,13 @@ namespace NAAD.Gameplay.FirstNight
             if (!EnsureRoot()) return false;
             if (string.IsNullOrWhiteSpace(playerMessage))
             {
-                Fail("TalkToTunde requires a non-empty player message");
+                Fail("TalkToTunde requires a non-empty player message", "TalkToTunde");
                 return false;
             }
 
             if (Root.Dialogue == null)
             {
-                Fail("IDialogueService not wired on NAADApplicationRoot");
+                Fail("IDialogueService not wired on NAADApplicationRoot", "TalkToTunde");
                 return false;
             }
 
@@ -374,7 +374,7 @@ namespace NAAD.Gameplay.FirstNight
                 var result = await Root.Dialogue.TalkToTundeAsync(playerMessage.Trim(), requestId);
                 if (result == null || !result.Success)
                 {
-                    Fail(result?.ErrorCode ?? "Tunde AI path failed — deploy npc-dialogue + GEMINI_API_KEY");
+                    Fail(result?.ErrorCode ?? "Tunde AI path failed — deploy npc-dialogue + GEMINI_API_KEY", "TalkToTunde");
                     return false;
                 }
 
@@ -387,7 +387,7 @@ namespace NAAD.Gameplay.FirstNight
             }
             catch (Exception ex)
             {
-                Fail("TalkToTunde exception: " + ex.Message);
+                Fail("TalkToTunde exception: " + ex.Message, "TalkToTunde");
                 return false;
             }
             finally

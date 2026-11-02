@@ -1,0 +1,81 @@
+NAAD Player Navigation Verification Report
+Generated: 2026-10-30 11:12:54
+
+Summary:
+  Scenes with NavMesh: 0/7
+  Scenes with Baked NavMesh: 0/7
+  Scenes with PlayerSpawn: 0/7
+  Scenes with Accessible Spawn: 0/7
+  Scenes with Issues: 7
+  Scenes with Warnings: 0
+
+Scene: Apartment_Blockout
+  NavMesh Present: ✗
+  NavMesh Baked: ✗
+  NavMesh Area: 0.00m²
+  NavMesh Vertices: 0
+  PlayerSpawn Present: ✗
+  Spawn Accessible: ✗
+  Issues:
+    - Scene file not found
+
+Scene: SuyaSpot_Blockout
+  NavMesh Present: ✗
+  NavMesh Baked: ✗
+  NavMesh Area: 0.00m²
+  NavMesh Vertices: 0
+  PlayerSpawn Present: ✗
+  Spawn Accessible: ✗
+  Issues:
+    - Scene file not found
+
+Scene: Nightclub_Blockout
+  NavMesh Present: ✗
+  NavMesh Baked: ✗
+  NavMesh Area: 0.00m²
+  NavMesh Vertices: 0
+  PlayerSpawn Present: ✗
+  Spawn Accessible: ✗
+  Issues:
+    - Scene file not found
+
+Scene: Mainland_Streets
+  NavMesh Present: ✗
+  NavMesh Baked: ✗
+  NavMesh Area: 0.00m²
+  NavMesh Vertices: 0
+  PlayerSpawn Present: ✗
+  Spawn Accessible: ✗
+  Issues:
+    - Scene file not found
+
+Scene: Island_Nightlife
+  NavMesh Present: ✗
+  NavMesh Baked: ✗
+  NavMesh Area: 0.00m²
+  NavMesh Vertices: 0
+  PlayerSpawn Present: ✗
+  Spawn Accessible: ✗
+  Issues:
+    - Scene file not found
+
+Scene: Creative_District
+  NavMesh Present: ✗
+  NavMesh Baked: ✗
+  NavMesh Area: 0.00m²
+  NavMesh Vertices: 0
+  PlayerSpawn Present: ✗
+  Spawn Accessible: ✗
+  Issues:
+    - Scene file not found
+
+Scene: Coastal_Beach
+  NavMesh Present: ✗
+  NavMesh Baked: ✗
+  NavMesh Area: 0.00m²
+  NavMesh Vertices: 0
+  PlayerSpawn Present: ✗
+  Spawn Accessible: ✗
+  Issues:
+    - Scene file not found
+
