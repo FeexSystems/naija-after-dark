@@ -1,3 +1,8 @@
+#if NAAD_LEGACY_EDITOR_TOOLS
+// Legacy blockout-era verifier. It asserts a `Assets/NAAD/Content/Scenes/Blockout/*`
+// layout that was superseded by `Assets/NAAD/Scenes/*` and
+// `NAAD.Editor.NaadScenePipeline.ValidateScenes`. Retained behind the legacy define so
+// it cannot report failures against scenes that no longer exist.
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -366,3 +371,4 @@ namespace NAAD.Editor
         }
     }
 }
+#endif

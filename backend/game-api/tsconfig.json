@@ -1,0 +1,21 @@
+{
+  // Scopes this workspace's build to its own sources. Without this, `tsc` run from
+  // this directory resolves upward to backend/tsconfig.json, whose include is
+  // "**/*.ts" — so every workspace build compiled the whole backend and emitted into
+  // a single shared backend/dist. Two workspaces meant the work happened twice.
+  //
+  // `npm run build` here is a TYPECHECK, not an emit. The sources use explicit `.ts`
+  // import extensions (Deno/tsx style): ../supabase/functions/npc-dialogue runs under
+  // Deno and the tests run under `tsx`, so no JavaScript artifact is ever consumed.
+  // Emitting is therefore impossible without `allowImportingTsExtensions`, which in
+  // turn requires `noEmit`. Before this, `npm run build` failed outright with TS5097.
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "./src",
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "declaration": false
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "dist", "**/*.test.ts"]
+}

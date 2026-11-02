@@ -1,6 +1,13 @@
 # NAAD Gate Status
 
-Last audit: 2026-10-23
+> **This is the single live ledger.** `PROJECT_PLAN.md` holds the roadmap only, and
+> `PRODUCTION_READINESS_STATUS.md` is a historical snapshot of the 2026-10-29 PR #16
+> run. When a gate lands, this file is updated in the same commit — that discipline is
+> what the previous drift was missing.
+>
+> Current workstreams and sequencing: [IMPLEMENTATION_PLAN_REMAINING.md](IMPLEMENTATION_PLAN_REMAINING.md).
+
+Last audit: 2026-11-02
 Branch: `main`
 Unity editor (actual): `6000.6.5f1` (`game/unity/ProjectSettings/ProjectVersion.txt`)
 Note: older bible drafts mentioning `6000.0.32f1` are outdated; Gate 22 docs already pin `6000.6.5f1`.
@@ -89,15 +96,17 @@ The First Night vertical slice is driven end-to-end by
 | `probe_double_request_id` | Verified (local) | idempotent replay (first + replay both success) |
 | `probe_same_location` | Verified (local) | `ALREADY_THERE`, no mutation |
 | `PHASE_D_PASS` | Verified (local) | `Library/first-night-report.json` ok:true |
-|| CI green run (`verify-unity`, `verify-project-structure`, `first-night-live-test`) | **Verified (2026-10-25)** | Merge PR #14 (commit `14fe069`) — all CI jobs passed. Run URL: https://github.com/FeexSystems/naija-after-dark/actions/workflows/naad-unity.yml |
+| CI green run (`verify-unity`, `verify-project-structure`, `verify-scene-registration`, `verify-animation`) | **Verified (2026-10-25)** | Merge PR #14 (commit `14fe069`) — all *scheduled* CI jobs passed. Run URL: https://github.com/FeexSystems/naija-after-dark/actions/workflows/naad-unity.yml |
+| `first-night-live-test` in CI | **Not verified — job is skipped on PRs** | The job is gated on `workflow_dispatch` + `inputs.run_live_first_night_test`, so it does **not** run on push or pull_request. It must be dispatched manually. Do not read a green PR run as live CI coverage of First Night. |
 
 ## Next gate and exit criteria
 
 Gate: **Gate C — Player Rig & Animation** (next priority). See [GATE_C_PLAYER_RIG_ANIMATION.md](GATE_C_PLAYER_RIG_ANIMATION.md) for full implementation plan.
 
 Previous gate completed: **First Night runtime verification in CI** (extends Gate B).
-- ✅ Green CI run on main via PR #14 (commit `14fe069`)
+- ✅ Green CI run on main via PR #14 (commit `14fe069`) for the compile/structure/scene/animation jobs
 - ✅ Repository Actions secrets configured (UNITY_EMAIL, UNITY_PASSWORD, NAAD_TEST_EMAIL, NAAD_TEST_PASSWORD)
+- ⚠️ `first-night-live-test` was **not** part of that green run — it is manual-dispatch only
 - ✅ Run URL: https://github.com/FeexSystems/naija-after-dark/actions/workflows/naad-unity.yml
 2. `FirstNightLiveTest.Run` exits 0 in CI with `GATE_B_PASS` and `PHASE_D_PASS` in
    `game/unity/Library/first-night-report.json` (uploaded as the

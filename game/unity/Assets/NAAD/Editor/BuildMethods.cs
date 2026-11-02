@@ -10,7 +10,7 @@ namespace NAAD.Editor
         {
             Debug.Log("Building Android APK...");
 
-            string[] scenes = { "Assets/NAAD/Scenes/Bootstrap.unity" };
+            string[] scenes = { NAADBuild.BootstrapScenePath };
             string buildPath = "Builds/Android/NAAD.apk";
 
             BuildPlayerOptions buildOptions = new BuildPlayerOptions
@@ -41,7 +41,7 @@ namespace NAAD.Editor
         {
             Debug.Log("Building Android Development APK...");
 
-            string[] scenes = { "Assets/NAAD/Scenes/Bootstrap.unity" };
+            string[] scenes = { NAADBuild.BootstrapScenePath };
             string buildPath = "Builds/Android/NAAD-Dev.apk";
 
             BuildPlayerOptions buildOptions = new BuildPlayerOptions
@@ -70,7 +70,7 @@ namespace NAAD.Editor
         {
             Debug.Log("Building Android AAB...");
 
-            string[] scenes = { "Assets/NAAD/Scenes/Bootstrap.unity" };
+            string[] scenes = { NAADBuild.BootstrapScenePath };
             string buildPath = "Builds/Android/NAAD.aab";
 
             EditorUserBuildSettings.buildAppBundle = true;
@@ -101,7 +101,7 @@ namespace NAAD.Editor
         {
             Debug.Log("Building Android APK with profiling...");
 
-            string[] scenes = { "Assets/NAAD/Scenes/Bootstrap.unity" };
+            string[] scenes = { NAADBuild.BootstrapScenePath };
             string buildPath = "Builds/Android/NAAD-Profile.apk";
 
             BuildPlayerOptions buildOptions = new BuildPlayerOptions

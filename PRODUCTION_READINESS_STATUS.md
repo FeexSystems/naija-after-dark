@@ -1,5 +1,15 @@
 # NAIJA AFTER DARK — Production-Readiness Status Report
 
+> **HISTORICAL SNAPSHOT — superseded 2026-11-02.** This records the state of PR #16
+> (`chore/production-readiness-foundation`) at commit `1a82e4b` on 2026-10-29 and is
+> kept for provenance. Several findings here have since changed: the Gate C rig,
+> prefab, controller and mask now exist (the clips are placeholders), the verifier
+> path fixes it awaited have landed, and the project-structure and service CI jobs
+> were corrected. Do not treat its gate table as current.
+>
+> **Current status:** `docs/GATE_STATUS.md`. **Remaining work:**
+> `docs/IMPLEMENTATION_PLAN_REMAINING.md`.
+
 **Repository:** `FeexSystems/naija-after-dark`  
 **Pull request:** #16  
 **Working branch:** `chore/production-readiness-foundation`  
