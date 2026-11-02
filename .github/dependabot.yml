@@ -17,18 +17,10 @@ updates:
       backend-production-dependencies:
         dependency-type: production
 
-  # Supabase Edge Functions (Deno). No lockfile is committed, so only major/minor
-  # signal is available; keep the PR volume low.
-  - package-ecosystem: npm
-    directory: /supabase/functions/npc-dialogue
-    schedule:
-      interval: monthly
-    open-pull-requests-limit: 2
-    ignore:
-      # Deno resolves these from the lockfile at deploy time; bumping blind can break
-      # the edge runtime.
-      - dependency-name: "*"
-        update-types: ["version-update:semver-patch"]
+  # Supabase Edge Functions are intentionally absent here. npc-dialogue is a single
+  # index.ts with no package.json and no lockfile (Deno resolves its imports at deploy
+  # time), so an npm entry has nothing to update and failed on every scheduled run.
+  # When the function gains an import map or a package.json, add the entry back.
 
   # GitHub Actions used by the Unity and backend workflows.
   - package-ecosystem: github-actions
