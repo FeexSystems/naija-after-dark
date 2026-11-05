@@ -19,6 +19,26 @@ namespace NAAD.Core.Bootstrap
         [SerializeField] private string password = "";
         [SerializeField] private bool preferRestoreSession = true;
 
+        /// <summary>Environment variables consulted when the serialized credentials are blank.</summary>
+        public const string DevEmailEnvVar = "NAAD_DEV_EMAIL";
+        public const string DevPasswordEnvVar = "NAAD_DEV_PASSWORD";
+
+        /// <summary>
+        /// Serialized value first, then the environment.
+        /// <para>
+        /// The Bootstrap scene shipped with both fields empty and there is no auth screen,
+        /// so a player had no way to sign in at all. Environment variables let a developer
+        /// run the night against a real project without committing a password to the scene.
+        /// </para>
+        /// </summary>
+        private static string ResolveCredential(string serialized, string envVar)
+        {
+            if (!string.IsNullOrWhiteSpace(serialized)) return serialized;
+            // Fully qualified: the project has a NAAD.Environment namespace that shadows System.Environment.
+            var fromEnv = System.Environment.GetEnvironmentVariable(envVar);
+            return string.IsNullOrWhiteSpace(fromEnv) ? serialized : fromEnv;
+        }
+
         private async void Start()
         {
             try
@@ -55,18 +75,31 @@ namespace NAAD.Core.Bootstrap
 
             if (!authenticated)
             {
-                if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
+                var devEmail = ResolveCredential(email, DevEmailEnvVar);
+                var devPassword = ResolveCredential(password, DevPasswordEnvVar);
+
+                if (string.IsNullOrWhiteSpace(devEmail) || string.IsNullOrWhiteSpace(devPassword))
                 {
-                    state.SetError("No session and no email/password configured on NAADBootstrap");
+                    var message =
+                        "No session and no dev credentials. Set Email/Password on the " +
+                        "NAADBootstrap component in Assets/Scenes/Bootstrap.unity, or export " +
+                        $"{DevEmailEnvVar} and {DevPasswordEnvVar}. See docs/SUPABASE_RESTORE_RUNBOOK.md.";
+                    state.SetError(message);
+                    log.Error("Bootstrap", message);
                     return;
                 }
 
-                authenticated = await root.Auth.SignInAsync(email, password);
+                authenticated = await root.Auth.SignInAsync(devEmail, devPassword);
             }
 
             if (!authenticated)
             {
-                state.SetError("Authentication failed");
+                var message =
+                    $"Sign-in failed for '{ResolveCredential(email, DevEmailEnvVar)}'. Check the account exists " +
+                    "in the Supabase project, that email confirmation is off (or the address is confirmed), " +
+                    "and that projectUrl/anonKey in SupabaseConfig.asset point at that project.";
+                state.SetError(message);
+                log.Error("Bootstrap", message);
                 return;
             }
 

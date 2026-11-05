@@ -14,6 +14,36 @@ Note: older bible drafts mentioning `6000.0.32f1` are outdated; Gate 22 docs alr
 
 Status key: Planned · In progress · Implemented · Verified · Blocked
 
+## ⛔ BACKEND LOST — 2026-11-05
+
+**The Supabase project `unzfqrfyejkyisalzkhc` no longer exists.**
+
+```
+$ nslookup unzfqrfyejkyisalzkhc.supabase.co 8.8.8.8
+*** dns.google can't find unzfqrfyejkyisalzkhc.supabase.co: Non-existent domain
+$ nslookup supabase.com 8.8.8.8
+Name:    supabase.com            ← control resolves fine
+```
+
+This is a deleted project, not a network or DNS-filtering problem.
+
+**What it invalidates:**
+
+- Every First Night command fails at runtime. `SupabaseConfig.IsConfigured` is true,
+  so the client composes *live* services and every RPC call targets a dead host.
+- The **`GATE_B_PASS` / `PHASE_D_PASS` evidence below is historical only.** It
+  records a run that happened; it is not reproducible today.
+- The `first-night-live-test` CI job cannot pass until a new project exists.
+
+**Recovery:** [SUPABASE_RESTORE_RUNBOOK.md](SUPABASE_RESTORE_RUNBOOK.md) — create a
+project, paste `supabase/apply_all.sql`, add a user, update `SupabaseConfig.asset`,
+export `NAAD_DEV_EMAIL`/`NAAD_DEV_PASSWORD`, verify with `tools/verify-supabase.py`.
+
+Applying the bundle will be the **first execution of migrations 0010 and 0011**,
+which redefine `naad_spend`, `naad_buy` and `naad_execute_command`, and revoke
+`naad_react_to_event_attendance` from the public roles.
+
+
 ## Infrastructure Improvements (2026-10-23)
 
 || Item | Status | Evidence |
