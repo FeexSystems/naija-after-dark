@@ -198,6 +198,30 @@ server clock, with zero state writes.
 - [ ] **Build-size blast radius first:** `Assets/` is **5.1 GB**, of which
       `Assets/StreamingAssets/` is **3.96 GB** of LLM native binaries across six
       platforms (gitignored). A mobile build cannot carry this. Decide what ships.
+- [ ] **Resolve the on-device LLM payload — highest-confidence size win, needs a
+      product answer.** Measured 2026-11-05:
+
+      | Artifact | Size | Tracked in git | Referenced by game code |
+      |---|---|---|---|
+      | `Assets/LLMUnity/` (211 files, vendored LLMUnity SDK) | 15 MB | **yes** | **no — zero references** |
+      | `Assets/StreamingAssets/LlamaLib-v2.0.5/` (runtime payload) | 3.9 GB | no (gitignored) | no |
+
+      `Assets/LLMUnity/Runtime/undream.llmunity.Runtime.asmdef` declares **no
+      `includePlatforms`**, so it compiles into *every* player build, and it ships
+      native `libusearch_c.so` for **Android arm64-v8a (1.96 MB) and x86_64
+      (1.86 MB)**. A grep across `Assets/`, `*.cs`, `*.unity`, `*.prefab` and
+      `*.asmdef` finds no reference to `LLMUnity` or `undream.llmunity` outside
+      `Assets/LLMUnity` itself. So the APK carries ~3.8 MB of native code for a
+      feature nothing calls, and `Assets/` carries 15 MB of dead SDK.
+
+      CI surfaced this as: `[native-plugin-compatibility] ... usearch/windows/
+      libusearch_c.dll` is Editor-visible on Windows hosts only, so on the Linux
+      runner the asset is invisible while the Windows DLL is not — a portability
+      trap if anyone ever references it unconditionally.
+
+      **Decision required:** is on-device LLM a product requirement? If no, delete
+      `Assets/LLMUnity/` and keep `LlamaLib` gitignored. If yes, this needs an
+      owner and a plan, because today it is neither shipped nor used.
 - [ ] Reconcile the 14 unused heavy packages: `com.unity.xr.openxr`, `com.unity.ml-agents`,
       `com.unity.services.vivox`, `com.unity.services.leaderboards`,
       `com.unity.services.ccd.management`, `com.unity.ai.assistant`,
