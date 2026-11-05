@@ -473,6 +473,14 @@ namespace NAAD.Editor
             if (requireExit && anchors.All(a => a.Kind != SceneAnchor.AnchorKind.ExitTravel))
                 errors.Add($"{path}: missing ExitTravel SceneAnchor");
 
+            // An anchor whose contentId is not in SceneAnchorCommandMap resolves to no
+            // command and is invisible at runtime — the player walks up to a marker and
+            // nothing happens. The helper has existed since Gate D but was never called,
+            // so this class of dead marker could reach a build silently.
+            foreach (var unmapped in NAAD.Gameplay.Interaction.SceneAnchorCommandMap
+                         .UnmappedContentIds(anchors))
+                errors.Add($"{path}: SceneAnchor contentId '{unmapped}' has no command mapping (SceneAnchorCommandMap)");
+
             var cam = UnityEngine.Object.FindFirstObjectByType<Camera>();
             if (cam == null || !cam.CompareTag("MainCamera"))
                 errors.Add($"{path}: missing Camera tagged MainCamera");

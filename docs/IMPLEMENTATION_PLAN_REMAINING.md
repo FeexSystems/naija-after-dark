@@ -10,6 +10,38 @@ understate the current state of Gate C and Gate D.
 
 ## Progress log
 
+**2026-11-05 — audit + repair, verified locally in the running Editor:**
+
+| Verified | Evidence |
+|---|---|
+| Gate C contract | `VerifyAnimationAssets.RunVerification` → `success: true`, **37/37**, 0 failures |
+| Scene registry | `NaadScenePipeline.ValidateScenes` passes, now also enforcing anchor→command mapping |
+| Metadata gate | `validate-unity-meta.py` → 2503 files, 0 problems |
+| Backend typecheck + tests | `npm run build --workspaces` clean; both suites pass |
+
+Corrected findings (the docs below were wrong about these):
+
+- **W1 is not blocked on asset acquisition.** `3b0749c` (2026-11-02, on `main`)
+  replaced all eight placeholder clips with real Mixamo takes. What was actually
+  broken was the *wiring*: `PlayerController.controller` had zero states and every
+  layer persisted `m_Mask: {fileID: 0}`, and `PlayerRig.prefab` had no
+  MonoBehaviours and `m_Controller: {fileID: 0}`. Root cause was a real bug in
+  `ConfigureGateCAssets.EnsureLayer` (mutated a layer, then looked it up with
+  `Array.IndexOf` against a freshly-built array → `-1` → silent no-op). Fixed.
+- **W2 is not inert.** There is only one `SceneAnchor` type (`NAAD.World`), and
+  `SceneAnchorCommandMap` resolves contentIds to commands. `PlayerInteractionController`
+  binds `NAAD.World.SceneAnchor` and filters via `TryResolve`. The missing piece was
+  that `UnmappedContentIds` was never called by the validator — now wired in.
+- **W0's premise was inverted.** The working tree was not "28 modified / 117
+  deleted" — it was 15 tracked modifications plus a **duplicated scene tree**:
+  untracked `Assets/NAAD/Prefabs/Scenes/*.unity` (byte-identical copies) held the
+  original GUIDs, `EditorBuildSettings.asset` had been repointed at them, and the
+  tracked `Assets/NAAD/Scenes/*.meta` had been re-GUIDed. That broke
+  `ValidateScenes` (exact-path comparison against `NaadSceneNames`). The duplicate
+  tree was quarantined outside the repo, the GUIDs and build settings restored, and
+  the token-bearing `game/unity/.mcp.json` (plus `.claude/`/`.roo/`/`.agent/`
+  scaffolding) unstaged and gitignored.
+
 **2026-11-02 — commit `33bccc8`** (branch `feat/unity-mcp-integration`), verified locally:
 
 | Verified | Evidence |

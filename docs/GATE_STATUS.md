@@ -7,7 +7,7 @@
 >
 > Current workstreams and sequencing: [IMPLEMENTATION_PLAN_REMAINING.md](IMPLEMENTATION_PLAN_REMAINING.md).
 
-Last audit: 2026-11-02
+Last audit: 2026-11-05
 Branch: `main`
 Unity editor (actual): `6000.6.5f1` (`game/unity/ProjectSettings/ProjectVersion.txt`)
 Note: older bible drafts mentioning `6000.0.32f1` are outdated; Gate 22 docs already pin `6000.6.5f1`.
@@ -56,9 +56,39 @@ Vendor packs remain optional (G3).
 
 ## Gate C — Characters / animation
 
-**In progress; not release-ready.** Added `PlayerLocomotionController` with script-driven, camera-relative movement and input injection for mobile joystick/run controls. Extended `VerifyAnimationAssets.RunVerification` into a strict headless contract check and added a `verify-animation` CI job. The check now requires a valid Humanoid FBX/avatar, eight MVP clips, typed Animator parameters, an upper-body mask layer, and a wired player prefab containing Animator, animation bridge/state manager, CharacterController, and locomotion controller.
+**Contract verified 2026-11-05** (`VerifyAnimationAssets` 37/37, 0 failures, run
+against the Editor in `game/unity`).
 
-**Hard blocker:** real rig/clip/controller/prefab assets are still absent from the clean repository checkout. The strict job is expected to fail until licensed assets are imported and committed with stable `.meta` files. No Unity Editor compile or animation playback test has been executed by this change. Full exit criteria: [GATE_C_PLAYER_RIG_ANIMATION.md](GATE_C_PLAYER_RIG_ANIMATION.md).
+What changed since the 2026-11-02 entry, all verified by reading the tree rather
+than the docs:
+
+| Claim (2026-11-02) | Reality (2026-11-05) |
+|---|---|
+| "Real rig/clip/controller/prefab assets are still absent" | **False.** `3b0749c` (2026-11-02, on `main`) replaced all eight clips with real Mixamo takes — 672,477 lines of muscle curves. |
+| Eight clips are placeholders | **False.** All eight are real takes; `Hold` and `PutAway` are *derived* from real takes (no dedicated source exists). |
+| "the contract job proves wiring" | It did not. CI ran `ConfigureAndVerify`, which **regenerated** the assets before checking them, so it could pass while the committed prefab had `m_Controller: {fileID: 0}`, zero MonoBehaviours, and a controller with **zero states and zero motions**. |
+
+Repaired 2026-11-05:
+
+- `PlayerController.controller` — rebuilt: 14 states, 14 bound motions, layers
+  `Base Layer` / `Social` / `Phone` / `Seating`.
+- `ConfigureGateCAssets.EnsureLayer` — **real bug fixed.** It mutated a layer then
+  located its slot with `Array.IndexOf(controller.layers, layer)`; because every
+  `controller.layers` read returns a fresh array, the lookup returned `-1` and
+  `ReplaceLayer` silently no-opped, so every layer persisted `m_Mask: {fileID: 0}`.
+  That is why `UpperBodyMask` never applied and verification failed on it.
+- `PlayerRig.prefab` — now carries `CharacterAnimationController`,
+  `AnimationStateManager`, `PlayerLocomotionController`, `CharacterController`, an
+  Animator bound to `PlayerController`, and a valid humanoid `PlayerAvatar`.
+- `PlayerAvatar.asset` — created (it did not exist; the prefab previously borrowed
+  an avatar from an *untracked* Mixamo FBX).
+- CI `verify-animation` now runs `VerifyAnimationAssets.RunVerification` (verify
+  only, no regeneration), so a green run proves the committed assets are correct.
+
+Still open: play-test motion (the contract proves wiring, not movement), and
+`Animations/NAADASSETSNEW/` (~77 MB of source takes) is uncommitted, so
+`ImportMixamoClips.Run` cannot regenerate from a clean checkout.
+
 ## Gate D — Gameplay / interaction
 
 In progress (backend-backed First Night controller/HUD exist; no third-person controller or interaction framework in `Assets/NAAD`).

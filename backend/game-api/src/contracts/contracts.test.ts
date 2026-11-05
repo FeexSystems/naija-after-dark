@@ -137,11 +137,58 @@ console.log("contracts.test.ts: ok");
 
 // --- RPC catalog presence ---
 {
-  const { RPC_CATALOG, listCommandRouterTypes } = await import("./rpc-catalog.ts");
+  const { RPC_CATALOG, INTERNAL_RPCS, TRIGGER_FUNCTIONS, listCommandRouterTypes } =
+    await import("./rpc-catalog.ts");
   assert(RPC_CATALOG.some((e) => e.name === "naad_execute_command"), "catalog lists router");
   const types = listCommandRouterTypes();
   for (const t of COMMAND_REGISTRY) {
     assert((types as readonly string[]).includes(t), "catalog command types include " + t);
+  }
+
+  // --- RPC catalog vs. the actual migrations -------------------------------
+  // The catalog previously advertised `naad_list_phone_messages`, which has
+  // never existed, while the Unity client called the real `naad_list_messages`.
+  // Read the migrations and require every catalogued name to be defined, so a
+  // rename on either side fails here instead of 404-ing in the game.
+  const { readFileSync, readdirSync } = await import("node:fs");
+  const { dirname, join } = await import("node:path");
+  const { fileURLToPath } = await import("node:url");
+
+  const migrationsDir = join(
+    dirname(fileURLToPath(import.meta.url)),
+    "..", "..", "..", "..", "supabase", "migrations",
+  );
+  const sql = readdirSync(migrationsDir)
+    .filter((f) => f.endsWith(".sql"))
+    .sort()
+    .map((f) => readFileSync(join(migrationsDir, f), "utf8"))
+    .join("\n");
+
+  const defined = new Set(
+    [...sql.matchAll(/create\s+or\s+replace\s+function\s+public\.([a-z0-9_]+)\s*\(/gi)]
+      .map((m) => m[1]!.toLowerCase()),
+  );
+  assert(defined.size > 20, "migration scan found the RPC surface (" + defined.size + ")");
+
+  for (const entry of RPC_CATALOG) {
+    assert(defined.has(entry.name), "catalog name exists in migrations: " + entry.name);
+  }
+  for (const name of INTERNAL_RPCS) {
+    assert(defined.has(name), "internal name exists in migrations: " + name);
+  }
+
+  // Nothing client-reachable may be missing from the catalog.
+  const catalogued = new Set<string>([
+    ...RPC_CATALOG.map((e) => e.name),
+    ...INTERNAL_RPCS,
+  ]);
+  for (const name of TRIGGER_FUNCTIONS) {
+    assert(defined.has(name), "trigger function exists in migrations: " + name);
+  }
+  const nonRpc = new Set<string>([...INTERNAL_RPCS, ...TRIGGER_FUNCTIONS]);
+  for (const name of defined) {
+    if (nonRpc.has(name)) continue;
+    assert(catalogued.has(name), "migration RPC is catalogued: " + name);
   }
 }
 
