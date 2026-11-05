@@ -160,8 +160,12 @@ contentIds, 0 unmapped.
 
 Remaining for Gate D:
 
-- [ ] Verify `StubCommandService` is never selected at runtime when a live config is
-      present.
+- [x] Verify `StubCommandService` is never selected at runtime when a live config is
+      present. Verified 2026-11-05: `NAADApplicationRoot.Compose()` branches once on
+      `supabaseConfig != null && supabaseConfig.IsConfigured`, and the stub arm logs
+      `SupabaseConfig missing — using stub services`. There is no other construction
+      site. Minor residual risk: a build shipped without a configured asset degrades
+      to stubs with only a warning — consider failing loudly in release.
 - [ ] Play-test First Night through real interactions.
 
 **Exit:** anchors drive real commands end-to-end on device, and the validator
@@ -214,6 +218,22 @@ measurements and a build size the store will accept.
 - [ ] **Collapse the two UI systems.** `Assets/NAAD/UI/*.cs` (Controllers) and
       `Assets/NAAD/UI/Scripts/*.cs` (Views + `ScreenNavigationManager`) are parallel
       implementations. Pick one; delete the other.
+
+      *Investigated 2026-11-05 — the picture is worse than "pick one".* **Neither
+      system is wired into anything.** Across all 31 UI scripts, the GUID of every
+      one appears in **zero** scenes and **zero** prefabs. The `Bootstrap` scene
+      contains only `FirstNight`, `Main Camera`, `NAADApplicationRoot`,
+      `NAADBootstrap` and `Spline` — no UI objects. `NAADBootstrap` references no UI
+      type at all. The only Editor path that builds screens is
+      `Assets/NAAD/UI/Editor/UIScreenFactory.cs` + `Editor/CreateScreenPrefabs.cs`,
+      and no prefabs from it are committed.
+
+      The UI that actually runs is `Assets/NAAD/Gameplay/FirstNight/FirstNightHud.cs`
+      (referenced by `NAADBuild.cs`) — a third implementation, outside `UI/`.
+
+      So this is not a merge decision, it is a product decision: does the game ship
+      the First Night HUD and delete all of `UI/`, or is `UI/` the intended future
+      shell that was never finished? Answer that before deleting anything.
 - [ ] **CityStreet reproducibility.** The committed scene references
       `lamp_pole_small.prefab` and `bench.prefab` from `Assets/Versatile Studio Assets/`,
       which `.gitignore:58-59` excludes. Either commit those two prefabs (+ deps) or
