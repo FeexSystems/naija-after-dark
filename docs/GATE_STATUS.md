@@ -14,34 +14,40 @@ Note: older bible drafts mentioning `6000.0.32f1` are outdated; Gate 22 docs alr
 
 Status key: Planned · In progress · Implemented · Verified · Blocked
 
-## ⛔ BACKEND LOST — 2026-11-05
+## Backend status — VERIFIED LIVE (2026-11-05)
 
-**The Supabase project `unzfqrfyejkyisalzkhc` no longer exists.**
+`https://unzfqrfyejkyisalzkhc.supabase.co` is **reachable and fully migrated**.
 
 ```
-$ nslookup unzfqrfyejkyisalzkhc.supabase.co 8.8.8.8
-*** dns.google can't find unzfqrfyejkyisalzkhc.supabase.co: Non-existent domain
-$ nslookup supabase.com 8.8.8.8
-Name:    supabase.com            ← control resolves fine
+$ python tools/verify-supabase.py
+project: https://unzfqrfyejkyisalzkhc.supabase.co
+  dns        OK
+  rpcs       28/28 present (28 answered UNAUTHENTICATED as expected)
+OK - project is reachable and the full RPC surface responds.
 ```
 
-This is a deleted project, not a network or DNS-filtering problem.
+All 28 client-callable RPCs exist and answer. Each returns `UNAUTHENTICATED`
+because the probe uses the anon key with no user session — that is the correct
+answer, and it means the functions are present and executing.
 
-**What it invalidates:**
+> **Correction to a claim made earlier the same day.** During the 2026-11-05 audit
+> `unzfqrfyejkyisalzkhc.supabase.co` returned `NXDOMAIN` from Google DNS, and that
+> was written up here as a deleted project. The host resolves and the gateway
+> answers now, so the earlier reading was a **transient DNS failure**, not a lost
+> backend. No project was ever missing, and the historical `GATE_B_PASS` /
+> `PHASE_D_PASS` evidence below still stands.
+>
+> A second error compounded it: the first probe posted `{}` to every RPC and read
+> the resulting **404s as "missing function"**. PostgREST returns 404 both for an
+> absent function *and* for one whose signature you failed to match, so every
+> function taking arguments looked missing. `tools/verify-supabase.py` now builds
+> the argument set from `rpc-catalog.ts` and reports 28/28.
 
-- Every First Night command fails at runtime. `SupabaseConfig.IsConfigured` is true,
-  so the client composes *live* services and every RPC call targets a dead host.
-- The **`GATE_B_PASS` / `PHASE_D_PASS` evidence below is historical only.** It
-  records a run that happened; it is not reproducible today.
-- The `first-night-live-test` CI job cannot pass until a new project exists.
-
-**Recovery:** [SUPABASE_RESTORE_RUNBOOK.md](SUPABASE_RESTORE_RUNBOOK.md) — create a
-project, paste `supabase/apply_all.sql`, add a user, update `SupabaseConfig.asset`,
-export `NAAD_DEV_EMAIL`/`NAAD_DEV_PASSWORD`, verify with `tools/verify-supabase.py`.
-
-Applying the bundle will be the **first execution of migrations 0010 and 0011**,
-which redefine `naad_spend`, `naad_buy` and `naad_execute_command`, and revoke
-`naad_react_to_event_attendance` from the public roles.
+**Real remaining blocker to play:** a user account. `Assets/Scenes/Bootstrap.unity`
+ships with `email`/`password` empty and there is no auth screen, so sign-in needs
+either a confirmed user in the project plus `NAAD_DEV_EMAIL`/`NAAD_DEV_PASSWORD`
+exported, or those two fields filled on the `NAADBootstrap` component.
+See [SUPABASE_SETUP_RUNBOOK.md](SUPABASE_SETUP_RUNBOOK.md).
 
 
 ## Infrastructure Improvements (2026-10-23)

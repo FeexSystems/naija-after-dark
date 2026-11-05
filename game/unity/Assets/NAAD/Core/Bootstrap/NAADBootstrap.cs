@@ -83,7 +83,7 @@ namespace NAAD.Core.Bootstrap
                     var message =
                         "No session and no dev credentials. Set Email/Password on the " +
                         "NAADBootstrap component in Assets/Scenes/Bootstrap.unity, or export " +
-                        $"{DevEmailEnvVar} and {DevPasswordEnvVar}. See docs/SUPABASE_RESTORE_RUNBOOK.md.";
+                        $"{DevEmailEnvVar} and {DevPasswordEnvVar}. See docs/SUPABASE_SETUP_RUNBOOK.md.";
                     state.SetError(message);
                     log.Error("Bootstrap", message);
                     return;
