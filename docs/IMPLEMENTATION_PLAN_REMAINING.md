@@ -219,9 +219,20 @@ server clock, with zero state writes.
       runner the asset is invisible while the Windows DLL is not — a portability
       trap if anyone ever references it unconditionally.
 
-      **Decision required:** is on-device LLM a product requirement? If no, delete
-      `Assets/LLMUnity/` and keep `LlamaLib` gitignored. If yes, this needs an
-      owner and a plan, because today it is neither shipped nor used.
+      **Decided 2026-11-05: keep it. On-device LLM is a planned feature, not dead
+      weight.** Consequences that now need owning before Gate 16 ships:
+
+      - `undream.llmunity.Runtime` must stop compiling into builds that do not use
+        it, or the ~3.8 MB of Android `libusearch_c.so` ships for nothing. Give the
+        asmdef an `includePlatforms`, or wire the feature.
+      - The Windows-only `libusearch_c.dll` being Editor-visible while the Linux
+        container sees nothing is a portability trap — any unconditional reference
+        breaks the Linux CI build.
+      - `Assets/StreamingAssets/LlamaLib-v2.0.5/` (3.9 GB) stays gitignored; a
+        clean clone therefore cannot run on-device inference. Document the fetch
+        step or the feature is unbuildable by anyone else.
+      - A model file has not been chosen or measured. That is the Gate 16 blocker:
+        a mobile LLM payload is tens to hundreds of MB and has to fit a store limit.
 - [ ] Reconcile the 14 unused heavy packages: `com.unity.xr.openxr`, `com.unity.ml-agents`,
       `com.unity.services.vivox`, `com.unity.services.leaderboards`,
       `com.unity.services.ccd.management`, `com.unity.ai.assistant`,
@@ -239,25 +250,42 @@ measurements and a build size the store will accept.
 
 ### W5 — Structural & hygiene debt · **M** · parallel, no dependencies
 
-- [ ] **Collapse the two UI systems.** `Assets/NAAD/UI/*.cs` (Controllers) and
-      `Assets/NAAD/UI/Scripts/*.cs` (Views + `ScreenNavigationManager`) are parallel
-      implementations. Pick one; delete the other.
+- [ ] **Finish the UI layer.** *Correction to the 2026-11-05 reading below — the two
+      folders are **paired**, not competing.*
 
-      *Investigated 2026-11-05 — the picture is worse than "pick one".* **Neither
-      system is wired into anything.** Across all 31 UI scripts, the GUID of every
-      one appears in **zero** scenes and **zero** prefabs. The `Bootstrap` scene
-      contains only `FirstNight`, `Main Camera`, `NAADApplicationRoot`,
-      `NAADBootstrap` and `Spline` — no UI objects. `NAADBootstrap` references no UI
-      type at all. The only Editor path that builds screens is
-      `Assets/NAAD/UI/Editor/UIScreenFactory.cs` + `Editor/CreateScreenPrefabs.cs`,
-      and no prefabs from it are committed.
+      `NAAD.UI.Scripts.*View` is the presentation half and `NAAD.UI.*Controller` is the
+      logic half; `MainHudView`'s own doc comment says "Bound to
+      `NAAD.UI.MainHudController`". The View half is genuinely implemented (real
+      `UpdateLocation`/`UpdateBalance`/`ShowInteractionPrompt` methods, events,
+      unsubscribe-on-destroy). The Controller half held the data but had **no reference
+      to any view**, so every `ShowHud`/`HideHud`/`UpdateHud` was an empty comment —
+      and `ScreenNavigationManager.WireController` looked a controller up by
+      `FindObjectOfType` inside a method nothing called. `ControllerWiring.WireViewControllers`
+      literally logged "View-controller wiring not yet implemented." (and was behind the
+      undefined `NAAD_LEGACY_EDITOR_TOOLS` define, so it was dead anyway).
 
-      The UI that actually runs is `Assets/NAAD/Gameplay/FirstNight/FirstNightHud.cs`
-      (referenced by `NAADBuild.cs`) — a third implementation, outside `UI/`.
+      **Done 2026-11-05** (compiles clean against Unity's assemblies):
+      - `BaseScreenController` now owns a `ScreenViewBase`, exposes `BindView()`, calls
+        `OnViewBound()` and renders on every state change.
+      - `MainHudController` renders `MainHudData` into `MainHudView` and routes the view's
+        interaction tap through `OnInteract()`.
+      - `ScreenNavigationManager.RegisterControllersAuto()` binds every controller to the
+        view whose screen id matches its type name (`MainHudController` → `"MainHud"`),
+        called from `Start()`. `WireController` now uses `FindAnyObjectByType`.
+      - `NAADApplicationRoot.Compose()` publishes the composed graph through
+        `ServiceContainer.RegisterProdServices`, which had never been called — leaving
+        every `ServiceContainer.Resolve<T>()` in the UI layer returning null.
 
-      So this is not a merge decision, it is a product decision: does the game ship
-      the First Night HUD and delete all of `UI/`, or is `UI/` the intended future
-      shell that was never finished? Answer that before deleting anything.
+      Remaining to finish:
+      - [ ] The other seven controllers (`Auth`, `Bootstrap`, `BottomNavigation`,
+            `Configuration`, `NightSummary`, `PhoneHome`, `PingMessaging`) still have the
+            same empty render methods. Same pattern as `MainHudController`.
+      - [ ] **Author the UI prefabs.** No screen prefab is committed, so nothing
+            instantiates a view. `Assets/NAAD/UI/Editor/UIScreenFactory.cs` can build them
+            but has never been run and its output is not in the repo. This needs the Unity
+            Editor, not code.
+      - [ ] Decide the relationship with `Gameplay/FirstNight/FirstNightHud.cs`, which is
+            the UI actually running today.
 - [ ] **CityStreet reproducibility.** The committed scene references
       `lamp_pole_small.prefab` and `bench.prefab` from `Assets/Versatile Studio Assets/`,
       which `.gitignore:58-59` excludes. Either commit those two prefabs (+ deps) or

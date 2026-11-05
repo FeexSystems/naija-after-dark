@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using NAAD.Core.Bootstrap;
+using NAAD.UI;
 
 namespace NAAD.UI.Scripts
 {
@@ -126,8 +127,9 @@ namespace NAAD.UI.Scripts
             var typedView = view as TView;
             if (typedView == null) return;
 
-            // The controller instance is found via FindObjectOfType or passed externally
-            var controller = FindObjectOfType<TController>();
+            // FindAnyObjectByType does not depend on instance-ID ordering, unlike the
+            // deprecated FindObjectOfType it replaces.
+            var controller = FindAnyObjectByType<TController>();
             if (controller == null)
             {
                 Debug.LogWarning($"[ScreenNavigationManager] Controller '{typeof(TController).Name}' not found for screen '{screenId}'.");
@@ -137,8 +139,54 @@ namespace NAAD.UI.Scripts
             wire(controller, typedView);
         }
 
+        /// <summary>
+        /// Bind every <see cref="BaseScreenController"/> in the scene to the registered view
+        /// whose screen id matches the controller's type name (strip the "Controller" suffix:
+        /// <c>MainHudController</c> → screen id <c>MainHud</c>).
+        /// <para>
+        /// This is the glue that did not exist. The Views (<c>NAAD.UI.Scripts.*View</c>) were
+        /// implemented and the Controllers (<c>NAAD.UI.*Controller</c>) held the data, but
+        /// nothing connected them — every render method was an empty comment. Bind once at
+        /// startup rather than per navigation; the controller keeps its view for its lifetime.
+        /// </para>
+        /// </summary>
+        /// <param name="logWhenMissing">Warn for controllers that have no matching view.</param>
+        /// <returns>The number of controllers bound.</returns>
+        public int RegisterControllersAuto(bool logWhenMissing = true)
+        {
+            var controllers = FindObjectsByType<BaseScreenController>(FindObjectsInactive.Include);
+            var bound = 0;
+
+            foreach (var controller in controllers)
+            {
+                if (controller == null) continue;
+
+                var typeName = controller.GetType().Name;
+                var screenId = typeName.EndsWith("Controller", StringComparison.Ordinal)
+                    ? typeName.Substring(0, typeName.Length - "Controller".Length)
+                    : typeName;
+
+                if (_views.TryGetValue(screenId, out var view))
+                {
+                    controller.BindView(view);
+                    bound++;
+                }
+                else if (logWhenMissing)
+                {
+                    Debug.LogWarning(
+                        $"[ScreenNavigationManager] No registered view for controller " +
+                        $"'{typeName}' (expected screen id '{screenId}').");
+                }
+            }
+
+            return bound;
+        }
+
         private void Start()
         {
+            // Bind before the first navigation so the default screen renders with data.
+            RegisterControllersAuto();
+
             if (_defaultScreen != null)
             {
                 NavigateTo(_defaultScreen.ScreenId, addToHistory: false);
