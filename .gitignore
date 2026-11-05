@@ -217,10 +217,10 @@ PRP_Bed_ND,PRP_TV_ND/
 deno.exe
 
 # Gate C animation sources — 77 MB / 268 raw Mixamo "Without Skin" FBX takes.
-# The baked .anim clips are what ship and they stay tracked; these are only inputs
-# to Assets/NAAD/Editor/ImportMixamoClips.cs, which can re-download them from
-# Mixamo. See Assets/NAAD/Animation/Animations/MVP_PLACEHOLDER_CLIPS.md.
-game/unity/Assets/NAAD/Animation/Animations/NAADASSETSNEW/
-game/unity/Assets/NAAD/Animation/Animations/NAADASSETSNEW.meta
+# COMMITTED on purpose (decided 2026-11-05): ImportMixamoClips.cs maps these onto
+# the eight shipped .anim clips, so committing them makes clip regeneration
+# reproducible from a clean checkout. Without them the tool reports
+# "MISSING SOURCE" and the provenance of the shipped clips is unverifiable.
+# See Assets/NAAD/Animation/Animations/MVP_PLACEHOLDER_CLIPS.md.
 # Orphan .meta for gitignored LLM native payload (see StreamingAssets/LlamaLib below).
 game/unity/Assets/StreamingAssets/LlamaLib-v2.0.5.meta
