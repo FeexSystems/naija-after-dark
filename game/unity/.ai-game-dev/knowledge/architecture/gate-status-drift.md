@@ -25,6 +25,25 @@ Establish truth with a CI run, not by reading a ledger.
 - `PROJECT_PLAN.md` had an unterminated code fence that swallowed the entire
   roadmap into a code block, plus an orphaned duplicate fragment at the end.
 
+## Audit findings go stale too (2026-11-05)
+
+The 2026-11-02 audit's two headline defects had both already been fixed on `main`
+by the time anyone acted on them:
+
+| Audit claim | Reality on `main` |
+|---|---|
+| Two duplicate `SceneAnchor` types; interaction inert | One type (`NAAD.World.SceneAnchor`), 22 anchors, `SceneAnchorCommandMap` resolves them, controller has `using NAAD.World` |
+| Gate C blocked; assets absent; clips are placeholders | `3b0749c` replaced all eight with real Mixamo takes (672,477 lines) |
+
+Both "corrections" in the plan were written from a working tree that was already
+behind a commit that fixed them. **An audit is a snapshot of a working tree, not of
+`main`.** Before acting on a finding, confirm it still reproduces — `git log` the
+file the finding names.
+
+The failure mode is asymmetric and worth naming: a stale *bug* report wastes work
+and can cause someone to "fix" a non-problem; a stale *status* claim hides a real
+defect. The 2026-11-05 audit found both in the same tree.
+
 ## Why this keeps happening
 
 Status docs here are written as snapshots ("Last audit: …") but read as current

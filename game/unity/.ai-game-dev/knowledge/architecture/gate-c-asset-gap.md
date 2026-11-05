@@ -1,36 +1,44 @@
-# Gate C Asset Sourcing — Blocked
+# Gate C Asset Sourcing — RESOLVED (2026-11-05)
 
-**Finding (2026-11-02):** the eight Gate C animation clips cannot be sourced from
-assets already in the project. Verified by exhaustive search, not assumption.
+> **This note said "Blocked" and is now wrong.** Kept as a record of the error,
+> because the correction is the useful part.
 
-## What is in the repo
+## What this note claimed (2026-11-02)
 
-| Source | Contents | Usable for Gate C? |
-|---|---|---|
-| `Assets/NAAD/Animation/Characters/Player/PlayerRig.fbx` | Humanoid rig (`animationType: 3`) with `clipAnimations: []` — **zero embedded clips** | No |
-| `Assets/NAAD/Content/Models/*/CHR_*.fbx` | Static character models, no animation | No |
-| `Assets/Kevin Iglesias/Human Animations/` | 84 FBX, but only **Idles** and **Work** (farming, fishing, mining, hammering, gathering, crafting, object-grip) | Only `HumanM@Idle01` resembles a required clip |
-| `Assets/Brick Project Studio/` | Furniture/door `.anim` clips, non-humanoid | No |
+That the eight Gate C clips could not be sourced from anything in the project, and
+that Gate C was blocked on human asset acquisition.
 
-Two further blockers on the Kevin Iglesias pack:
+## What was actually true
 
-1. It is **gitignored** (`.gitignore:52-53`) — absent from every clean checkout, so
-   anything wired from it breaks CI and fresh clones.
-2. It is a medieval/crafting themed library. It has no walk, no run, no greeting and
-   no phone animations at all.
+Commit `3b0749c` — `feat(gate-c): replace placeholder clips with real Mixamo takes`
+— landed on `main` on **2026-11-02 at 16:48**, i.e. *after* this note was written.
+It replaced all eight placeholders: 672,477 inserted lines, every clip now
+`m_Name: mixamo.com` muscle curves. `Assets/NAAD/Editor/ImportMixamoClips.cs` maps
+each target `.anim` to a source take under `Animations/NAADASSETSNEW/` and copies
+the clip without touching the target `.meta`, so controller bindings survive.
 
-## Consequence
+Verify by reading the asset, not the doc:
 
-Gate C passes its contract today on eight **placeholder** clips
-(`MVP_PLACEHOLDER_CLIPS.md` states they are not production takes). A green Gate C
-job means the *wiring* is correct, not that the player is animated.
+```bash
+git log --oneline -1 -- game/unity/Assets/NAAD/Animation/Animations/Locomotion/Idle.anim
+head -13 game/unity/Assets/NAAD/Animation/Animations/Locomotion/Idle.anim   # m_Name: mixamo.com
+```
 
-## What is actually required
+## The real Gate C defect (also fixed 2026-11-05)
 
-Real humanoid takes for: locomotion Idle/Walk/Run, phone Retrieve/Hold/Browse/
-PutAway, social Greeting. The documented acquisition route is Mixamo or Unity
-Starter Assets — see `Assets/NAAD/Animation/ASSET_ACQUISITION.md`. Whoever imports
-them must preserve the existing `.meta` GUIDs so the AnimatorController bindings
-survive (stability is the whole reason the clips are committed as `.anim`).
+The clips were fine; the **wiring** was not. `PlayerController.controller` had
+zero states, zero motions and `m_Mask: {fileID: 0}` on every layer, and
+`PlayerRig.prefab` had no MonoBehaviours and `m_Controller: {fileID: 0}`. Root
+cause was a genuine bug in `ConfigureGateCAssets.EnsureLayer`: it mutated a layer
+and then located its slot with `Array.IndexOf(controller.layers, layer)`, but every
+`controller.layers` read returns a fresh array, so the lookup returned `-1` and the
+mask write was silently dropped. Fixed by mutating a local array copy and assigning
+the whole array back.
 
-Related: [Mutation Surface](/architecture/mutation-surface.md).
+## Lesson
+
+A gate that *regenerates* the artifact before verifying it (`ConfigureAndVerify`)
+proves nothing about what is committed. The CI job now runs
+`VerifyAnimationAssets.RunVerification` — verify only.
+
+Related: [Gate Status & Doc Drift](/architecture/gate-status-drift.md).

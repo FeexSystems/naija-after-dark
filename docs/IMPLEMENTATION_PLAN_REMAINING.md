@@ -10,6 +10,38 @@ understate the current state of Gate C and Gate D.
 
 ## Progress log
 
+**2026-11-05 — audit + repair, verified locally in the running Editor:**
+
+| Verified | Evidence |
+|---|---|
+| Gate C contract | `VerifyAnimationAssets.RunVerification` → `success: true`, **37/37**, 0 failures |
+| Scene registry | `NaadScenePipeline.ValidateScenes` passes, now also enforcing anchor→command mapping |
+| Metadata gate | `validate-unity-meta.py` → 2503 files, 0 problems |
+| Backend typecheck + tests | `npm run build --workspaces` clean; both suites pass |
+
+Corrected findings (the docs below were wrong about these):
+
+- **W1 is not blocked on asset acquisition.** `3b0749c` (2026-11-02, on `main`)
+  replaced all eight placeholder clips with real Mixamo takes. What was actually
+  broken was the *wiring*: `PlayerController.controller` had zero states and every
+  layer persisted `m_Mask: {fileID: 0}`, and `PlayerRig.prefab` had no
+  MonoBehaviours and `m_Controller: {fileID: 0}`. Root cause was a real bug in
+  `ConfigureGateCAssets.EnsureLayer` (mutated a layer, then looked it up with
+  `Array.IndexOf` against a freshly-built array → `-1` → silent no-op). Fixed.
+- **W2 is not inert.** There is only one `SceneAnchor` type (`NAAD.World`), and
+  `SceneAnchorCommandMap` resolves contentIds to commands. `PlayerInteractionController`
+  binds `NAAD.World.SceneAnchor` and filters via `TryResolve`. The missing piece was
+  that `UnmappedContentIds` was never called by the validator — now wired in.
+- **W0's premise was inverted.** The working tree was not "28 modified / 117
+  deleted" — it was 15 tracked modifications plus a **duplicated scene tree**:
+  untracked `Assets/NAAD/Prefabs/Scenes/*.unity` (byte-identical copies) held the
+  original GUIDs, `EditorBuildSettings.asset` had been repointed at them, and the
+  tracked `Assets/NAAD/Scenes/*.meta` had been re-GUIDed. That broke
+  `ValidateScenes` (exact-path comparison against `NaadSceneNames`). The duplicate
+  tree was quarantined outside the repo, the GUIDs and build settings restored, and
+  the token-bearing `game/unity/.mcp.json` (plus `.claude/`/`.roo/`/`.agent/`
+  scaffolding) unstaged and gitignored.
+
 **2026-11-02 — commit `33bccc8`** (branch `feat/unity-mcp-integration`), verified locally:
 
 | Verified | Evidence |
@@ -81,70 +113,63 @@ the edits landed 06:53–06:54.
 
 ---
 
-### W1 — Gate C: real player animation · **M** (plus human asset acquisition)
+### W1 — Gate C: real player animation · **DONE 2026-11-05**
 
-This is the longest-standing blocker. The eight clips are placeholders by their own
-documentation, and **the assets do not exist anywhere in the repo** — see
-`knowledge/architecture/gate-c-asset-gap.md`. `PlayerRig.fbx` is a humanoid rig with
-`clipAnimations: []`.
+> **This section was wrong.** The eight clips are **real Mixamo takes**, landed in
+> `3b0749c` on `main` on 2026-11-02 — a commit that post-dates the audit this plan
+> was written from. No human asset acquisition was ever outstanding. What was
+> actually broken was the *wiring*: `PlayerController.controller` had zero states
+> and persisted `m_Mask: {fileID: 0}` on every layer, and `PlayerRig.prefab` had no
+> MonoBehaviours and `m_Controller: {fileID: 0}`. Root cause was a real bug in
+> `ConfigureGateCAssets.EnsureLayer` (mutated a layer, then looked its slot up with
+> `Array.IndexOf` against a freshly-built array → `-1` → silent no-op). Fixed, and
+> `VerifyAnimationAssets` now reports 37/37.
 
-- [ ] **Human task:** acquire real humanoid takes for Idle / Walk / Run /
-      Retrieve / Hold / Browse / PutAway / Greeting (Mixamo or Unity Starter Assets;
-      route documented in `Assets/NAAD/Animation/ASSET_ACQUISITION.md`).
-- [ ] Import, **preserving the existing `.meta` GUIDs** so AnimatorController
-      bindings survive — this is why the clips are committed as `.anim` at all.
-- [ ] Re-run `NAAD.Editor.ConfigureGateCAssets.ConfigureAndVerify` headlessly.
+Remaining for Gate C:
+
 - [ ] Play-test on device or in Editor: move, phone in/out, greet. The contract job
       proves wiring, not motion.
-- [ ] Replace `MVP_PLACEHOLDER_CLIPS.md` with a real provenance record (source,
-      licence, actor/take).
+- [ ] Decide whether to commit `Animations/NAADASSETSNEW/` (~77 MB of source takes).
+      It is gitignored today, so `ImportMixamoClips.Run` cannot regenerate from a
+      clean checkout — the baked `.anim` clips are what ship.
+- [x] Provenance recorded in `Animations/MVP_PLACEHOLDER_CLIPS.md` (the file name is
+      now wrong; the contents are a real provenance table).
 
-**Exit:** eight non-placeholder clips with recorded provenance, contract job green,
-and observed in-game playback.
+**Exit:** thirteen of fourteen bars met; blocked only on observed playback.
 
-> **Do not** wire clips from `Assets/Kevin Iglesias/`. It is gitignored
-> (`.gitignore:52-53`), contains only Idles + farming/crafting work, and using it
-> would reintroduce the clean-checkout failure this plan is trying to remove.
+> **Do not** wire clips from `Assets/Kevin Iglesias/`. It is gitignored, contains
+> only Idles + farming/crafting work, and would reintroduce the clean-checkout
+> failure this plan is trying to remove.
 
 ---
 
-### W2 — Gate D: gameplay/interaction is **wired but inert** · **M**
+### W2 — Gate D: gameplay/interaction · **DONE 2026-11-05** (play-test outstanding)
 
-> **Correction to earlier readings of this gate (2026-11-02).** The framework exists
-> and looks complete, but it probes for a component type that no scene contains.
+> **This section was wrong.** It described a duplicate `SceneAnchor` type and an
+> inert controller. Both were already fixed on `main` before this plan was read
+> again: there is exactly one type, `NAAD.World.SceneAnchor`, used by all 22 anchors
+> across the five scenes; `SceneAnchorCommandMap` maps each `contentId` to a command
+> intent; and `PlayerInteractionController` has `using NAAD.World;` and filters
+> candidates through `TryResolve`.
 
-There are **two different `SceneAnchor` MonoBehaviour classes**:
+What was genuinely missing: `SceneAnchorCommandMap.UnmappedContentIds` existed for
+exactly this purpose but **was never called**, so an unmapped marker would have
+failed silently at runtime instead of failing the scene gate. It is now wired into
+`NaadScenePipeline.ValidateAnchors`. Verified statically: 22 anchors, 17 mapped
+contentIds, 0 unmapped.
 
-| Type | Fields | Present in scenes |
-|---|---|---|
-| `NAAD.World.SceneAnchor` | `contentId`, `AnchorKind{PlayerSpawn, ExitTravel, Interaction, CameraRig, Landmark}`, `displayName`, `travelSceneName` | **yes — 22 instances across all 5 scenes** |
-| `NAAD.Gameplay.Interaction.SceneAnchor` | `anchorId`, `InteractionKind{None,Talk,Travel,Spend,AttendEvent,Examine}`, `prompt`, `radius`, `targetLocationId`, `sku`, `npcId`, `eventId` | **zero** |
+Remaining for Gate D:
 
-`PlayerInteractionController.RefreshNearestAnchor()` does
-`FindObjectsByType<SceneAnchor>()` in namespace `NAAD.Gameplay.Interaction` with no
-`using NAAD.World;` — so it binds to the interaction type and finds **nothing at
-runtime**. Nothing ever `AddComponent`s that type; the only creators
-(`NaadScenePipeline.CreateAnchor`, `NaadCityStreetBuilder`) add the `NAAD.World` one.
-
-Tasks:
-
-- [ ] Choose the canonical type. Scenes and CI already standardise on
-      `NAAD.World.SceneAnchor` (22 instances, validated by `ValidateScenes`), so the
-      cheaper direction is to make that canonical.
-- [ ] Map `AnchorKind` → command intent, and carry the payload the interaction type
-      encodes (`sku`, `npcId`, `eventId`, `targetLocationId`). `contentId` currently
-      holds mixed identifiers (`"nightclub"`, `"syu.grill.open"`,
-      `"npc.crew.mama-seyi"`), so this needs a deliberate decision, not a guess —
-      a wrong mapping sends players to the wrong location.
-- [ ] Delete the losing type so this cannot silently recur.
-- [ ] Extend `NaadScenePipeline.ValidateScenes` to assert every non-spawn anchor
-      resolves to a known command intent — catches the disconnect class of bug in CI.
-- [ ] Verify `StubCommandService` is never selected at runtime when a live config is
-      present.
+- [x] Verify `StubCommandService` is never selected at runtime when a live config is
+      present. Verified 2026-11-05: `NAADApplicationRoot.Compose()` branches once on
+      `supabaseConfig != null && supabaseConfig.IsConfigured`, and the stub arm logs
+      `SupabaseConfig missing — using stub services`. There is no other construction
+      site. Minor residual risk: a build shipped without a configured asset degrades
+      to stubs with only a warning — consider failing loudly in release.
 - [ ] Play-test First Night through real interactions.
 
-**Exit:** anchors in all five scenes drive real commands end-to-end, validator
-enforces the mapping, and only one `SceneAnchor` type exists.
+**Exit:** anchors drive real commands end-to-end on device, and the validator
+enforces the mapping (the validator half is now done).
 
 ---
 
@@ -193,6 +218,22 @@ measurements and a build size the store will accept.
 - [ ] **Collapse the two UI systems.** `Assets/NAAD/UI/*.cs` (Controllers) and
       `Assets/NAAD/UI/Scripts/*.cs` (Views + `ScreenNavigationManager`) are parallel
       implementations. Pick one; delete the other.
+
+      *Investigated 2026-11-05 — the picture is worse than "pick one".* **Neither
+      system is wired into anything.** Across all 31 UI scripts, the GUID of every
+      one appears in **zero** scenes and **zero** prefabs. The `Bootstrap` scene
+      contains only `FirstNight`, `Main Camera`, `NAADApplicationRoot`,
+      `NAADBootstrap` and `Spline` — no UI objects. `NAADBootstrap` references no UI
+      type at all. The only Editor path that builds screens is
+      `Assets/NAAD/UI/Editor/UIScreenFactory.cs` + `Editor/CreateScreenPrefabs.cs`,
+      and no prefabs from it are committed.
+
+      The UI that actually runs is `Assets/NAAD/Gameplay/FirstNight/FirstNightHud.cs`
+      (referenced by `NAADBuild.cs`) — a third implementation, outside `UI/`.
+
+      So this is not a merge decision, it is a product decision: does the game ship
+      the First Night HUD and delete all of `UI/`, or is `UI/` the intended future
+      shell that was never finished? Answer that before deleting anything.
 - [ ] **CityStreet reproducibility.** The committed scene references
       `lamp_pole_small.prefab` and `bench.prefab` from `Assets/Versatile Studio Assets/`,
       which `.gitignore:58-59` excludes. Either commit those two prefabs (+ deps) or

@@ -15,15 +15,15 @@
       "hash": "a77a1b4a89824fb6df293099de3060daf2a432c1"
     },
     "com.ivanmurzak.unity.mcp": {
-      "version": "https://github.com/IvanMurzak/Unity-MCP.git?path=Unity-MCP-Plugin/Packages/com.ivanmurzak.unity.mcp",
+      "version": "1.7.0",
       "depth": 0,
-      "source": "git",
+      "source": "registry",
       "dependencies": {
         "com.unity.test-framework": "1.1.33",
         "com.unity.modules.uielements": "1.0.0",
         "extensions.unity.playerprefsex": "2.1.5"
       },
-      "hash": "475d025746755d130bfdb5274bc6e75ba9c83f24"
+      "url": "https://package.openupm.com"
     },
     "com.ivanmurzak.unity.mcp.animation": {
       "version": "2.1.0",

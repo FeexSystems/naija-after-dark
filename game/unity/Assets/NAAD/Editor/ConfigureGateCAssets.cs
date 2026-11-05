@@ -392,28 +392,47 @@ namespace NAAD.Editor
             controller.AddParameter(name, type);
         }
 
+        /// <summary>
+        /// Find-or-create an Animator layer and assign its avatar mask.
+        /// <para>
+        /// Must mutate the layer through a local copy of <c>controller.layers</c>
+        /// and write the whole array back. The previous version mutated a layer
+        /// object and located its slot with <c>Array.IndexOf(controller.layers, layer)</c>;
+        /// because every <c>controller.layers</c> read hands back a freshly built
+        /// array, that lookup compared against different instances, returned -1,
+        /// and <c>ReplaceLayer</c> silently no-opped. Result: the controller saved
+        /// with <c>m_Mask: {fileID: 0}</c> on every layer and Gate C verification
+        /// failed with "Animator has a non-base layer using UpperBodyMask".
+        /// </para>
+        /// </summary>
         private static AnimatorControllerLayer EnsureLayer(AnimatorController controller, string name, AvatarMask mask)
         {
-            foreach (var layer in controller.layers)
-                if (layer.name == name)
-                {
-                    layer.avatarMask = mask;
-                    layer.blendingMode = AnimatorLayerBlendingMode.Override;
-                    controller.layers = ReplaceLayer(controller.layers, Array.IndexOf(controller.layers, layer), layer);
-                    return layer;
-                }
+            var existing = ApplyMaskToNamedLayer(controller, name, mask);
+            if (existing != null) return existing;
 
             controller.AddLayer(name);
-            foreach (var layer in controller.layers)
-                if (layer.name == name)
-                {
-                    layer.avatarMask = mask;
-                    layer.blendingMode = AnimatorLayerBlendingMode.Override;
-                    controller.layers = ReplaceLayer(controller.layers, Array.IndexOf(controller.layers, layer), layer);
-                    return layer;
-                }
+
+            var created = ApplyMaskToNamedLayer(controller, name, mask);
+            if (created != null) return created;
 
             throw new InvalidOperationException("Could not create Animator layer: " + name);
+        }
+
+        private static AnimatorControllerLayer ApplyMaskToNamedLayer(
+            AnimatorController controller, string name, AvatarMask mask)
+        {
+            var layers = controller.layers;
+            for (var i = 0; i < layers.Length; i++)
+            {
+                if (layers[i].name != name) continue;
+
+                layers[i].avatarMask = mask;
+                layers[i].blendingMode = AnimatorLayerBlendingMode.Override;
+                controller.layers = layers;
+                return layers[i];
+            }
+
+            return null;
         }
 
         private static AnimatorControllerLayer[] ReplaceLayer(AnimatorControllerLayer[] layers, int index, AnimatorControllerLayer layer)

@@ -63,8 +63,7 @@ game/unity/Assets/Resources/
 game/unity/Assets/Resources.meta
 
 # Unity (game/unity)
-game/unity/[Ll]ibrary/
-game/unity/[Tt]emp/
+game/unity/[Ll]ibrary/game/unity/[Tt]emp/
 game/unity/[Oo]bj/
 game/unity/[Bb]uild/
 game/unity/[Bb]uilds/
@@ -135,6 +134,15 @@ temp/
 .grok/
 # Cursor MCP config holds a live UNITY_ACP_SESSION_TOKEN + local paths — never commit.
 .cursor/
+# Unity MCP bridge config holds a live per-session bearer token + absolute local paths.
+# A `git add -A` would commit a working credential — never commit this file.
+game/unity/.mcp.json
+# Per-session agent scaffolding inside the Unity project.
+# NOTE: the repo-root .claude/ tree IS tracked on purpose (shared agent definitions);
+# only the Unity-project copies are transient.
+game/unity/.claude/
+game/unity/.roo/
+game/unity/.agent/
 
 # Local PDF-extraction scratch (guides distill into docs/UNITY_KNOWLEDGE_BASE/)
 _tmp_*/
@@ -207,3 +215,12 @@ _scratch_*.log
 _scratch_*.zip
 PRP_Bed_ND,PRP_TV_ND/
 deno.exe
+
+# Gate C animation sources — 77 MB / 268 raw Mixamo "Without Skin" FBX takes.
+# The baked .anim clips are what ship and they stay tracked; these are only inputs
+# to Assets/NAAD/Editor/ImportMixamoClips.cs, which can re-download them from
+# Mixamo. See Assets/NAAD/Animation/Animations/MVP_PLACEHOLDER_CLIPS.md.
+game/unity/Assets/NAAD/Animation/Animations/NAADASSETSNEW/
+game/unity/Assets/NAAD/Animation/Animations/NAADASSETSNEW.meta
+# Orphan .meta for gitignored LLM native payload (see StreamingAssets/LlamaLib below).
+game/unity/Assets/StreamingAssets/LlamaLib-v2.0.5.meta

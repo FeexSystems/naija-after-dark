@@ -167,7 +167,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
-      - name: Configure and verify humanoid rig, clips, prefab wiring, and Animator contract
+      # Verify ONLY. This job previously ran
+      # `ConfigureGateCAssets.ConfigureAndVerify`, which regenerates the avatar,
+      # the AnimatorController and the player prefab before checking them — so it
+      # could go green while the committed prefab still had no AnimatorController
+      # and a controller with zero states (the exact state of `main` on
+      # 2026-11-05). A gate must check the artifact that ships, not one it just
+      # rebuilt. Regeneration stays available as a local repair tool:
+      # `NAAD > Gate C > Configure Player Rig Wiring`.
+      - name: Verify humanoid rig, clips, prefab wiring, and Animator contract
         uses: game-ci/unity-builder@v6
         env:
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
@@ -177,7 +185,7 @@ jobs:
           projectPath: game/unity
           unityVersion: 6000.6.5f1
           targetPlatform: StandaloneLinux64
-          buildMethod: NAAD.Editor.ConfigureGateCAssets.ConfigureAndVerify
+          buildMethod: NAAD.Editor.VerifyAnimationAssets.RunVerification
           customParameters: -nographics
 
       - name: Upload Gate C report
