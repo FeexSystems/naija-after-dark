@@ -267,6 +267,18 @@ namespace NAAD.UI.Scripts
             ShowDefaultScreen();
 
             RegisterControllersAuto();
+
+            // Runtime invariant. Every failure mode this shell has had — no views
+            // registered, wrong activation level, Start aborting before navigation —
+            // presented the same way: a blank screen and no error. Fail loudly instead.
+            if (_currentScreen == null)
+            {
+                Debug.LogError(
+                    "[ScreenNavigationManager] No screen is showing after Start(). " +
+                    $"registered={_views.Count} views. Check that the view prefabs are children " +
+                    "of this canvas, that each view's prefab ROOT is active, and that a " +
+                    "ScreenViewBase exists under it.");
+            }
         }
 
         private void ShowDefaultScreen()
