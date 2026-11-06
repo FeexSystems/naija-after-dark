@@ -48,6 +48,23 @@ Also: `Editor/` folders are excluded because they need `UnityEditor.dll` and the
 `UNITY_EDITOR` define. If you need to check editor tooling, add `UnityEditor.dll`
 from `Editor/Data/Managed/` and define `UNITY_EDITOR`.
 
+## Checking Editor scripts too
+
+For `Editor/` code, add `UnityEditor.dll` and define `UNITY_EDITOR`:
+
+```xml
+<DefineConstants>UNITY_EDITOR;UNITY_2023_1_OR_NEWER;UNITY_6000_0_OR_NEWER;UNITY_STANDALONE</DefineConstants>
+<Compile Include=".../Assets/NAAD/**/*.cs" />   <!-- no Editor exclusion -->
+```
+
+**Trap:** `Editor/Data/Managed/UnityEngine/` also contains `UnityEditor.*Module.dll`
+(70 of them). Referencing those *and* the monolithic `UnityEditor.dll` gives
+`CS0433: The type 'MenuItem' exists in both 'UnityEditor.CoreModule' and 'UnityEditor'`.
+Exclude `UnityEditor*.dll` from the module glob and keep `UnityEditor.dll`.
+
+Keep `#if NAAD_LEGACY_EDITOR_TOOLS` files out by simply not defining that symbol —
+which is also what the real build does, so the check stays honest.
+
 ## What it does and does not prove
 
 It catches syntax errors, wrong member names, missing `using`s and type mismatches
