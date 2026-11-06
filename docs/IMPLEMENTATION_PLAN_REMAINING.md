@@ -277,9 +277,11 @@ measurements and a build size the store will accept.
         every `ServiceContainer.Resolve<T>()` in the UI layer returning null.
 
       Remaining to finish:
-      - [ ] The other seven controllers (`Auth`, `Bootstrap`, `BottomNavigation`,
-            `Configuration`, `NightSummary`, `PhoneHome`, `PingMessaging`) still have the
-            same empty render methods. Same pattern as `MainHudController`.
+      - [x] All eight controllers now render into their views and route view events back
+            through the controller: `MainHud`, `Auth`, `Bootstrap`, `BottomNavigation`,
+            `Configuration`, `NightSummary`, `PhoneHome`, `PingMessaging`.
+            `ConfigurationUIController.Render()` was an empty "view binding pending"
+            stub — the hook it was waiting for now exists.
       - [ ] **Author the UI prefabs.** No screen prefab is committed, so nothing
             instantiates a view. `Assets/NAAD/UI/Editor/UIScreenFactory.cs` can build them
             but has never been run and its output is not in the repo. This needs the Unity

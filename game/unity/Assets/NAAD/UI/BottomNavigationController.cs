@@ -1,4 +1,5 @@
 using System;
+using NAAD.UI.Scripts;
 
 namespace NAAD.UI
 {
@@ -85,9 +86,37 @@ namespace NAAD.UI
 
         private void ShowNavigation()
         {
-            // Show navigation bar
-            // Update active tab highlight
-            // Update badge counts
+            UpdateNavigation();
+        }
+
+        /// <summary>Push the active tab and the aggregate badge count onto the view.</summary>
+        private void UpdateNavigation()
+        {
+            if (View is not BottomNavigationView view) return;
+
+            var activeIndex = _data.Items.FindIndex(item => item.TabId == _data.ActiveTabId);
+            if (activeIndex >= 0)
+                view.SetActiveTab(activeIndex);
+
+            var badges = 0;
+            for (var i = 0; i < _data.Items.Count; i++)
+                badges += _data.Items[i].BadgeCount;
+
+            view.UpdateBadgeCount(badges);
+        }
+
+        /// <summary>Route a tab tap from the view back into <see cref="SwitchTab"/>.</summary>
+        protected override void OnViewBound(NAAD.UI.Scripts.ScreenViewBase view)
+        {
+            base.OnViewBound(view);
+
+            if (view is not BottomNavigationView nav) return;
+
+            nav.OnTabSwitched += index =>
+            {
+                if (index < 0 || index >= _data.Items.Count) return;
+                SwitchTab(_data.Items[index].TabId);
+            };
         }
 
         /// <summary>
@@ -107,12 +136,6 @@ namespace NAAD.UI
             _data.ActiveTabId = tabId;
             OnTabChanged?.Invoke(tabId);
             UpdateNavigation();
-        }
-
-        private void UpdateNavigation()
-        {
-            // Update active tab highlight
-            // Update badge counts
         }
 
         /// <summary>

@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using NAAD.Core.Bootstrap;
 using NAAD.Networking;
+using NAAD.UI.Scripts;
 
 namespace NAAD.UI
 {
@@ -130,26 +131,50 @@ namespace NAAD.UI
 
         private void ShowLoadingView()
         {
-            // Show loading spinner
+            View?.SetState(ScreenState.Loading);
         }
 
         private void ShowEmptyView()
         {
-            // Show empty state message
-            // Display "No messages yet"
+            if (View is not PingMessagingView view) return;
+            view.ClearResponseOptions();
+            view.SetMessage(string.Empty, "No messages yet.");
         }
 
         private void ShowSuccessView()
         {
-            // Show contact list
-            // Show message list for selected contact
-            // Update unread badges
+            if (View is not PingMessagingView view) return;
+
+            var contact = _data.Contacts.Find(c => c.ContactId == _data.SelectedContactId);
+            var body = _data.Messages.Count > 0
+                ? _data.Messages[_data.Messages.Count - 1].Content
+                : string.Empty;
+
+            view.SetMessage(contact?.DisplayName ?? _data.SelectedContactId, body);
         }
 
         private void ShowErrorView()
         {
-            // Show error message
-            // Display retry button
+            if (View is not PingMessagingView view) return;
+            view.SetMessage("Ping", string.IsNullOrEmpty(ErrorMessage) ? "Could not reach the server." : ErrorMessage);
+        }
+
+        /// <summary>Wire the messaging view's send / refresh actions.</summary>
+        protected override void OnViewBound(NAAD.UI.Scripts.ScreenViewBase view)
+        {
+            base.OnViewBound(view);
+
+            if (view is not PingMessagingView ping) return;
+
+            ping.OnSend += () =>
+            {
+                var text = ping.GetInputText();
+                if (string.IsNullOrWhiteSpace(text)) return;
+                ping.ClearInput();
+                SendMessage(text);
+            };
+
+            ping.OnRefresh += Refresh;
         }
 
         /// <summary>

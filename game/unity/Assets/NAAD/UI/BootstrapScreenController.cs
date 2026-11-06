@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using NAAD.Core.Bootstrap;
 using NAAD.Networking;
+using NAAD.UI.Scripts;
 
 namespace NAAD.UI
 {
@@ -101,27 +102,39 @@ namespace NAAD.UI
 
         private void ShowLoadingView()
         {
-            // Show loading spinner with progress
-            // Display loading message
-            // Update progress bar
+            if (View is not BootstrapView view) return;
+            view.ShowLoading();
+            view.SetStatus("Starting up…");
         }
 
         private void ShowEmptyView()
         {
-            // Show sign-in prompt
-            // Display sign-in button
+            // Nothing loaded yet: show the content shell and ask the player to sign in.
+            if (View is not BootstrapView view) return;
+            view.ShowContent();
+            view.SetStatus("Sign in to continue.");
         }
 
         private void ShowSuccessView()
         {
-            // Hide bootstrap screen
-            // Show main game UI
+            if (View is not BootstrapView view) return;
+            view.ShowContent();
+            view.SetStatus("Ready.");
         }
 
         private void ShowErrorView()
         {
-            // Show error message
-            // Display retry button
+            if (View is not BootstrapView view) return;
+            view.ShowError(string.IsNullOrEmpty(ErrorMessage) ? "Startup failed." : ErrorMessage);
+        }
+
+        /// <summary>Wire the view's Retry button to <see cref="Retry"/>.</summary>
+        protected override void OnViewBound(NAAD.UI.Scripts.ScreenViewBase view)
+        {
+            base.OnViewBound(view);
+
+            if (view is BootstrapView bootstrap)
+                bootstrap.OnRetry += Retry;
         }
 
         /// <summary>
