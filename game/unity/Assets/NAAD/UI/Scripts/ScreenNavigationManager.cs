@@ -45,6 +45,68 @@ namespace NAAD.UI.Scripts
         }
 
         /// <summary>
+        /// Stable screen key for a view: the type name without the "View" suffix.
+        /// <para>
+        /// Deliberately does NOT use <see cref="ScreenViewBase.ScreenId"/>: views are
+        /// instantiated inactive, so their <c>Awake</c> never runs and the serialized
+        /// <c>_screenId</c> is still empty when this is called. Deriving from the type
+        /// name is deterministic and matches how controllers are keyed.
+        /// </para>
+        /// </summary>
+        private static string ScreenKeyOf(ScreenViewBase view)
+        {
+            var name = view.GetType().Name;
+            return name.EndsWith("View", StringComparison.Ordinal)
+                ? name.Substring(0, name.Length - "View".Length)
+                : name;
+        }
+
+        /// <summary>
+        /// Stable screen key for a controller: strip the "Controller" suffix, then the
+        /// "Screen" / "UI" infixes the two older naming styles added.
+        /// <c>BootstrapScreenController</c> → Bootstrap, <c>ConfigurationUIController</c> →
+        /// Configuration, <c>MainHudController</c> → MainHud.
+        /// </summary>
+        private static string ScreenKeyOfController(BaseScreenController controller)
+        {
+            var name = controller.GetType().Name;
+
+            if (name.EndsWith("Controller", StringComparison.Ordinal))
+                name = name.Substring(0, name.Length - "Controller".Length);
+            if (name.EndsWith("Screen", StringComparison.Ordinal))
+                name = name.Substring(0, name.Length - "Screen".Length);
+            if (name.EndsWith("UI", StringComparison.Ordinal))
+                name = name.Substring(0, name.Length - "UI".Length);
+
+            return name;
+        }
+
+        /// <summary>
+        /// Register every <see cref="ScreenViewBase"/> under this canvas.
+        /// <para>
+        /// Nothing ever called <see cref="RegisterView"/>, so <c>_views</c> stayed empty and
+        /// <see cref="NavigateTo"/> could only ever log "View not registered".
+        /// </para>
+        /// </summary>
+        public int RegisterChildViews()
+        {
+            var registered = 0;
+            foreach (var view in GetComponentsInChildren<ScreenViewBase>(includeInactive: true))
+            {
+                if (view == null) continue;
+
+                var key = ScreenKeyOf(view);
+                if (string.IsNullOrEmpty(key) || _views.ContainsKey(key)) continue;
+
+                _views[key] = view;
+                view.gameObject.SetActive(false);
+                registered++;
+            }
+
+            return registered;
+        }
+
+        /// <summary>
         /// Register a view with the navigation manager.
         /// </summary>
         /// <param name="view">The view instance to register.</param>
@@ -161,10 +223,7 @@ namespace NAAD.UI.Scripts
             {
                 if (controller == null) continue;
 
-                var typeName = controller.GetType().Name;
-                var screenId = typeName.EndsWith("Controller", StringComparison.Ordinal)
-                    ? typeName.Substring(0, typeName.Length - "Controller".Length)
-                    : typeName;
+                var screenId = ScreenKeyOfController(controller);
 
                 if (_views.TryGetValue(screenId, out var view))
                 {
@@ -175,7 +234,7 @@ namespace NAAD.UI.Scripts
                 {
                     Debug.LogWarning(
                         $"[ScreenNavigationManager] No registered view for controller " +
-                        $"'{typeName}' (expected screen id '{screenId}').");
+                        $"'{controller.GetType().Name}' (expected screen id '{screenId}').");
                 }
             }
 
@@ -184,12 +243,36 @@ namespace NAAD.UI.Scripts
 
         private void Start()
         {
+            RegisterChildViews();
+
             // Bind before the first navigation so the default screen renders with data.
             RegisterControllersAuto();
 
+            if (_defaultScreen == null)
+            {
+                // Deterministic fallback: start-up screen, then sign-in, then anything.
+                foreach (var preferred in new[] { "Bootstrap", "Auth" })
+                {
+                    if (_views.TryGetValue(preferred, out var view))
+                    {
+                        _defaultScreen = view;
+                        break;
+                    }
+                }
+
+                if (_defaultScreen == null)
+                {
+                    foreach (var view in _views.Values)
+                    {
+                        _defaultScreen = view;
+                        break;
+                    }
+                }
+            }
+
             if (_defaultScreen != null)
             {
-                NavigateTo(_defaultScreen.ScreenId, addToHistory: false);
+                NavigateTo(ScreenKeyOf(_defaultScreen), addToHistory: false);
             }
         }
 
