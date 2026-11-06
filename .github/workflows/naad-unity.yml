@@ -32,6 +32,13 @@ jobs:
       - name: Validate Unity metadata
         run: python3 tools/validate-unity-meta.py game/unity
 
+      # Structural, so it runs before Unity is even needed: the Bootstrap scene must
+      # mount UIRoot, the navigation manager, all eight view prefabs and all eight
+      # controllers. This caught nothing when written, but the shell had silently been
+      # absent from the scene for the whole project's life while Verify passed.
+      - name: Validate Bootstrap UI shell wiring
+        run: python3 tools/validate-bootstrap-ui.py game/unity
+
       - name: Check Unity licensing configuration
         shell: bash
         env:

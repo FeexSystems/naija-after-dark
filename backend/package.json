@@ -9,14 +9,17 @@
   "scripts": {
     "test": "npm run test --workspaces",
     "build": "npm run build --workspaces",
-    "lint": "eslint . --ext .ts"
+    "lint": "eslint ."
   },
   "devDependencies": {
     "@types/node": "^26.6.6",
     "@typescript-eslint/eslint-plugin": "^8.72.1",
     "@typescript-eslint/parser": "^8.72.1",
-    "eslint": "^10.14.0",
+    "eslint": "^9.39.5",
     "tsx": "^4.0.0",
     "typescript": "^5.9.2"
+  },
+  "overrides": {
+    "minimatch": "^11.0.1"
   }
 }
