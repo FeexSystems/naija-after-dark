@@ -101,8 +101,16 @@ namespace NAAD.Editor
 
                 var instance = (GameObject)PrefabUtility.InstantiatePrefab(prefab, viewsParent.transform);
                 instance.name = name;
-                instance.SetActive(false);
                 added++;
+            }
+
+            // The view component lives on a child "Panel"; the prefab root is the canvas.
+            // Activating the view only works if its root is active, so normalise both here.
+            foreach (Transform child in viewsParent.transform)
+            {
+                child.gameObject.SetActive(true);
+                var view = child.GetComponentInChildren<ScreenViewBase>(true);
+                if (view != null) view.Hide();
             }
 
             var controllers = EnsureChild(root, "Controllers");

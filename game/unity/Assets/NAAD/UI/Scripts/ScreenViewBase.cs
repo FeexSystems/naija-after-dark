@@ -23,7 +23,27 @@ namespace NAAD.UI.Scripts
         [Tooltip("Whether this view blocks input to views beneath it.")]
         private bool _blocksInput = true;
 
-        protected CanvasGroup CanvasGroup { get; private set; } = null!;
+        private CanvasGroup? _canvasGroup;
+
+        /// <summary>
+        /// The view's CanvasGroup, resolved on demand.
+        /// <para>
+        /// This must be lazy. Views are instantiated inactive so that
+        /// <see cref="ScreenNavigationManager"/> can register them, which means
+        /// <c>Awake</c> has not run yet — and <see cref="Hide"/> is called during the very
+        /// first navigation. Assigning only in <c>Awake</c> left this null and threw a
+        /// NullReferenceException on the first <c>NavigateTo</c>.
+        /// </para>
+        /// </summary>
+        protected CanvasGroup CanvasGroup
+        {
+            get
+            {
+                if (_canvasGroup == null) _canvasGroup = GetComponent<CanvasGroup>();
+                if (_canvasGroup == null) _canvasGroup = gameObject.AddComponent<CanvasGroup>();
+                return _canvasGroup;
+            }
+        }
 
         /// <summary>Unique screen identifier.</summary>
         public string ScreenId => _screenId;
@@ -33,11 +53,9 @@ namespace NAAD.UI.Scripts
 
         protected virtual void Awake()
         {
-            CanvasGroup = GetComponent<CanvasGroup>();
-            if (CanvasGroup == null)
-            {
-                CanvasGroup = gameObject.AddComponent<CanvasGroup>();
-            }
+            // Touch the lazy property so the group exists (and is added if missing) as
+            // soon as the object becomes active.
+            _ = CanvasGroup;
         }
 
         /// <summary>Show the view with optional fade-in.</summary>

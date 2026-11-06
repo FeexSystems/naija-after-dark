@@ -99,7 +99,11 @@ namespace NAAD.UI.Scripts
                 if (string.IsNullOrEmpty(key) || _views.ContainsKey(key)) continue;
 
                 _views[key] = view;
-                view.gameObject.SetActive(false);
+
+                // Hide the VIEW object, not the prefab root. The view component sits on a
+                // "Panel" child while the root is the canvas; deactivating the root would
+                // make Show() (which activates the view's own GameObject) a silent no-op.
+                view.Hide();
                 registered++;
             }
 
@@ -227,8 +231,19 @@ namespace NAAD.UI.Scripts
 
                 if (_views.TryGetValue(screenId, out var view))
                 {
-                    controller.BindView(view);
-                    bound++;
+                    // Isolate per-controller failures: one controller's first Render() must
+                    // not stop every other screen from binding.
+                    try
+                    {
+                        controller.BindView(view);
+                        bound++;
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.LogError(
+                            $"[ScreenNavigationManager] {controller.GetType().Name} threw while binding " +
+                            $"'{screenId}': {ex}");
+                    }
                 }
                 else if (logWhenMissing)
                 {
@@ -245,9 +260,17 @@ namespace NAAD.UI.Scripts
         {
             RegisterChildViews();
 
-            // Bind before the first navigation so the default screen renders with data.
-            RegisterControllersAuto();
+            // Show a screen BEFORE binding controllers. BindView calls Render(), and a
+            // single controller throwing there used to abort Start entirely — leaving the
+            // whole UI blank with no clue why. The UI appearing matters more than any one
+            // controller's first render.
+            ShowDefaultScreen();
 
+            RegisterControllersAuto();
+        }
+
+        private void ShowDefaultScreen()
+        {
             if (_defaultScreen == null)
             {
                 // Deterministic fallback: start-up screen, then sign-in, then anything.
