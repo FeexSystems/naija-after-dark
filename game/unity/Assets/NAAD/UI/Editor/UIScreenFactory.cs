@@ -1,4 +1,3 @@
-#if NAAD_LEGACY_EDITOR_TOOLS
 using System;
 using System.IO;
 using UnityEditor;
@@ -184,16 +183,16 @@ namespace NAAD.UI.Editor
             errorRt.offsetMax = Vector2.zero;
 
             var view = panel.AddComponent<BootstrapView>();
-            view._statusText = status;
-            view._errorText = errorText;
-            view._retryButton = retryBtn;
-            view._loadingPanel = loadingPanel;
-            view._contentPanel = contentPanel;
-            view._errorPanel = errorPanel;
+            SetObject(view, "_statusText", status);
+            SetObject(view, "_errorText", errorText);
+            SetObject(view, "_retryButton", retryBtn);
+            SetObject(view, "_loadingPanel", loadingPanel);
+            SetObject(view, "_contentPanel", contentPanel);
+            SetObject(view, "_errorPanel", errorPanel);
 
             var prefabPath = Path.Combine(ViewsFolder, "BootstrapView.prefab");
             PrefabUtility.SaveAsPrefabAsset(canvas, prefabPath);
-            Object.DestroyImmediate(canvas);
+            UnityEngine.Object.DestroyImmediate(canvas);
             Debug.Log($"[UIScreenFactory] Created {prefabPath}");
         }
 
@@ -233,15 +232,15 @@ namespace NAAD.UI.Editor
                 new Vector2(0, 0), new Vector2(0, 0), 20);
 
             var view = panel.AddComponent<MainHudView>();
-            view._locationText = location;
-            view._balanceText = balance;
-            view._interactionButton = interactBtn;
-            view._interactionPromptPanel = promptPanel;
-            view._interactionPromptText = promptTxt;
+            SetObject(view, "_locationText", location);
+            SetObject(view, "_balanceText", balance);
+            SetObject(view, "_interactionButton", interactBtn);
+            SetObject(view, "_interactionPromptPanel", promptPanel);
+            SetObject(view, "_interactionPromptText", promptTxt);
 
             var prefabPath = Path.Combine(ViewsFolder, "MainHudView.prefab");
             PrefabUtility.SaveAsPrefabAsset(canvas, prefabPath);
-            Object.DestroyImmediate(canvas);
+            UnityEngine.Object.DestroyImmediate(canvas);
             Debug.Log($"[UIScreenFactory] Created {prefabPath}");
         }
 
@@ -268,8 +267,6 @@ namespace NAAD.UI.Editor
             var gridLayout = appGrid.AddComponent<GridLayoutGroup>();
             gridLayout.cellSize = new Vector2(120, 120);
             gridLayout.spacing = new Vector2(20, 20);
-            gridLayout.startCorner = GridLayoutGroup.StartCorner.UpperLeft;
-            gridLayout.startAxis = GridLayoutGroup.StartAxis.Horizontal;
             gridLayout.childAlignment = TextAnchor.UpperLeft;
 
             var refreshBtn = CreateButton(panel, "RefreshButton", "Refresh",
@@ -277,13 +274,13 @@ namespace NAAD.UI.Editor
                 new Vector2(0, 0), new Vector2(0, 0));
 
             var view = panel.AddComponent<PhoneHomeView>();
-            view._unreadBadgeText = badge;
-            view._appGridParent = appGrid.transform;
-            view._refreshButton = refreshBtn;
+            SetObject(view, "_unreadBadgeText", badge);
+            SetObject(view, "_appGridParent", appGrid.transform);
+            SetObject(view, "_refreshButton", refreshBtn);
 
             var prefabPath = Path.Combine(ViewsFolder, "PhoneHomeView.prefab");
             PrefabUtility.SaveAsPrefabAsset(canvas, prefabPath);
-            Object.DestroyImmediate(canvas);
+            UnityEngine.Object.DestroyImmediate(canvas);
             Debug.Log($"[UIScreenFactory] Created {prefabPath}");
         }
 
@@ -337,16 +334,16 @@ namespace NAAD.UI.Editor
                 new Vector2(0, 0), new Vector2(0, 0));
 
             var view = panel.AddComponent<PingMessagingView>();
-            view._contactNameText = contactName;
-            view._messageBodyText = messageBody;
-            view._responseButtonParent = responseParent.transform;
-            view._sendButton = sendBtn;
-            view._inputField = input;
-            view._refreshButton = refreshBtn;
+            SetObject(view, "_contactNameText", contactName);
+            SetObject(view, "_messageBodyText", messageBody);
+            SetObject(view, "_responseButtonParent", responseParent.transform);
+            SetObject(view, "_sendButton", sendBtn);
+            SetObject(view, "_inputField", input);
+            SetObject(view, "_refreshButton", refreshBtn);
 
             var prefabPath = Path.Combine(ViewsFolder, "PingMessagingView.prefab");
             PrefabUtility.SaveAsPrefabAsset(canvas, prefabPath);
-            Object.DestroyImmediate(canvas);
+            UnityEngine.Object.DestroyImmediate(canvas);
             Debug.Log($"[UIScreenFactory] Created {prefabPath}");
         }
 
@@ -383,16 +380,16 @@ namespace NAAD.UI.Editor
                 new Vector2(0, 0), new Vector2(0, 0));
 
             var view = panel.AddComponent<NightSummaryView>();
-            view._spentText = spent;
-            view._peopleMetText = people;
-            view._bestMomentText = bestMoment;
-            view._continueButton = continueBtn;
-            view._skipButton = skipBtn;
-            view._retryButton = retryBtn;
+            SetObject(view, "_spentText", spent);
+            SetObject(view, "_peopleMetText", people);
+            SetObject(view, "_bestMomentText", bestMoment);
+            SetObject(view, "_continueButton", continueBtn);
+            SetObject(view, "_skipButton", skipBtn);
+            SetObject(view, "_retryButton", retryBtn);
 
             var prefabPath = Path.Combine(ViewsFolder, "NightSummaryView.prefab");
             PrefabUtility.SaveAsPrefabAsset(canvas, prefabPath);
-            Object.DestroyImmediate(canvas);
+            UnityEngine.Object.DestroyImmediate(canvas);
             Debug.Log($"[UIScreenFactory] Created {prefabPath}");
         }
 
@@ -425,12 +422,12 @@ namespace NAAD.UI.Editor
                 new Vector2(-30, -10), new Vector2(0, 0), 14, Color.yellow);
 
             var view = panel.AddComponent<BottomNavigationView>();
-            view._tabButtonParent = panel.transform;
-            view._badgeText = badge;
+            SetObject(view, "_tabButtonParent", panel.transform);
+            SetObject(view, "_badgeText", badge);
 
             var prefabPath = Path.Combine(ViewsFolder, "BottomNavigationView.prefab");
             PrefabUtility.SaveAsPrefabAsset(canvas, prefabPath);
-            Object.DestroyImmediate(canvas);
+            UnityEngine.Object.DestroyImmediate(canvas);
             Debug.Log($"[UIScreenFactory] Created {prefabPath}");
         }
 
@@ -455,13 +452,13 @@ namespace NAAD.UI.Editor
                 new Vector2(0, 0), new Vector2(0, 0));
 
             var view = panel.AddComponent<ConfigurationView>();
-            view._statusText = configText;
-            view._refreshButton = refreshBtn;
-            view._retryButton = retryBtn;
+            SetObject(view, "_statusText", configText);
+            SetObject(view, "_refreshButton", refreshBtn);
+            SetObject(view, "_retryButton", retryBtn);
 
             var prefabPath = Path.Combine(ViewsFolder, "ConfigurationView.prefab");
             PrefabUtility.SaveAsPrefabAsset(canvas, prefabPath);
-            Object.DestroyImmediate(canvas);
+            UnityEngine.Object.DestroyImmediate(canvas);
             Debug.Log($"[UIScreenFactory] Created {prefabPath}");
         }
 
@@ -511,18 +508,41 @@ namespace NAAD.UI.Editor
                 new Vector2(0, 0), new Vector2(0, 0));
 
             var view = panel.AddComponent<AuthView>();
-            view._emailInput = emailInputComp;
-            view._passwordInput = passInputComp;
-            view._signUpButton = signUpBtn;
-            view._signInButton = signInBtn;
-            view._restoreButton = signInBtn;
-            view._authPanel = authPanel;
+            SetObject(view, "_emailInput", emailInputComp);
+            SetObject(view, "_passwordInput", passInputComp);
+            SetObject(view, "_signUpButton", signUpBtn);
+            SetObject(view, "_signInButton", signInBtn);
+            SetObject(view, "_restoreButton", signInBtn);
+            SetObject(view, "_authPanel", panel);
 
             var prefabPath = Path.Combine(ViewsFolder, "AuthView.prefab");
             PrefabUtility.SaveAsPrefabAsset(canvas, prefabPath);
-            Object.DestroyImmediate(canvas);
+            UnityEngine.Object.DestroyImmediate(canvas);
             Debug.Log($"[UIScreenFactory] Created {prefabPath}");
+        }
+
+        /// <summary>
+        /// Set a [SerializeField] private field on a view via SerializedObject.
+        /// <para>
+        /// The views keep their fields private and the Editor code lives in
+        /// Assembly-CSharp-Editor while the views are in Assembly-CSharp, so neither
+        /// direct assignment nor `internal` reaches them. SerializedObject is the
+        /// supported way across that boundary, and it is what Unity serialisation uses
+        /// anyway — so a typo in the field name fails loudly here instead of silently
+        /// producing an unwired prefab.
+        /// </para>
+        /// </summary>
+        private static void SetObject(UnityEngine.Object target, string fieldName, UnityEngine.Object value)
+        {
+            var so = new SerializedObject(target);
+            var prop = so.FindProperty(fieldName);
+            if (prop == null)
+            {
+                Debug.LogError($"[UIScreenFactory] {target.GetType().Name} has no serialized field '{fieldName}'");
+                return;
+            }
+            prop.objectReferenceValue = value;
+            so.ApplyModifiedPropertiesWithoutUndo();
         }
     }
 }
-#endif

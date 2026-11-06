@@ -19,7 +19,7 @@ namespace NAAD.Editor
     /// </summary>
     public static class NavMeshSceneBaker
     {
-        [MenuItem("NAAD/Scenes/Bake All NavMeshes", priority = 103)]
+        [MenuItem("NAAD/Scenes/Bake All NavMeshes (Build Settings scan)", priority = 103)]
         public static void BakeAllNavMeshes()
         {
             var scenes = EditorBuildSettings.scenes;

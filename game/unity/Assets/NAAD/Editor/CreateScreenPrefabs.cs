@@ -8,9 +8,12 @@ namespace NAAD.Editor
     {
         private const string Dir = "Assets/NAAD/Prefabs/UI/Screens";
 
-        [MenuItem("NAAD/UI/Create All Screen Prefabs")]
+        [MenuItem("NAAD/UI/Deprecated/Create Controller Screen Prefabs")]
         public static void CreateAllScreenPrefabs()
         {
+            Debug.LogWarning("[CreateScreenPrefabs] Deprecated: builds Controller-based screen prefabs. "
+                + "The UI layer is View+Controller — use NAAD > UI > Create All Screen Prefabs (UIScreenFactory).");
+
             Debug.Log("[NAAD][UI] Creating all MVP screen prefabs...");
             EnsureDirs();
             CreateBootstrapScreen();
