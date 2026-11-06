@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using NAAD.Core.Bootstrap;
 using NAAD.Core.Logging;
 using NAAD.Networking;
+using NAAD.UI.Scripts;
 using UnityEngine;
 
 namespace NAAD.UI
@@ -12,12 +13,84 @@ namespace NAAD.UI
     /// </summary>
     public sealed class AuthController : MonoBehaviour
     {
+        [SerializeField] private AuthView? _view;
+
         private IAuthService? _auth;
         private INAADLogger? _log;
 
         private void Awake()
         {
             Bind();
+        }
+
+        private void Start()
+        {
+            // This controller is not a BaseScreenController, so RegisterControllersAuto
+            // does not reach it. Resolve the view directly so a login screen works
+            // without any prefab wiring.
+            if (_view == null)
+                _view = FindAnyObjectByType<AuthView>(FindObjectsInactive.Include);
+
+            if (_view == null) return;
+
+            _view.OnSignIn += HandleSignIn;
+            _view.OnSignUp += HandleSignUp;
+
+            if (_view.ScreenId.Length == 0)
+                _log?.Warn("UI.Auth", "AuthView has an empty screen id; navigation will not find it.");
+        }
+
+        private void OnDestroy()
+        {
+            if (_view == null) return;
+            _view.OnSignIn -= HandleSignIn;
+            _view.OnSignUp -= HandleSignUp;
+        }
+
+        private async void HandleSignIn(string email, string password)
+        {
+            _view?.HideError();
+
+            if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
+            {
+                _view?.ShowError("Enter both an email and a password.");
+                return;
+            }
+
+            var ok = await SignInAsync(email, password);
+            if (ok)
+            {
+                _view?.HideAuthPanel();
+            }
+            else
+            {
+                _view?.ShowError(
+                    "Sign-in failed. Check the email and password, and that the account is " +
+                    "confirmed in Supabase (Authentication → Users → Auto Confirm).");
+            }
+        }
+
+        private async void HandleSignUp(string email, string password)
+        {
+            _view?.HideError();
+
+            if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
+            {
+                _view?.ShowError("Enter both an email and a password.");
+                return;
+            }
+
+            var ok = await SignUpAsync(email, password, displayName: string.Empty);
+            if (ok)
+            {
+                _view?.HideAuthPanel();
+            }
+            else
+            {
+                _view?.ShowError(
+                    "Sign-up failed. If the project requires email confirmation, confirm the " +
+                    "address before signing in, or turn confirmation off for development.");
+            }
         }
 
         private void Bind()

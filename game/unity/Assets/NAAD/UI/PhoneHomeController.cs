@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using NAAD.Core.Bootstrap;
 using NAAD.Networking;
+using NAAD.UI.Scripts;
 
 namespace NAAD.UI
 {
@@ -150,21 +151,31 @@ namespace NAAD.UI
 
         private void ShowLoadingView()
         {
-            // Show loading spinner
+            View?.SetState(ScreenState.Loading);
         }
 
         private void ShowSuccessView()
         {
-            // Show app grid
-            // Update notification badges
-            // Update battery indicator
-            // Update network status
+            UpdateHud();
         }
 
         private void ShowErrorView()
         {
-            // Show error message
-            // Display retry button
+            View?.SetState(ScreenState.Error);
+        }
+
+        /// <summary>Wire the phone home refresh action.</summary>
+        protected override void OnViewBound(NAAD.UI.Scripts.ScreenViewBase view)
+        {
+            base.OnViewBound(view);
+
+            if (view is not PhoneHomeView phone) return;
+
+            phone.OnRefresh += () =>
+            {
+                SetState(ScreenState.Retry);
+                LoadData();
+            };
         }
 
         /// <summary>
@@ -195,7 +206,13 @@ namespace NAAD.UI
 
         private void UpdateHud()
         {
-            // Update notification badges
+            if (View is not PhoneHomeView view) return;
+
+            var unread = 0;
+            for (var i = 0; i < _data.Apps.Count; i++)
+                unread += _data.Apps[i].UnreadCount;
+
+            view.UpdateUnreadCount(unread);
         }
 
         /// <summary>

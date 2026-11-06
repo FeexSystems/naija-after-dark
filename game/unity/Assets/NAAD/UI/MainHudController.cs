@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using NAAD.Core.Bootstrap;
 using NAAD.Networking;
+using NAAD.UI.Scripts;
 
 namespace NAAD.UI
 {
@@ -81,21 +82,44 @@ namespace NAAD.UI
 
         private void ShowHud()
         {
-            // Show HUD canvas
+            View?.Show();
         }
 
         private void HideHud()
         {
-            // Hide HUD canvas
+            View?.Hide();
         }
 
+        /// <summary>
+        /// Push the current <see cref="MainHudData"/> onto the bound <see cref="MainHudView"/>.
+        /// Previously an empty comment block; the controller owned the data but had no way to
+        /// reach a view at all.
+        /// </summary>
         private void UpdateHud()
         {
-            // Update player name display
-            // Update location display
-            // Update balance display
-            // Update time of day display
-            // Update notification badge
+            if (View is not MainHudView hud) return;
+
+            hud.UpdateLocation(_data.CurrentLocation);
+            hud.UpdateBalance(_data.Balance);
+
+            if (_data.HasActiveInteraction)
+                hud.ShowInteractionPrompt(_data.InteractionPrompt);
+            else
+                hud.HideInteractionPrompt();
+        }
+
+        /// <summary>
+        /// Route the view's interaction tap into the authoritative command path.
+        /// Presentation may request an action but never mutate state itself.
+        /// </summary>
+        protected override void OnViewBound(NAAD.UI.Scripts.ScreenViewBase view)
+        {
+            base.OnViewBound(view);
+
+            if (view is MainHudView hud)
+            {
+                hud.OnInteractionTapped += OnInteractionTapped;
+            }
         }
 
         /// <summary>
@@ -167,6 +191,21 @@ namespace NAAD.UI
         public MainHudData GetData()
         {
             return _data;
+        }
+
+        private void OnInteractionTapped()
+        {
+            OnInteract();
+        }
+
+        protected override void Cleanup()
+        {
+            if (View is MainHudView hud)
+            {
+                hud.OnInteractionTapped -= OnInteractionTapped;
+            }
+
+            base.Cleanup();
         }
     }
 }

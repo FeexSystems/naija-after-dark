@@ -1,4 +1,5 @@
 using System;
+using NAAD.UI.Scripts;
 using UnityEngine;
 
 namespace NAAD.UI
@@ -11,6 +12,38 @@ namespace NAAD.UI
     {
         protected ScreenState CurrentState = ScreenState.Loading;
         protected string ErrorMessage = string.Empty;
+
+        [Header("View")]
+        [SerializeField]
+        [Tooltip("The presentation layer this controller renders into. Bound at runtime by " +
+                 "ScreenNavigationManager.RegisterControllersAuto() when it is not set in the prefab.")]
+        private ScreenViewBase? _view;
+
+        /// <summary>The bound presentation layer, or null when nothing has been bound yet.</summary>
+        public ScreenViewBase? View => _view;
+
+        /// <summary>
+        /// Bind this controller to its view and render once.
+        /// <para>
+        /// Controllers used to manage their data with no way to reach a view at all, so
+        /// every <c>ShowHud</c>/<c>UpdateHud</c>-style method was an empty comment. This is
+        /// the link that was missing between <c>NAAD.UI.*Controller</c> and
+        /// <c>NAAD.UI.Scripts.*View</c>.
+        /// </para>
+        /// </summary>
+        public void BindView(ScreenViewBase view)
+        {
+            if (view == null) return;
+
+            _view = view;
+            OnViewBound(view);
+            Render();
+        }
+
+        /// <summary>Called once after a view is bound. Override for type-specific setup.</summary>
+        protected virtual void OnViewBound(ScreenViewBase view)
+        {
+        }
 
         /// <summary>
         /// Called when screen state changes.
@@ -35,6 +68,10 @@ namespace NAAD.UI
             }
             
             OnStateChanged(newState, oldState);
+
+            // Push the new state into the view. Derived classes implement Render() (or their
+            // own Update* method) to move data onto the bound view.
+            Render();
         }
 
         /// <summary>

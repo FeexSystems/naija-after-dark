@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using NAAD.Core.Bootstrap;
 using NAAD.Networking;
+using NAAD.UI.Scripts;
 
 namespace NAAD.UI
 {
@@ -88,23 +89,39 @@ namespace NAAD.UI
 
         private void ShowLoadingView()
         {
-            // Show loading spinner
-            // Display "Calculating your night..."
+            View?.SetState(ScreenState.Loading);
         }
 
         private void ShowSuccessView()
         {
-            // Show night summary cards
-            // Display statistics
-            // Show achievements
-            // Display "Continue" button
+            if (View is not NightSummaryView view) return;
+
+            view.SetSummary(
+                _data.SpentNgn,
+                _data.PeopleMet,
+                string.IsNullOrEmpty(_data.BestMoment) ? _data.NewConnection : _data.BestMoment);
         }
 
         private void ShowErrorView()
         {
-            // Show error message
-            // Display retry button
-            // Display "Skip" option
+            if (View is not NightSummaryView view) return;
+            view.SetSummary(0, 0, string.IsNullOrEmpty(ErrorMessage) ? "Could not load the summary." : ErrorMessage);
+        }
+
+        /// <summary>Wire the summary's Continue / Skip / Retry buttons.</summary>
+        protected override void OnViewBound(NAAD.UI.Scripts.ScreenViewBase view)
+        {
+            base.OnViewBound(view);
+
+            if (view is not NightSummaryView summary) return;
+
+            summary.OnContinue += () => SetState(ScreenState.Success);
+            summary.OnSkip += () => SetState(ScreenState.Success);
+            summary.OnRetry += () =>
+            {
+                SetState(ScreenState.Retry);
+                LoadData();
+            };
         }
 
         /// <summary>

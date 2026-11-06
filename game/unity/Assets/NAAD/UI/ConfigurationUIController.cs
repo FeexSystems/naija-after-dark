@@ -1,5 +1,6 @@
 using NAAD.Core.Bootstrap;
 using NAAD.Networking.Config;
+using NAAD.UI.Scripts;
 
 namespace NAAD.UI
 {
@@ -157,14 +158,58 @@ namespace NAAD.UI
         }
 
         /// <summary>
-        /// Render is where the view layer binds. The views themselves are still
-        /// pending (see UI_IMPLEMENTATION_REPORT.md); this override exists so the
-        /// base-class hook is wired and the data contract is the single binding
-        /// surface when the view lands.
+        /// Render is where the view layer binds. The view now exists, so this pushes the
+        /// composed-service truth onto it: an unconfigured root reports Error, never a
+        /// fabricated Success.
         /// </summary>
         protected override void Render()
         {
-            // View binding pending. All state is available via GetData().
+            if (View is not ConfigurationView view) return;
+
+            switch (CurrentState)
+            {
+                case ScreenState.Loading:
+                case ScreenState.Retry:
+                    view.SetStatus("Checking configuration…");
+                    break;
+
+                case ScreenState.Success:
+                    view.ShowConfiguration();
+                    view.SetStatus(_data.UsingLiveServices
+                        ? "Live Supabase services"
+                        : "Stub fallback — configure SupabaseConfig for live services");
+                    break;
+
+                case ScreenState.Empty:
+                    view.SetStatus("No configuration loaded.");
+                    break;
+
+                case ScreenState.Error:
+                    view.ShowConfigurationError(
+                        !string.IsNullOrEmpty(_data.ErrorMessage)
+                            ? _data.ErrorMessage
+                            : string.IsNullOrEmpty(ErrorMessage) ? "Configuration error." : ErrorMessage);
+                    break;
+            }
+        }
+
+        protected override void OnViewBound(NAAD.UI.Scripts.ScreenViewBase view)
+        {
+            base.OnViewBound(view);
+
+            if (view is not ConfigurationView config) return;
+
+            config.OnRefresh += () =>
+            {
+                SetState(ScreenState.Retry);
+                LoadData();
+            };
+
+            config.OnRetry += () =>
+            {
+                SetState(ScreenState.Retry);
+                LoadData();
+            };
         }
     }
 }

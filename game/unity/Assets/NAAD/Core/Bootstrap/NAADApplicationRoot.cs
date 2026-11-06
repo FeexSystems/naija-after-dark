@@ -3,6 +3,7 @@ using NAAD.Core.State;
 using NAAD.Networking;
 using NAAD.Networking.Config;
 using NAAD.Networking.Supabase;
+using NAAD.UI.Scripts;
 using UnityEngine;
 
 namespace NAAD.Core.Bootstrap
@@ -67,6 +68,13 @@ namespace NAAD.Core.Bootstrap
                 Dialogue = null;
                 Logger.Warn("Root", "SupabaseConfig missing — using stub services");
             }
+
+            // Publish the composed graph so the UI layer can resolve services instead of
+            // reaching through NAADApplicationRoot.Instance. ServiceContainer already
+            // declared RegisterProdServices but nothing ever called it, leaving every
+            // ServiceContainer.Resolve<T>() in the UI layer returning null.
+            ServiceContainer.Clear();
+            ServiceContainer.RegisterProdServices(Auth, Players, World, Commands, Phone, Dialogue);
         }
 
         private void OnDestroy()
