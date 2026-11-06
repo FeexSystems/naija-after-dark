@@ -98,7 +98,7 @@ namespace NAAD.UI.Editor
             rt.offsetMin = offsetMin;
             rt.offsetMax = offsetMax;
 
-            var tmp = go.AddComponent<TMP_Text>();
+            var tmp = go.AddComponent<TextMeshProUGUI>();
             tmp.text = text;
             tmp.fontSize = fontSize;
             tmp.color = color ?? Color.white;
@@ -129,7 +129,7 @@ namespace NAAD.UI.Editor
             txtRt.offsetMin = Vector2.zero;
             txtRt.offsetMax = Vector2.zero;
 
-            var txt = txtGo.AddComponent<TMP_Text>();
+            var txt = txtGo.AddComponent<TextMeshProUGUI>();
             txt.text = text;
             txt.fontSize = 20;
             txt.color = Color.white;
