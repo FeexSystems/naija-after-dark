@@ -81,7 +81,8 @@
       "district": "ML",
       "venue": "SYU",
       "status": "planned",
-      "brief": "Reusable serving plate with suya skewers, sliced onions and tomatoes as a static food presentation prop. No brand marks or legible generated text."
+      "brief": "Reusable serving plate with suya skewers, sliced onions and tomatoes as a static food presentation prop. No brand marks or legible generated text.",
+      "target_scene": "SuyaSpot"
     }
   ]
 }
