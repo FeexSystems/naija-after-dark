@@ -1,0 +1,30 @@
+name: Higgsfield Asset Intake
+
+on:
+  push:
+    branches: [main, "feat/higgsfield-asset-pipeline"]
+    paths:
+      - "tools/higgsfield/**"
+      - ".github/workflows/higgsfield-asset-intake.yml"
+  pull_request:
+    paths:
+      - "tools/higgsfield/**"
+      - ".github/workflows/higgsfield-asset-intake.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate-intake:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run intake validator tests
+        run: python -m unittest discover -s tools/higgsfield/tests -v
+      - name: Validate pilot manifest
+        run: python tools/higgsfield/validate_intake.py

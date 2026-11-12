@@ -224,3 +224,7 @@ deno.exe
 # See Assets/NAAD/Animation/Animations/MVP_PLACEHOLDER_CLIPS.md.
 # Orphan .meta for gitignored LLM native payload (see StreamingAssets/LlamaLib below).
 game/unity/Assets/StreamingAssets/LlamaLib-v2.0.5.meta
+
+# Local Higgsfield exports are staged outside tracked Unity assets.
+tools/higgsfield/staging/*
+!tools/higgsfield/staging/.gitkeep
