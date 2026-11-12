@@ -1,0 +1,87 @@
+{
+  "schema_version": "1.0.0",
+  "project": "NAIJA AFTER DARK",
+  "repository": "FeexSystems/naija-after-dark",
+  "pilot": "suya-spot-gap-fill-v1",
+  "assets": [
+    {
+      "asset_id": "NAAD-SYU-001",
+      "asset_name": "SYU_CanopyFrame_ML_v001",
+      "category": "SYU",
+      "district": "ML",
+      "venue": "SYU",
+      "target_scene": "SuyaSpot",
+      "status": "planned",
+      "brief": "Open-sided 4m x 6m Nigerian street suya canopy frame, modular steel poles, practical joints and real-world scale. No baked scene floor or unrelated props."
+    },
+    {
+      "asset_id": "NAAD-SYU-002",
+      "asset_name": "SYU_CanopyFabric_ML_v001",
+      "category": "SYU",
+      "district": "ML",
+      "venue": "SYU",
+      "target_scene": "SuyaSpot",
+      "status": "planned",
+      "brief": "Separate striped red-and-cream weathered canopy fabric mesh sized for the NAAD suya frame. Keep geometry simple and material tiling clean."
+    },
+    {
+      "asset_id": "NAAD-PRP-001",
+      "asset_name": "PRP_MenuBoard_ML_v001",
+      "category": "PRP",
+      "district": "ML",
+      "venue": "SYU",
+      "target_scene": "SuyaSpot",
+      "status": "planned",
+      "brief": "Freestanding hand-painted Nigerian suya menu board, blank or placeholder text surface so localized game text can be rendered separately."
+    },
+    {
+      "asset_id": "NAAD-PRP-002",
+      "asset_name": "PRP_SpiceTinSet_ML_v001",
+      "category": "PRP",
+      "district": "ML",
+      "venue": "SYU",
+      "target_scene": "SuyaSpot",
+      "status": "planned",
+      "brief": "Small reusable set of metal spice tins and bowls for a suya preparation counter, separate meshes where practical."
+    },
+    {
+      "asset_id": "NAAD-PRP-003",
+      "asset_name": "PRP_Tongs_ML_v001",
+      "category": "PRP",
+      "district": "ML",
+      "venue": "SYU",
+      "target_scene": "SuyaSpot",
+      "status": "planned",
+      "brief": "Pair of practical stainless-steel grilling tongs, clean silhouette, realistic handheld scale."
+    },
+    {
+      "asset_id": "NAAD-PRP-004",
+      "asset_name": "PRP_CharcoalEmbers_ML_v001",
+      "category": "PRP",
+      "district": "ML",
+      "venue": "SYU",
+      "status": "planned",
+      "target_scene": "SuyaSpot",
+      "brief": "Low-cost charcoal ember bed insert for the existing NAAD grill. Mesh/material asset only; smoke and glow effects remain Unity particle/material systems."
+    },
+    {
+      "asset_id": "NAAD-PRP-005",
+      "asset_name": "PRP_MonoblocChair_ML_v001",
+      "category": "PRP",
+      "district": "ML",
+      "venue": "SYU",
+      "target_scene": "SuyaSpot",
+      "status": "planned",
+      "brief": "Single Nigerian-style plastic monobloc chair, durable everyday form, real-world dimensions, low-poly mobile-ready geometry."
+    },
+    {
+      "asset_id": "NAAD-PRP-006",
+      "asset_name": "PRP_PlateSuya_ML_v001",
+      "category": "PRP",
+      "district": "ML",
+      "venue": "SYU",
+      "status": "planned",
+      "brief": "Reusable serving plate with suya skewers, sliced onions and tomatoes as a static food presentation prop. No brand marks or legible generated text."
+    }
+  ]
+}
