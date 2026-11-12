@@ -137,6 +137,8 @@ def validate_manifest(data: dict[str, Any], repo_root: Path = REPO_ROOT) -> list
                 continue
             if file_path.suffix.lower() not in ALLOWED_FORMATS:
                 errors.append(f"{prefix}.staged_file has unsupported extension: {file_path.suffix}")
+            if source_format and file_path.suffix.lower() != "." + source_format:
+                errors.append(f"{prefix}.source_format does not match staged_file extension")
 
             if status in {"validated", "approved_for_unity"}:
                 expected_hash = asset.get("sha256", "")
